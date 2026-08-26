@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pantone-challenger"
+version = "1.0.0"
+description = "A daily, reproducible commercial-color index built from official marketing pages."
+readme = "README.md"
+requires-python = ">=3.11"
+license = {text = "MIT"}
+authors = [{name = "Karissa Gannon"}]
+dependencies = [
+  "click>=8.1,<9",
+  "numpy>=1.26,<3",
+  "Pillow>=10.4,<13",
+  "playwright>=1.48,<2",
+  "PyYAML>=6.0,<7",
+  "requests>=2.32,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.3,<10",
+  "ruff>=0.8,<1",
+]
+
+[project.scripts]
+challenger = "challenger.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["challenger*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"

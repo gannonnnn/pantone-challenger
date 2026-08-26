@@ -1,0 +1,27 @@
+project_name: "Pantone Challenger"
+methodology_version: "1.0"
+timezone: "America/New_York"
+rollover_hour: 4
+
+viewport_width: 1440
+viewport_height: 1200
+frames_per_source: 2
+second_frame_scroll_y: 900
+navigation_timeout_ms: 45000
+post_load_wait_ms: 3500
+concurrency: 3
+request_delay_seconds: 1.0
+
+cluster_distance: 0.055
+source_cluster_distance: 0.045
+baseline_lookback_days: 30
+baseline_warmup_days: 7
+baseline_suppression: 0.75
+unchanged_page_factor: 0.35
+
+min_usable_sources: 20
+min_usable_sectors: 8
+min_winner_sources: 5
+min_winner_sectors: 3
+min_candidates: 3
+raw_capture_retention_days: 14
