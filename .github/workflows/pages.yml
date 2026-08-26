@@ -20,7 +20,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  private-repository-notice:
+    if: ${{ github.event.repository.private == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Explain why Pages is skipped
+        run: |
+          echo "GitHub Pages is skipped while this repository is private."
+          echo "The Daily Challenger workflow can still run normally."
+
   build:
+    if: ${{ github.event.repository.private == false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -36,6 +46,7 @@ jobs:
           path: site
 
   deploy:
+    if: ${{ github.event.repository.private == false }}
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
