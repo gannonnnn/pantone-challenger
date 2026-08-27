@@ -1,0 +1,54 @@
+{
+  "files": [
+    {
+      "name": "caption.txt",
+      "bytes": 631,
+      "sha256": "b136ccac960985bc5a66975536b00b9be8de4d9583881408d6c0c24ee13eb651"
+    },
+    {
+      "name": "capture-report.json",
+      "bytes": 32783,
+      "sha256": "a1cf15d9a6269742e23a312db0d7a7b662968f9016a0251ca1bcddd493e9ec0b"
+    },
+    {
+      "name": "feed-post.png",
+      "bytes": 44670,
+      "sha256": "29fbf2b9bc6ac283d88727dc297653e6ea92ef0376a3b7b38b503fec938a831c"
+    },
+    {
+      "name": "observations.json",
+      "bytes": 83270,
+      "sha256": "58d94376efa1e04a113db510fa0d8c099665f5e99ce06de42fd8a3c846c5f506"
+    },
+    {
+      "name": "publish-package.json",
+      "bytes": 502,
+      "sha256": "e29552beae24303cdf8eee76527be707b3341f1d4ed2b1e3027d5d05488a83fb"
+    },
+    {
+      "name": "result.json",
+      "bytes": 10101,
+      "sha256": "0347b4ea41d07cd35a001b36493bd1a41c548c6b86bfef42f9c6d803fe38f5b5"
+    },
+    {
+      "name": "story-01-color.png",
+      "bytes": 45437,
+      "sha256": "81bc7a5d86e5c9045fed274060aca4e371fac13085f114cf118f9af3acdd8051"
+    },
+    {
+      "name": "story-02-evidence.png",
+      "bytes": 92067,
+      "sha256": "468ae0763a3459d636e3afd97af5bf38e701842bd6c2b652c05a00251d6cc81d"
+    },
+    {
+      "name": "story-03-why-it-won.png",
+      "bytes": 77400,
+      "sha256": "3091abaf6d3a8567d29621f3ca0ae857a24d5c19fd80be7d460beab6deb540ab"
+    },
+    {
+      "name": "story-04-runners-up.png",
+      "bytes": 58720,
+      "sha256": "d03ece16a0554a06898c97417aa1f7beed10e8f2441d10c1e0f92250efcb43db"
+    }
+  ]
+}
