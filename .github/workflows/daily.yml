@@ -1,0 +1,140 @@
+name: Daily Challenger
+
+on:
+  schedule:
+    # 11:30 p.m. Eastern during daylight time; 10:30 p.m. during standard time.
+    - cron: "30 3 * * *"
+  workflow_dispatch:
+    inputs:
+      date:
+        description: "Marketing date (YYYY-MM-DD) or auto"
+        required: true
+        default: "auto"
+      max_sources:
+        description: "0 uses the full 48-source panel"
+        required: true
+        default: "0"
+      force:
+        description: "Rebuild an existing date"
+        type: boolean
+        required: true
+        default: false
+
+concurrency:
+  group: daily-challenger
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    env:
+      REQUESTED_DATE: ${{ github.event.inputs.date || 'auto' }}
+      MAX_SOURCES: ${{ github.event.inputs.max_sources || '0' }}
+      FORCE_INPUT: ${{ github.event.inputs.force || 'false' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install application
+        run: |
+          python -m pip install -e .
+          python -m playwright install --with-deps chromium
+
+      - name: Capture and calculate
+        id: run
+        shell: bash
+        run: |
+          target_date="$(python - <<PY
+          from challenger.config import load_settings
+          from challenger.dates import resolve_marketing_date
+          settings = load_settings("config")
+          print(resolve_marketing_date(
+              "$REQUESTED_DATE",
+              timezone_name=settings.timezone,
+              rollover_hour=settings.rollover_hour,
+          ).isoformat())
+          PY
+          )"
+          echo "target_date=$target_date" >> "$GITHUB_OUTPUT"
+
+          set +e
+          args=(--date "$REQUESTED_DATE")
+          if [[ "$MAX_SOURCES" != "0" ]]; then
+            args+=(--max-sources "$MAX_SOURCES")
+          fi
+          if [[ "$FORCE_INPUT" == "true" ]]; then
+            args+=(--force)
+          fi
+          challenger run "${args[@]}" | tee daily-run.json
+          status=${PIPESTATUS[0]}
+          set -e
+          echo "exit_code=$status" >> "$GITHUB_OUTPUT"
+
+          if [[ ! -f "archive/$target_date/result.json" ]]; then
+            echo "No archive result was generated for $target_date."
+            exit 1
+          fi
+
+          result_status="$(python - <<PY
+          import json
+          from pathlib import Path
+          p = Path("archive") / "$target_date" / "result.json"
+          print(json.loads(p.read_text())["status"])
+          PY
+          )"
+          echo "result_status=$result_status" >> "$GITHUB_OUTPUT"
+
+      - name: Upload private capture evidence
+        if: always() && steps.run.outputs.target_date != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: raw-captures-${{ steps.run.outputs.target_date }}
+          path: |
+            .work/captures/${{ steps.run.outputs.target_date }}/
+            archive/${{ steps.run.outputs.target_date }}/capture-report.json
+          retention-days: 14
+          if-no-files-found: warn
+
+      - name: Stop when quality gate blocks publication
+        if: steps.run.outputs.result_status != 'ready'
+        run: |
+          echo "The real capture completed, but the quality gate blocked publication."
+          cat "archive/${{ steps.run.outputs.target_date }}/result.json"
+          exit 1
+
+      - name: Create or update daily review pull request
+        if: steps.run.outputs.result_status == 'ready'
+        shell: bash
+        run: |
+          date="${{ steps.run.outputs.target_date }}"
+          branch="daily/$date"
+          git config user.name "pantone-challenger[bot]"
+          git config user.email "pantone-challenger[bot]@users.noreply.github.com"
+
+          git checkout -B "$branch"
+          git add "archive/$date" site
+          git commit -m "daily: publish Challenger result for $date" || true
+          git push --force-with-lease origin "$branch"
+
+          if gh pr view "$branch" >/dev/null 2>&1; then
+            gh pr edit "$branch" \
+              --title "Yesterday's Challenger — $date" \
+              --body-file "archive/$date/caption.txt"
+          else
+            gh pr create \
+              --base main \
+              --head "$branch" \
+              --title "Yesterday's Challenger — $date" \
+              --body-file "archive/$date/caption.txt"
+          fi

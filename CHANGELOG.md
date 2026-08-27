@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1 — Launch workflow hotfix
+
+- Corrected a scoring test fixture that unintentionally triggered the unchanged-page penalty.
+- Gated GitHub Pages deployment behind the `ENABLE_PAGES=true` repository variable.
+- Prevents a private repository from showing a failed Pages build before Pages is enabled.
+
 ## 1.0.0 — Production launch build
 
 - Replaced synthetic input with browser-rendered official marketing pages.
