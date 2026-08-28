@@ -1,0 +1,1007 @@
+{
+  "date": "2026-08-28",
+  "records": [
+    {
+      "source_id": "apple",
+      "source_name": "Apple",
+      "sector": "technology",
+      "url": "https://www.apple.com/",
+      "final_url": "https://www.apple.com/",
+      "title": "Apple",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "apple/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "727234d1eac7503ef929f7d04df7e787daedf1e734a0039edc7fdc35dbe352cd"
+        },
+        {
+          "path": "apple/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "79143df4cfe121b8816179bcbdf08833f978b45fadb4ff1bbdb8214eb90d9820"
+        }
+      ],
+      "duration_seconds": 6.511
+    },
+    {
+      "source_id": "microsoft",
+      "source_name": "Microsoft",
+      "sector": "technology",
+      "url": "https://www.microsoft.com/en-us/",
+      "final_url": "https://www.microsoft.com/en-us/",
+      "title": "Microsoft \u2013 AI, Cloud, Productivity, Computing, Gaming & Apps",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "microsoft/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "176e739a8a6d7650158b222ea9d0d1e94cf82b7e63ee29d472bdec6d5dede0e3"
+        },
+        {
+          "path": "microsoft/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "6634e32d86d444871b3c6b72308bacbc97c4bcc4a73f3a7c830040d7c4830724"
+        }
+      ],
+      "duration_seconds": 7.304
+    },
+    {
+      "source_id": "adobe",
+      "source_name": "Adobe",
+      "sector": "technology",
+      "url": "https://www.adobe.com/",
+      "final_url": "",
+      "title": "",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": false,
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.adobe.com/\nCall log:\n  - navigating to \"https://www.adobe.com/\", waiting until \"domcontentloaded\"\n",
+      "frames": [],
+      "duration_seconds": 0.171
+    },
+    {
+      "source_id": "samsung",
+      "source_name": "Samsung",
+      "sector": "technology",
+      "url": "https://www.samsung.com/us/",
+      "final_url": "https://www.samsung.com/us/",
+      "title": "Samsung US | Mobile | TV | Home Electronics | Home Appliances | Samsung US",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "samsung/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "5f770a6b7f3f091e6a8a75a73eedc8e3c111294b73ff7ab84e6aadaddf5e25eb"
+        },
+        {
+          "path": "samsung/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "c3c06b3619ec2c4d44ed06b934a07ae5fbf0661159c10747a197367edad9d6c5"
+        }
+      ],
+      "duration_seconds": 13.499
+    },
+    {
+      "source_id": "target",
+      "source_name": "Target",
+      "sector": "retail",
+      "url": "https://www.target.com/",
+      "final_url": "https://www.target.com/",
+      "title": "Target : Expect More. Pay Less.",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "target/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "28ad916c82c1f29340e86e22963b6245357fad80bbeeb6de5993ec78b1b79c62"
+        },
+        {
+          "path": "target/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "a6c67249b41f9812423f24f3b30dc3b3731fa3563329d491890cf694f09ea228"
+        }
+      ],
+      "duration_seconds": 18.461
+    },
+    {
+      "source_id": "walmart",
+      "source_name": "Walmart",
+      "sector": "retail",
+      "url": "https://www.walmart.com/",
+      "final_url": "https://www.walmart.com/",
+      "title": "Walmart | Save Money. Live better.",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "walmart/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "82c9d099bf30d3e163757e6e06a647cd2a6482d12135cc6d831550b0976e4a9e"
+        },
+        {
+          "path": "walmart/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "71154a3fe96784beda50a5ae38986eb930deee3a294d3ecb3c87866a6e8cb004"
+        }
+      ],
+      "duration_seconds": 20.159
+    },
+    {
+      "source_id": "etsy",
+      "source_name": "Etsy",
+      "sector": "retail",
+      "url": "https://www.etsy.com/",
+      "final_url": "https://www.etsy.com/",
+      "title": "etsy.com",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 18.264
+    },
+    {
+      "source_id": "best-buy",
+      "source_name": "Best Buy",
+      "sector": "retail",
+      "url": "https://www.bestbuy.com/",
+      "final_url": "https://www.bestbuy.com/",
+      "title": "Best Buy | Official Online Store | Shop Now & Save",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "best-buy/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "fbf36f44153d8979f3a037479fefa528a25db7b0bad590e6320457e77a5ebf46"
+        },
+        {
+          "path": "best-buy/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "7e585e1f8e019add43b0f356516a427ca6814c1909cee8161c03a8006a53f9d1"
+        }
+      ],
+      "duration_seconds": 58.168
+    },
+    {
+      "source_id": "starbucks",
+      "source_name": "Starbucks",
+      "sector": "food_beverage",
+      "url": "https://www.starbucks.com/",
+      "final_url": "https://www.starbucks.com/",
+      "title": "Starbucks Coffee Company",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "starbucks/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "7c457016eda94a95aa0303d0708e4165109a0e6df313b8bb0c8b3d9f2932472f"
+        },
+        {
+          "path": "starbucks/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "dfccd7ba97c15e68b81b1312b28561dea65f5a0e534cc37f189dc0a6c9b6f8bb"
+        }
+      ],
+      "duration_seconds": 30.569
+    },
+    {
+      "source_id": "coca-cola",
+      "source_name": "Coca-Cola",
+      "sector": "food_beverage",
+      "url": "https://www.coca-cola.com/us/en",
+      "final_url": "https://www.coca-cola.com/us/en",
+      "title": "Explore the Coca\u2011Cola\u00ae Official Site | Coca-Cola US",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "coca-cola/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "3697fadac59f02530cfdea184323f3626732c2588b9f8147db8d2a0fdee563ad"
+        },
+        {
+          "path": "coca-cola/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "a2c56ac89e739ac2e2ea354d9c404082ba01ea2e388a6107c85a5ade20cdf35b"
+        }
+      ],
+      "duration_seconds": 27.016
+    },
+    {
+      "source_id": "mcdonalds",
+      "source_name": "McDonald's",
+      "sector": "food_beverage",
+      "url": "https://www.mcdonalds.com/us/en-us.html",
+      "final_url": "",
+      "title": "",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": false,
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.mcdonalds.com/us/en-us.html\nCall log:\n  - navigating to \"https://www.mcdonalds.com/us/en-us.html\", waiting until \"domcontentloaded\"\n",
+      "frames": [],
+      "duration_seconds": 28.184
+    },
+    {
+      "source_id": "chipotle",
+      "source_name": "Chipotle",
+      "sector": "food_beverage",
+      "url": "https://www.chipotle.com/",
+      "final_url": "https://www.chipotle.com/",
+      "title": "Chipotle \u2014 Order Now",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "chipotle/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "1fe30e7a0f5420ba1a59a1b4af00c925218127250aa8b83bb6359eb3ea27e763"
+        },
+        {
+          "path": "chipotle/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "6479e2414e2598d8c696888e6a6ac49465b42dd80b97dab4204a1e84ce0fadbe"
+        }
+      ],
+      "duration_seconds": 40.779
+    },
+    {
+      "source_id": "netflix",
+      "source_name": "Netflix",
+      "sector": "entertainment",
+      "url": "https://www.netflix.com/",
+      "final_url": "https://www.netflix.com/",
+      "title": "Netflix - Watch TV Shows Online, Watch Movies Online",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 200)",
+      "frames": [],
+      "duration_seconds": 40.984
+    },
+    {
+      "source_id": "disney-plus",
+      "source_name": "Disney+",
+      "sector": "entertainment",
+      "url": "https://www.disneyplus.com/",
+      "final_url": "https://www.disneyplus.com/",
+      "title": "Disney+ | Stream Movies, TV Shows, Documentaries & More | U.S. Site",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "disney-plus/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "8becd18b2d10c7f04b008aa6b25b661112d5739633a7461c7ca795ed49ab9da2"
+        },
+        {
+          "path": "disney-plus/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "3d772c509c132281838613c752b3fc5b81190f824d33d33b740f6a4cc3129be0"
+        }
+      ],
+      "duration_seconds": 47.844
+    },
+    {
+      "source_id": "spotify",
+      "source_name": "Spotify",
+      "sector": "entertainment",
+      "url": "https://www.spotify.com/us/",
+      "final_url": "https://open.spotify.com/",
+      "title": "Spotify - Web Player: Music for everyone",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "spotify/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "5085c67ed95f79eaf8827ccbd869fd3b8a72db79fa4e6887fabd0e0d6f479db1"
+        },
+        {
+          "path": "spotify/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "5085c67ed95f79eaf8827ccbd869fd3b8a72db79fa4e6887fabd0e0d6f479db1"
+        }
+      ],
+      "duration_seconds": 48.557
+    },
+    {
+      "source_id": "max",
+      "source_name": "Max",
+      "sector": "entertainment",
+      "url": "https://www.max.com/",
+      "final_url": "https://www.hbomax.com/",
+      "title": "HBO Max | Stream Series and Movies",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "max/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "ccdbcbf6d24f74a7ff68ba8b3bdf6661496fa0342b539f8b713ea9048c99df6f"
+        },
+        {
+          "path": "max/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "3c5efe480623e232c147925c5e33ff8ff5eba90c8e919e75c9dea1dcad2cb7eb"
+        }
+      ],
+      "duration_seconds": 60.783
+    },
+    {
+      "source_id": "sephora",
+      "source_name": "Sephora",
+      "sector": "beauty",
+      "url": "https://www.sephora.com/",
+      "final_url": "https://www.sephora.com/",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 53.375
+    },
+    {
+      "source_id": "glossier",
+      "source_name": "Glossier",
+      "sector": "beauty",
+      "url": "https://www.glossier.com/",
+      "final_url": "https://www.glossier.com/",
+      "title": "Glossier",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "glossier/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "2a51cb51b29e1fca1c10dedb83c44e90ee0acf3031545e53c9806f87fb95bb2e"
+        },
+        {
+          "path": "glossier/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "ad169d0205b5b78c7212f0c144504dbaab697b7f0ecbcc8ec47d4b158916e9eb"
+        }
+      ],
+      "duration_seconds": 65.671
+    },
+    {
+      "source_id": "fenty-beauty",
+      "source_name": "Fenty Beauty",
+      "sector": "beauty",
+      "url": "https://fentybeauty.com/",
+      "final_url": "https://fentybeauty.com/",
+      "title": "Fenty Beauty by Rihanna | Beauty for All",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "fenty-beauty/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "6e4b8a847af5457032df783364259e9222edd80c722f7b0d034b73d52dabca45"
+        },
+        {
+          "path": "fenty-beauty/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "6e4b8a847af5457032df783364259e9222edd80c722f7b0d034b73d52dabca45"
+        }
+      ],
+      "duration_seconds": 71.821
+    },
+    {
+      "source_id": "ulta",
+      "source_name": "Ulta Beauty",
+      "sector": "beauty",
+      "url": "https://www.ulta.com/",
+      "final_url": "https://www.ulta.com/",
+      "title": "Ulta Beauty | Makeup, Skin Care, Fragrance, Hair Care & Beauty Products",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "ulta/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "de698c4f36b4e051ac00df68aa2b5f9945f29d51e0d0ec949fbba9f0b65bb729"
+        },
+        {
+          "path": "ulta/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "d818e78c00253b08ad74c45f7b5d7479407bc260f835ec53fa0364c5bcf8e490"
+        }
+      ],
+      "duration_seconds": 77.415
+    },
+    {
+      "source_id": "airbnb",
+      "source_name": "Airbnb",
+      "sector": "travel",
+      "url": "https://www.airbnb.com/",
+      "final_url": "https://www.airbnb.com/",
+      "title": "Airbnb | Vacation rentals, cabins, beach houses, & more",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "airbnb/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "4b19c52059712f4ff851d6c3927fdd5deadee50c7e9862bb9dab904395e6ccdf"
+        },
+        {
+          "path": "airbnb/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "b878824d944544aa22db91f0a5c368bf88748411c03dbbf8303035498f97f94f"
+        }
+      ],
+      "duration_seconds": 78.536
+    },
+    {
+      "source_id": "marriott",
+      "source_name": "Marriott",
+      "sector": "travel",
+      "url": "https://www.marriott.com/",
+      "final_url": "https://www.marriott.com/default.mi",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 76.632
+    },
+    {
+      "source_id": "delta",
+      "source_name": "Delta Air Lines",
+      "sector": "travel",
+      "url": "https://www.delta.com/",
+      "final_url": "https://www.delta.com/",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 444)",
+      "frames": [],
+      "duration_seconds": 81.275
+    },
+    {
+      "source_id": "visit-california",
+      "source_name": "Visit California",
+      "sector": "travel",
+      "url": "https://www.visitcalifornia.com/",
+      "final_url": "https://www.visitcalifornia.com/",
+      "title": "Visit California - Official Travel & Tourism Website",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "visit-california/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "47e438961ca49f921a00b08c1410abe51141e70f6d0aa679ca991c35bee7f903"
+        },
+        {
+          "path": "visit-california/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "1c5132a69180d6210afc114b73bc6a0a7c1bb5491189c8f532289122cc806201"
+        }
+      ],
+      "duration_seconds": 89.83
+    },
+    {
+      "source_id": "capital-one",
+      "source_name": "Capital One",
+      "sector": "finance",
+      "url": "https://www.capitalone.com/",
+      "final_url": "https://www.capitalone.com/",
+      "title": "Capital One | Credit Cards, Checking, Savings & Auto Loans",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "capital-one/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "5860e0f8ba6dc588e8d4ffc0645c7888842bd4b831f1f35482f74b28d7046166"
+        },
+        {
+          "path": "capital-one/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "f59e5888ab06cb0a7f9798fd59a687429cb59d39c467bc90bb9991f8d6daadb2"
+        }
+      ],
+      "duration_seconds": 91.691
+    },
+    {
+      "source_id": "chase",
+      "source_name": "Chase",
+      "sector": "finance",
+      "url": "https://www.chase.com/",
+      "final_url": "https://www.chase.com/",
+      "title": "Credit Card, Mortgage, Banking, Auto | Chase Online | Chase.com",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "chase/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "db5df4653810c98eae080dba0b28158ade05b6b1f772b3bd3ea0ddef190f2e95"
+        },
+        {
+          "path": "chase/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "72b64a158879e91edc8705705e49dd36f40167962407132547fe705d751056d1"
+        }
+      ],
+      "duration_seconds": 93.057
+    },
+    {
+      "source_id": "american-express",
+      "source_name": "American Express",
+      "sector": "finance",
+      "url": "https://www.americanexpress.com/",
+      "final_url": "https://www.americanexpress.com/",
+      "title": "American Express Credit Cards, Rewards & Banking",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": false,
+      "error": "Error: Page.evaluate: Error: eval is disabled\n    at monkeypatchedEval (https://www.aexp-static.com/cdaas/one/app/6.30.1-4c1d5b4e/legacy/app.js:2:91559)\n    at UtilityScript.evaluate (<anonymous>:311:30)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)",
+      "frames": [],
+      "duration_seconds": 100.251
+    },
+    {
+      "source_id": "cash-app",
+      "source_name": "Cash App",
+      "sector": "finance",
+      "url": "https://cash.app/",
+      "final_url": "https://cash.app/",
+      "title": "Send, Receive, Invest, & Manage Your Money with Cash App",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "cash-app/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "95a645c83ff1b5adb3171ff148013689ef78306bf7c999745b866e342f14b1e8"
+        },
+        {
+          "path": "cash-app/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "2b93234ed524a6567a7d38e3eb8a3ea47c414400b93344e9e665d0d822018289"
+        }
+      ],
+      "duration_seconds": 104.043
+    },
+    {
+      "source_id": "tesla",
+      "source_name": "Tesla",
+      "sector": "automotive",
+      "url": "https://www.tesla.com/",
+      "final_url": "https://www.tesla.com/",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 97.674
+    },
+    {
+      "source_id": "ford",
+      "source_name": "Ford",
+      "sector": "automotive",
+      "url": "https://www.ford.com/",
+      "final_url": "",
+      "title": "",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": false,
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.ford.com/\nCall log:\n  - navigating to \"https://www.ford.com/\", waiting until \"domcontentloaded\"\n",
+      "frames": [],
+      "duration_seconds": 98.752
+    },
+    {
+      "source_id": "toyota",
+      "source_name": "Toyota",
+      "sector": "automotive",
+      "url": "https://www.toyota.com/",
+      "final_url": "https://www.toyota.com/",
+      "title": "New Cars, Trucks, SUVs & Hybrids | Toyota Official Site",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "toyota/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "4f74a3eabb6a22abd207238d8873a16986359aae9357389fb01c903cac3a84a9"
+        },
+        {
+          "path": "toyota/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "90e7b38f928e86c6af73d51918169ac79252f55696c643e7aacd0c2b93ae52bb"
+        }
+      ],
+      "duration_seconds": 114.663
+    },
+    {
+      "source_id": "rivian",
+      "source_name": "Rivian",
+      "sector": "automotive",
+      "url": "https://rivian.com/",
+      "final_url": "https://rivian.com/",
+      "title": "Rivian: Electric Vehicles Designed For Adventure",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "rivian/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "56b267de6ef2149263e5e1b9d6c745c9ad9094852d528f247bc48c8cac47a442"
+        },
+        {
+          "path": "rivian/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "3e610b3e2a80b04a07b5c45431337a54d83ea473f4195b9023e17d617a0fdc81"
+        }
+      ],
+      "duration_seconds": 113.497
+    },
+    {
+      "source_id": "nike",
+      "source_name": "Nike",
+      "sector": "sports",
+      "url": "https://www.nike.com/",
+      "final_url": "https://www.nike.com/",
+      "title": "Nike. Just Do It. Nike.com",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "nike/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "259d8c3b09a192250f620e1145a2b1beaa2b3e4e6436226956009ba506939894"
+        },
+        {
+          "path": "nike/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "3ada2b30cfdebb1fdddd0964e560bf5fec14e0a27b3776451acb94de7658c286"
+        }
+      ],
+      "duration_seconds": 113.569
+    },
+    {
+      "source_id": "adidas",
+      "source_name": "Adidas",
+      "sector": "sports",
+      "url": "https://www.adidas.com/us/",
+      "final_url": "",
+      "title": "",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": false,
+      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.adidas.com/us/\", waiting until \"domcontentloaded\"\n",
+      "frames": [],
+      "duration_seconds": 159.546
+    },
+    {
+      "source_id": "nba",
+      "source_name": "NBA",
+      "sector": "sports",
+      "url": "https://www.nba.com/",
+      "final_url": "https://www.nba.com/",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 118.259
+    },
+    {
+      "source_id": "peloton",
+      "source_name": "Peloton",
+      "sector": "sports",
+      "url": "https://www.onepeloton.com/",
+      "final_url": "https://www.onepeloton.com/",
+      "title": "Peloton: Innovative exercise equipment and personalized workout plans",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "peloton/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "408644563ac87261ee3f33848f9912b173003c1c222ed77fbae1988484cd29f1"
+        },
+        {
+          "path": "peloton/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "61f50c6f05162358cbad4470387e45df16c73c9bd6a2b8d2c1929fcd70faeb87"
+        }
+      ],
+      "duration_seconds": 128.074
+    },
+    {
+      "source_id": "ikea",
+      "source_name": "IKEA",
+      "sector": "home",
+      "url": "https://www.ikea.com/us/en/",
+      "final_url": "https://www.ikea.com/us/en/",
+      "title": "Shop Affordable Home Furnishings & Home Goods - IKEA",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "ikea/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "698fbd12c93be83571b8ad119e43c56109e040c807cae5acc4f6ce25dc40aa27"
+        },
+        {
+          "path": "ikea/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "5f041952435a5979792feae7b63eae9dd0d4e1d640b5dd5108064af36087e862"
+        }
+      ],
+      "duration_seconds": 131.543
+    },
+    {
+      "source_id": "west-elm",
+      "source_name": "West Elm",
+      "sector": "home",
+      "url": "https://www.westelm.com/",
+      "final_url": "",
+      "title": "",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": false,
+      "error": "TimeoutError: Page.goto: Timeout 45000ms exceeded.\nCall log:\n  - navigating to \"https://www.westelm.com/\", waiting until \"domcontentloaded\"\n",
+      "frames": [],
+      "duration_seconds": 174.114
+    },
+    {
+      "source_id": "crate-and-barrel",
+      "source_name": "Crate & Barrel",
+      "sector": "home",
+      "url": "https://www.crateandbarrel.com/",
+      "final_url": "https://www.crateandbarrel.com/",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 136.203
+    },
+    {
+      "source_id": "sherwin-williams",
+      "source_name": "Sherwin-Williams",
+      "sector": "home",
+      "url": "https://www.sherwin-williams.com/",
+      "final_url": "https://www.sherwin-williams.com/",
+      "title": "Sherwin-Williams Paints, Stains, Supplies and Coating Solutions",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "sherwin-williams/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "bdcd75658166629d39c319c44809dc056edf155fbe0d9f8f77e5094f806c8a21"
+        },
+        {
+          "path": "sherwin-williams/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "2b02e0e8c6c0f40d58c8f4c8c82052fbef2b7ab4dfaaddaac88877d402840b7b"
+        }
+      ],
+      "duration_seconds": 149.051
+    },
+    {
+      "source_id": "zara",
+      "source_name": "Zara",
+      "sector": "fashion",
+      "url": "https://www.zara.com/us/",
+      "final_url": "https://www.zara.com/us/",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 153.671
+    },
+    {
+      "source_id": "hm",
+      "source_name": "H&M",
+      "sector": "fashion",
+      "url": "https://www2.hm.com/en_us/index.html",
+      "final_url": "https://www2.hm.com/en_us/index.html",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 158.29
+    },
+    {
+      "source_id": "gucci",
+      "source_name": "Gucci",
+      "sector": "fashion",
+      "url": "https://www.gucci.com/us/en/",
+      "final_url": "",
+      "title": "",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": false,
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.gucci.com/us/en/\nCall log:\n  - navigating to \"https://www.gucci.com/us/en/\", waiting until \"domcontentloaded\"\n",
+      "frames": [],
+      "duration_seconds": 159.366
+    },
+    {
+      "source_id": "uniqlo",
+      "source_name": "UNIQLO",
+      "sector": "fashion",
+      "url": "https://www.uniqlo.com/us/en/",
+      "final_url": "https://www.uniqlo.com/us/en/",
+      "title": "Access Denied",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": false,
+      "blocked": true,
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)",
+      "frames": [],
+      "duration_seconds": 164.163
+    },
+    {
+      "source_id": "playstation",
+      "source_name": "PlayStation",
+      "sector": "gaming",
+      "url": "https://www.playstation.com/en-us/",
+      "final_url": "https://www.playstation.com/en-us/",
+      "title": "PlayStation\u00ae Official Site: Consoles, Games, Accessories & More",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "playstation/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "d334bb51be0c36094cbbf1a25b24f287c53833a4c563686a372cf9c0c5e6d349"
+        },
+        {
+          "path": "playstation/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "78ac43d59649f794da7820b25a9ee8fc184e52fe2a4797fc41f947a8ada4af3c"
+        }
+      ],
+      "duration_seconds": 172.043
+    },
+    {
+      "source_id": "xbox",
+      "source_name": "Xbox",
+      "sector": "gaming",
+      "url": "https://www.xbox.com/en-US/",
+      "final_url": "https://www.xbox.com/en-US/?wfExp=382A",
+      "title": "XBOX Official Site: Play Games Anywhere | XBOX",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "xbox/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "4c7b323f005ff560e4fcd3e3e393aa88750d6b18916ea772147fd34851f4ea45"
+        },
+        {
+          "path": "xbox/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "93a75fec9e33760a2002dd29188e54bc4a27d593d6e8d4b3ae03453ee70a0287"
+        }
+      ],
+      "duration_seconds": 171.301
+    },
+    {
+      "source_id": "nintendo",
+      "source_name": "Nintendo",
+      "sector": "gaming",
+      "url": "https://www.nintendo.com/us/",
+      "final_url": "https://www.nintendo.com/us/",
+      "title": "Nintendo - Official Site: Consoles, Games, News, and More",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "nintendo/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "49347dc0cd4a2e93a78a6605731ac582822a7ab01fd29f6bc9d5b2884b4809a5"
+        },
+        {
+          "path": "nintendo/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "1faf9ab4c0ea2dd29e0317b1661ab5288c9b86ae9a7be79ece211dea37bbca81"
+        }
+      ],
+      "duration_seconds": 178.848
+    },
+    {
+      "source_id": "epic-games",
+      "source_name": "Epic Games Store",
+      "sector": "gaming",
+      "url": "https://store.epicgames.com/en-US/",
+      "final_url": "https://store.epicgames.com/?lang=en-US",
+      "title": "Epic Games Store | Download & Play PC Games, Mods, DLC & More \u2013 Epic Games",
+      "captured_at": "2026-08-28T11:35:27-04:00",
+      "success": true,
+      "blocked": false,
+      "error": "",
+      "frames": [
+        {
+          "path": "epic-games/frame-01.jpg",
+          "scroll_y": 0,
+          "sha256": "1a4898761b0ca51c7f8571cc6351577352ce04738d9dead769914b8904e7c5b1"
+        },
+        {
+          "path": "epic-games/frame-02.jpg",
+          "scroll_y": 900,
+          "sha256": "a4d7af82af76287d3c7523c39baa58d7420985f5ae6b91dcbaa48b0403f6ab80"
+        }
+      ],
+      "duration_seconds": 185.635
+    }
+  ]
+}
