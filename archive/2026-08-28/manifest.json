@@ -1,0 +1,54 @@
+{
+  "files": [
+    {
+      "name": "caption.txt",
+      "bytes": 627,
+      "sha256": "4733f612dc575333bfc4311878a273995f26b632c0753f8c63db8090f5937b27"
+    },
+    {
+      "name": "capture-report.json",
+      "bytes": 32865,
+      "sha256": "6689105cca982f9b2b5b92ec4da2040b36ea066dd3236890a6164b787b3d391d"
+    },
+    {
+      "name": "feed-post.png",
+      "bytes": 43406,
+      "sha256": "7da2fbccee06c553d095e2acf403151efbde73527b07906e716041729fb1192c"
+    },
+    {
+      "name": "observations.json",
+      "bytes": 82898,
+      "sha256": "c25064987e0dfce3d5a6204866813db8bfee02047e7c1124f87795845f568f62"
+    },
+    {
+      "name": "publish-package.json",
+      "bytes": 502,
+      "sha256": "147abff4bdca705b98c8f5092783a85f76fa18cd5f0e7c555bb7d30a8e274bdc"
+    },
+    {
+      "name": "result.json",
+      "bytes": 10497,
+      "sha256": "595905338fa2eb9dd4913dcbfffc15f73e830cc2a1bd3ce0c0c682ae153fa852"
+    },
+    {
+      "name": "story-01-color.png",
+      "bytes": 44550,
+      "sha256": "50b388de289c3b84d1071c6cb5977b28c0acc42e0bebe7d49bdc4bf6071b267c"
+    },
+    {
+      "name": "story-02-evidence.png",
+      "bytes": 92232,
+      "sha256": "c6f821dde2d84dbb7d7950dfc2ac70080e226aab379de9a5cee3990fe56f0b87"
+    },
+    {
+      "name": "story-03-why-it-won.png",
+      "bytes": 74102,
+      "sha256": "dd3d6a87741bd8117948cdd8a2ef1bfe223fbd0347614a2884220c12647ff69b"
+    },
+    {
+      "name": "story-04-runners-up.png",
+      "bytes": 55755,
+      "sha256": "265093c22a4905019197d880a1d3309e1d0183b38c44b13300ad1b7d410e4050"
+    }
+  ]
+}

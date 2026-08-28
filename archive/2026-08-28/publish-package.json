@@ -1,0 +1,15 @@
+{
+  "date": "2026-08-28",
+  "status": "ready_for_review",
+  "quality_gate_passed": true,
+  "caption_file": "caption.txt",
+  "feed_asset": "feed-post.png",
+  "story_assets": [
+    "story-01-color.png",
+    "story-02-evidence.png",
+    "story-03-why-it-won.png",
+    "story-04-runners-up.png"
+  ],
+  "public_asset_path": "assets/2026-08-28",
+  "approval_model": "Merge the generated daily pull request to approve publication. Social publishing remains manual unless AUTO_PUBLISH is explicitly enabled."
+}
