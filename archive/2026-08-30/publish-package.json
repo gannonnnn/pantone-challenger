@@ -1,0 +1,93 @@
+{
+  "date": "2026-08-30",
+  "status": "ready_for_review",
+  "quality_gate_passed": true,
+  "coverage": {
+    "reviewed_sources": 48,
+    "usable_sources": 31,
+    "usable_sectors": 11,
+    "winner_supporting_sources": 13,
+    "winner_supporting_sectors": 7
+  },
+  "recurrence": {
+    "year": 2026,
+    "family_name": "Black",
+    "representative_hex": "#141416",
+    "distance_threshold": 0.055,
+    "winning_days": 1,
+    "previous_winning_days": 0,
+    "current_streak": 1,
+    "longest_streak": 1,
+    "first_win_date": "2026-08-30",
+    "latest_win_date": "2026-08-30",
+    "matching_dates": [
+      "2026-08-30"
+    ],
+    "unique_company_count": 13,
+    "unique_company_ids": [
+      "coca-cola",
+      "epic-games",
+      "etsy",
+      "max",
+      "microsoft",
+      "nike",
+      "peloton",
+      "playstation",
+      "rivian",
+      "spotify",
+      "toyota",
+      "walmart",
+      "xbox"
+    ],
+    "unique_company_names": [
+      "Coca-Cola",
+      "Epic Games Store",
+      "Etsy",
+      "Max",
+      "Microsoft",
+      "Nike",
+      "Peloton",
+      "PlayStation",
+      "Rivian",
+      "Spotify",
+      "Toyota",
+      "Walmart",
+      "Xbox"
+    ],
+    "panel_company_count": 48,
+    "supporting_company_days": 13,
+    "average_analyzed_company_pages": 31.0,
+    "sectors": [
+      "automotive",
+      "entertainment",
+      "food_beverage",
+      "gaming",
+      "retail",
+      "sports",
+      "technology"
+    ],
+    "sector_count": 7,
+    "sector_day_counts": {
+      "automotive": 1,
+      "entertainment": 1,
+      "food_beverage": 1,
+      "gaming": 1,
+      "retail": 1,
+      "sports": 1,
+      "technology": 1
+    },
+    "ready_days_in_year": 1
+  },
+  "caption_file": "caption.txt",
+  "review_file": "review-summary.md",
+  "feed_asset": "feed-post.png",
+  "story_assets": [
+    "story-01-color.png",
+    "story-02-evidence.png",
+    "story-03-why-it-won.png",
+    "story-04-runners-up.png"
+  ],
+  "logo_directory": "logos",
+  "public_asset_path": "assets/2026-08-30",
+  "approval_model": "Merge the generated daily pull request to approve publication. Social publishing remains manual unless AUTO_PUBLISH is explicitly enabled."
+}
