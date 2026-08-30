@@ -1,0 +1,401 @@
+{
+  "date": "2026-08-29",
+  "generated_at": "2026-08-29T06:23:30-04:00",
+  "project": "Pantone Challenger",
+  "methodology_version": "1.0",
+  "panel_size": 48,
+  "captured_sources": 30,
+  "captured_sectors": 11,
+  "baseline_days": 0,
+  "status": "ready",
+  "quality_gate": {
+    "passed": true,
+    "reasons": [],
+    "usable_sources": 30,
+    "configured_sources": 48,
+    "usable_sectors": 11,
+    "configured_sectors": 12
+  },
+  "winner": {
+    "hex": "#131317",
+    "oklab": [
+      0.18961398480545144,
+      0.0017003839149578063,
+      -0.007000403412034222
+    ],
+    "oklch": [
+      0.18961398480545144,
+      0.007203954010782386,
+      283.6526291134127
+    ],
+    "score": 68.22,
+    "source_count": 13,
+    "sector_count": 8,
+    "source_ids": [
+      "spotify",
+      "epic-games",
+      "max",
+      "playstation",
+      "rivian",
+      "peloton",
+      "nike",
+      "toyota",
+      "visit-california",
+      "microsoft",
+      "xbox",
+      "walmart",
+      "coca-cola"
+    ],
+    "source_names": [
+      "Spotify",
+      "Epic Games Store",
+      "Max",
+      "PlayStation",
+      "Rivian",
+      "Peloton",
+      "Nike",
+      "Toyota",
+      "Visit California",
+      "Microsoft",
+      "Xbox",
+      "Walmart",
+      "Coca-Cola"
+    ],
+    "sectors": [
+      "automotive",
+      "entertainment",
+      "food_beverage",
+      "gaming",
+      "retail",
+      "sports",
+      "technology",
+      "travel"
+    ],
+    "prevalence": 0.43333,
+    "sector_breadth": 0.72727,
+    "mean_salience": 0.23701,
+    "momentum": 0.5,
+    "baseline_prevalence": 0.0,
+    "neutral_penalty": 18.0,
+    "concentration_penalty": 0.0,
+    "components": {
+      "source_breadth": 30.0,
+      "sector_breadth": 22.0,
+      "momentum": 10.0,
+      "visual_salience": 14.22,
+      "prevalence": 10.0
+    }
+  },
+  "winner_name": "Boardroom Beauty Drop Violet",
+  "runners_up": [
+    {
+      "hex": "#ECECEA",
+      "oklab": [
+        0.9423823585729016,
+        -0.0003937240168318471,
+        0.001808664739889739
+      ],
+      "oklch": [
+        0.9423823585729016,
+        0.0018510231610519147,
+        102.28098707773928
+      ],
+      "score": 66.091,
+      "source_count": 17,
+      "sector_count": 10,
+      "source_ids": [
+        "microsoft",
+        "chipotle",
+        "apple",
+        "best-buy",
+        "capital-one",
+        "sherwin-williams",
+        "ulta",
+        "coca-cola",
+        "visit-california",
+        "airbnb",
+        "toyota",
+        "target",
+        "peloton",
+        "playstation",
+        "chase",
+        "nike",
+        "cash-app"
+      ],
+      "source_names": [
+        "Microsoft",
+        "Chipotle",
+        "Apple",
+        "Best Buy",
+        "Capital One",
+        "Sherwin-Williams",
+        "Ulta Beauty",
+        "Coca-Cola",
+        "Visit California",
+        "Airbnb",
+        "Toyota",
+        "Target",
+        "Peloton",
+        "PlayStation",
+        "Chase",
+        "Nike",
+        "Cash App"
+      ],
+      "sectors": [
+        "automotive",
+        "beauty",
+        "finance",
+        "food_beverage",
+        "gaming",
+        "home",
+        "retail",
+        "sports",
+        "technology",
+        "travel"
+      ],
+      "prevalence": 0.56667,
+      "sector_breadth": 0.90909,
+      "mean_salience": 0.28486,
+      "momentum": 0.5,
+      "baseline_prevalence": 0.0,
+      "neutral_penalty": 23.0,
+      "concentration_penalty": 0.0,
+      "components": {
+        "source_breadth": 30.0,
+        "sector_breadth": 22.0,
+        "momentum": 10.0,
+        "visual_salience": 17.091,
+        "prevalence": 10.0
+      }
+    },
+    {
+      "hex": "#6B6760",
+      "oklab": [
+        0.5161077449604621,
+        0.0016318598473626668,
+        0.011591879937896272
+      ],
+      "oklch": [
+        0.5161077449604621,
+        0.011706179866038134,
+        81.9867808508994
+      ],
+      "score": 62.377,
+      "source_count": 11,
+      "sector_count": 10,
+      "source_ids": [
+        "walmart",
+        "glossier",
+        "coca-cola",
+        "sherwin-williams",
+        "toyota",
+        "airbnb",
+        "xbox",
+        "capital-one",
+        "ikea",
+        "spotify",
+        "microsoft"
+      ],
+      "source_names": [
+        "Walmart",
+        "Glossier",
+        "Coca-Cola",
+        "Sherwin-Williams",
+        "Toyota",
+        "Airbnb",
+        "Xbox",
+        "Capital One",
+        "IKEA",
+        "Spotify",
+        "Microsoft"
+      ],
+      "sectors": [
+        "automotive",
+        "beauty",
+        "entertainment",
+        "finance",
+        "food_beverage",
+        "gaming",
+        "home",
+        "retail",
+        "technology",
+        "travel"
+      ],
+      "prevalence": 0.36667,
+      "sector_breadth": 0.90909,
+      "mean_salience": 0.18129,
+      "momentum": 0.5,
+      "baseline_prevalence": 0.0,
+      "neutral_penalty": 18.0,
+      "concentration_penalty": 0.0,
+      "components": {
+        "source_breadth": 27.5,
+        "sector_breadth": 22.0,
+        "momentum": 10.0,
+        "visual_salience": 10.877,
+        "prevalence": 10.0
+      }
+    },
+    {
+      "hex": "#413A36",
+      "oklab": [
+        0.3544941584095674,
+        0.007825881059773094,
+        0.01030740794566378
+      ],
+      "oklch": [
+        0.3544941584095674,
+        0.012941679679239787,
+        52.792479561118434
+      ],
+      "score": 61.755,
+      "source_count": 12,
+      "sector_count": 8,
+      "source_ids": [
+        "fenty-beauty",
+        "nike",
+        "toyota",
+        "xbox",
+        "max",
+        "peloton",
+        "visit-california",
+        "spotify",
+        "nintendo",
+        "microsoft",
+        "walmart",
+        "apple"
+      ],
+      "source_names": [
+        "Fenty Beauty",
+        "Nike",
+        "Toyota",
+        "Xbox",
+        "Max",
+        "Peloton",
+        "Visit California",
+        "Spotify",
+        "Nintendo",
+        "Microsoft",
+        "Walmart",
+        "Apple"
+      ],
+      "sectors": [
+        "automotive",
+        "beauty",
+        "entertainment",
+        "gaming",
+        "retail",
+        "sports",
+        "technology",
+        "travel"
+      ],
+      "prevalence": 0.4,
+      "sector_breadth": 0.72727,
+      "mean_salience": 0.12924,
+      "momentum": 0.5,
+      "baseline_prevalence": 0.0,
+      "neutral_penalty": 18.0,
+      "concentration_penalty": 0.0,
+      "components": {
+        "source_breadth": 30.0,
+        "sector_breadth": 22.0,
+        "momentum": 10.0,
+        "visual_salience": 7.755,
+        "prevalence": 10.0
+      }
+    }
+  ],
+  "source_failures": [
+    {
+      "source_id": "adobe",
+      "source_name": "Adobe",
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.adobe.com/\nCall log:\n  - navigating to \"https://www.adobe.com/\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "source_id": "etsy",
+      "source_name": "Etsy",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "mcdonalds",
+      "source_name": "McDonald's",
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.mcdonalds.com/us/en-us.html\nCall log:\n  - navigating to \"https://www.mcdonalds.com/us/en-us.html\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "source_id": "netflix",
+      "source_name": "Netflix",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 200)"
+    },
+    {
+      "source_id": "sephora",
+      "source_name": "Sephora",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "marriott",
+      "source_name": "Marriott",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "delta",
+      "source_name": "Delta Air Lines",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 444)"
+    },
+    {
+      "source_id": "american-express",
+      "source_name": "American Express",
+      "error": "Error: Page.evaluate: Error: eval is disabled\n    at monkeypatchedEval (https://www.aexp-static.com/cdaas/one/app/6.30.1-4c1d5b4e/app.js:1:112490)\n    at UtilityScript.evaluate (<anonymous>:311:30)\n    at UtilityScript.<anonymous> (<anonymous>:1:44)"
+    },
+    {
+      "source_id": "tesla",
+      "source_name": "Tesla",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "ford",
+      "source_name": "Ford",
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.ford.com/\nCall log:\n  - navigating to \"https://www.ford.com/\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "source_id": "adidas",
+      "source_name": "Adidas",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "nba",
+      "source_name": "NBA",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "west-elm",
+      "source_name": "West Elm",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "crate-and-barrel",
+      "source_name": "Crate & Barrel",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "zara",
+      "source_name": "Zara",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "hm",
+      "source_name": "H&M",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    },
+    {
+      "source_id": "gucci",
+      "source_name": "Gucci",
+      "error": "Error: Page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.gucci.com/us/en/\nCall log:\n  - navigating to \"https://www.gucci.com/us/en/\", waiting until \"domcontentloaded\"\n"
+    },
+    {
+      "source_id": "uniqlo",
+      "source_name": "UNIQLO",
+      "error": "RuntimeError: Source returned a blocked or challenge page (HTTP 403)"
+    }
+  ],
+  "disclaimer": "Pantone Challenger is an independent computational art project and is not affiliated with, sponsored by, or endorsed by Pantone LLC. The index measures a declared panel of official marketing pages, not the entire internet."
+}
