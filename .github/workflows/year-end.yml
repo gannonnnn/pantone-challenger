@@ -1,0 +1,151 @@
+name: Year-End Challenger
+
+on:
+  schedule:
+    # January 2 at 10:00 a.m. Eastern (15:00 UTC). Builds the previous calendar year.
+    - cron: "0 15 2 1 *"
+  workflow_dispatch:
+    inputs:
+      year:
+        description: "Calendar year (YYYY) or previous"
+        required: true
+        default: "previous"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      REQUESTED_YEAR: ${{ github.event.inputs.year || 'previous' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install application
+        run: python -m pip install -e .
+
+      - name: Resolve year and check archive
+        id: resolve
+        shell: bash
+        run: |
+          year="$(python - <<'PY'
+          import os
+          from datetime import datetime, timezone
+          raw = os.environ.get("REQUESTED_YEAR", "previous").strip().lower()
+          if raw == "previous":
+              print(datetime.now(timezone.utc).year - 1)
+          else:
+              value = int(raw)
+              if value < 2000 or value > 2200:
+                  raise SystemExit("Year must be between 2000 and 2200")
+              print(value)
+          PY
+          )"
+          echo "year=$year" >> "$GITHUB_OUTPUT"
+          has_results="$(python - "$year" <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          year = sys.argv[1]
+          found = False
+          for path in Path("archive").glob(f"{year}-??-??/result.json"):
+              try:
+                  result = json.loads(path.read_text())
+              except (OSError, ValueError):
+                  continue
+              if result.get("status") == "ready" and result.get("winner"):
+                  found = True
+                  break
+          print("true" if found else "false")
+          PY
+          )"
+          echo "has_results=$has_results" >> "$GITHUB_OUTPUT"
+
+      - name: Build annual package
+        if: steps.resolve.outputs.has_results == 'true'
+        run: challenger year-end --year "${{ steps.resolve.outputs.year }}"
+
+      - name: Upload annual social package
+        if: steps.resolve.outputs.has_results == 'true'
+        uses: actions/upload-artifact@v7
+        with:
+          name: year-in-color-${{ steps.resolve.outputs.year }}
+          path: archive/yearly/${{ steps.resolve.outputs.year }}/
+          retention-days: 90
+          if-no-files-found: error
+
+      - name: Create or update annual review pull request
+        if: steps.resolve.outputs.has_results == 'true'
+        shell: bash
+        run: |
+          year="${{ steps.resolve.outputs.year }}"
+          branch="year-end/$year"
+          git config user.name "pantone-challenger[bot]"
+          git config user.email "pantone-challenger[bot]@users.noreply.github.com"
+          git checkout -B "$branch"
+          git add "archive/yearly/$year" site
+          git commit -m "annual: publish $year Year in Color" || true
+          git push --force-with-lease origin "$branch"
+          sha="$(git rev-parse HEAD)"
+
+          python - "$year" "$sha" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          year, sha = sys.argv[1:]
+          root = Path("archive") / "yearly" / year
+          summary = json.loads((root / "annual-summary.json").read_text())
+          repo = os.environ["GITHUB_REPOSITORY"]
+          base = f"https://github.com/{repo}/blob/{sha}/archive/yearly/{year}"
+          top = summary["most_frequent_family"]
+          longest = summary["longest_streak_family"]
+          widest = summary["widest_company_reach_family"]
+          body = "\n".join([
+              f"# {year} Year in Color",
+              "",
+              f"![Year in Color]({base}/year-in-color.png?raw=1)",
+              "",
+              f"![Every approved daily winner]({base}/year-color-grid.png?raw=1)",
+              "",
+              "## Headline findings",
+              "",
+              f"- **{summary['approved_days']} approved daily results**",
+              f"- **Most frequent daily winner:** {top['family_name']} `{top['representative_hex']}` — {top['winning_days']} days",
+              f"- **Longest streak:** {longest['family_name']} — {longest['longest_streak']} consecutive days",
+              f"- **Widest company reach:** {widest['family_name']} — {widest['unique_company_count']} / {widest['panel_company_count']} companies",
+              f"- **Average panel coverage:** {summary['average_analyzed_company_pages']} / {summary['panel_company_count']} pages ({summary['average_panel_coverage_percent']}%)",
+              "",
+              f"[Open the annual report]({base}/annual-summary.md) · [Open summary JSON]({base}/annual-summary.json)",
+              "",
+              "> Merging this pull request approves the year-end summary generated from approved daily results.",
+          ])
+          Path("/tmp/pantone-challenger-year-body.md").write_text(body, encoding="utf-8")
+          PY
+
+          if gh pr view "$branch" >/dev/null 2>&1; then
+            gh pr edit "$branch" \
+              --title "$year Year in Color" \
+              --body-file "/tmp/pantone-challenger-year-body.md"
+          else
+            gh pr create \
+              --base main \
+              --head "$branch" \
+              --title "$year Year in Color" \
+              --body-file "/tmp/pantone-challenger-year-body.md"
+          fi
+
+      - name: No approved results yet
+        if: steps.resolve.outputs.has_results != 'true'
+        run: echo "No approved daily results were found for ${{ steps.resolve.outputs.year }}; no annual package was created."

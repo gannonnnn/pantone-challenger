@@ -1,5 +1,7 @@
 from dataclasses import replace
 
+import pytest
+
 from challenger.colors import oklab_from_hex, oklab_to_oklch
 from challenger.config import Settings
 from challenger.models import Source, SourceObservation, Swatch
@@ -37,20 +39,30 @@ def test_persistent_brand_color_is_suppressed():
             [swatch("#D72B34", 0.60), swatch("#6D8E62", 0.40)],
         )
     ]
+    # This test isolates brand-color baseline suppression. A new screenshot hash
+    # prevents the separate unchanged-page penalty from affecting every swatch.
+    current[0].screenshot_hashes = ["brand-current"]
     history = [
         [observation("brand", "retail", [swatch("#D72B34", 0.60), swatch("#E9E5DD", 0.40)])]
         for _ in range(7)
     ]
-    # Isolate brand-color baseline suppression. Reusing the same screenshot hash
-    # would also trigger the separate unchanged-page penalty.
-    for day_index, day in enumerate(history):
-        day[0].screenshot_hashes = [f"brand-history-{day_index}"]
-    current[0].screenshot_hashes = ["brand-current"]
     apply_source_baselines(current, history, settings)
     red, green = current[0].swatches
     assert red.adjusted_share < red.share
     assert green.adjusted_share == green.share
     assert green.adjusted_share > red.adjusted_share
+
+
+def test_unchanged_page_factor_applies_to_all_swatches():
+    settings = Settings(baseline_warmup_days=1, unchanged_page_factor=0.35)
+    current = [observation("brand", "retail", [swatch("#6D8E62", 0.40)])]
+    history = [
+        [observation("brand", "retail", [swatch("#D72B34", 0.60)])]
+    ]
+
+    apply_source_baselines(current, history, settings)
+
+    assert current[0].swatches[0].adjusted_share == pytest.approx(0.40 * 0.35)
 
 
 def test_cross_sector_candidate_scores_and_passes_small_test_gate():

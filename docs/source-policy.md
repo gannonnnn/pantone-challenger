@@ -2,7 +2,7 @@
 
 ## Inclusion criteria
 
-A Version 1.0 source must be:
+A Version 1.1 source must be:
 
 - publicly reachable without authentication;
 - owned or officially operated by the represented brand or organization;
@@ -57,6 +57,7 @@ They are excluded from Git, excluded from the public site, and retained only tem
 The public archive may include:
 
 - source name;
+- a first-party company mark captured from the official page header or official site icon;
 - source URL;
 - capture timestamp;
 - screenshot hash;
@@ -66,11 +67,11 @@ The public archive may include:
 - capture status and error category;
 - original Pantone Challenger graphics.
 
-It does not republish the captured brand photography in Version 1.0.
+It does not republish the captured campaign photography in Version 1.1. When a company mark is unavailable or unusable, the project uses a typographic fallback rather than fetching an unofficial logo.
 
 ## Attribution
 
-The source panel links to official pages. A source link documents where observation occurred; it does not imply endorsement or partnership.
+The source panel links to official pages. A source link or company mark documents where observation occurred; it does not imply endorsement, sponsorship, affiliation, or partnership. Company marks should be shown only alongside the evidence they identify, at a modest size, without alteration beyond normalization needed for legibility.
 
 ## Trademark and brand presentation
 
@@ -80,6 +81,8 @@ The project must not:
 - use proprietary Pantone color codes;
 - copy Pantone swatch layouts in a way that suggests affiliation;
 - describe itself as an official Pantone product;
+- alter monitored company marks to imply a partnership;
+- use company marks as decorative sponsorship badges;
 - suggest that monitored brands endorse the index.
 
 The independence disclaimer appears in the public site and caption.

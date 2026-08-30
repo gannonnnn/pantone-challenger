@@ -12,7 +12,7 @@ from .models import Source
 @dataclass(frozen=True)
 class Settings:
     project_name: str = "Pantone Challenger"
-    methodology_version: str = "1.0"
+    methodology_version: str = "1.2"
     timezone: str = "America/New_York"
     rollover_hour: int = 4
     viewport_width: int = 1440
@@ -25,6 +25,7 @@ class Settings:
     request_delay_seconds: float = 1.0
     cluster_distance: float = 0.055
     source_cluster_distance: float = 0.045
+    recurrence_distance: float = 0.055
     baseline_lookback_days: int = 30
     baseline_warmup_days: int = 7
     baseline_suppression: float = 0.75
