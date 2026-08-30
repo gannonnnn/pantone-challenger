@@ -1,4 +1,4 @@
-# Challenger Color Index Methodology — Version 1.0
+# Challenger Color Index Methodology — Version 1.2
 
 ## Research question
 
@@ -23,7 +23,7 @@ This prevents a visually dense retailer from outweighing a simpler campaign page
 
 ## Panel
 
-Version 1.0 uses 48 official marketing pages across 12 sectors, with four sources in each sector. The panel is declared in `config/sources.yml`.
+Version 1.2 uses 48 official marketing pages across 12 sectors, with four sources in each sector. The panel is declared in `config/sources.yml`.
 
 The panel is intentionally broad but not globally representative. It is currently US-facing and English-language. Future geographic panels should be published as separate indices rather than silently mixed into the baseline.
 
@@ -44,6 +44,12 @@ Video and websocket resources are blocked to improve reproducibility. Images, CS
 The system attempts to dismiss a small list of ordinary consent buttons. It does not bypass CAPTCHAs, authentication, paywalls, or access controls.
 
 Pages displaying likely block or challenge signatures are marked unusable.
+
+### Source identity marks
+
+After a page is accepted, the capture process attempts to save a small first-party brand mark from the visible page header. If no suitable visible mark is available, it tries the official page icon or favicon. If neither succeeds, public graphics use a text-initials fallback.
+
+Brand marks are presentation metadata only. They do not affect palette extraction, clustering, score, source weighting, or quality-gate decisions. Raw brand photography remains private and is not republished in the public social package.
 
 ## Commercial date
 
@@ -199,6 +205,53 @@ The color name is deterministic, using:
 
 The naming system does not choose the color. Editing a name for safety or clarity does not alter the result, but Version 1.0 does not include an automated override path.
 
+## Year-to-date color-family recurrence
+
+A daily generated name is intentionally creative and may vary even when two winning shades are visually similar. Recurrence is therefore **not** counted by name and does not require an exact HEX match.
+
+For each ready result, the system loads all earlier approved winners from the same calendar year and groups them in OKLab using a fixed complete-link distance threshold. Version 1.2 uses `0.055`.
+
+Complete-link means a shade may join a color family only when it is within the threshold of **every** existing member of that family. This prevents a chain such as green → yellow-green → yellow from gradually turning one family into a different color.
+
+The current result stores:
+
+- a stable descriptive family label such as Chartreuse, Olive Green, Blue, or Clay Red;
+- representative family HEX and OKLab values;
+- winning days in the current calendar year;
+- every matching approved date;
+- current and longest calendar-day streaks;
+- unique supporting companies across matching days;
+- the declared company-panel denominator;
+- supporting-company-day count;
+- average analyzed company pages across matching days; and
+- sectors represented across matching days.
+
+The counter resets on January 1. A missing or rejected calendar day breaks a consecutive streak, but does not erase cumulative winning-day history. Only results merged into the approved archive are eligible as historical evidence.
+
+Recurrence does not affect which color wins today. It is a longitudinal description applied after the daily quality gate and score have selected the winner.
+
+## Year in Color summary
+
+The `challenger year-end --year YYYY` command groups that year's approved daily winners using the same complete-link threshold and creates:
+
+- a structured annual JSON summary;
+- a human-readable Markdown report;
+- a feed-ready “Year in Color” card; and
+- a chronological grid containing every approved daily winner.
+
+The annual package reports the most frequent daily winning family, longest streak, widest unique-company reach, widest sector reach, monthly leaders, average source coverage, and the full family ranking. The scheduled workflow runs on January 2 for the previous calendar year and opens a review pull request; it does not publish automatically.
+
+## Published result package
+
+Every ready result states four different counts so the claim remains auditable:
+
+- **monitored** — the complete configured panel used for the run;
+- **analyzed** — sources that produced usable captures and palettes;
+- **supported** — analyzed sources contributing to the winning color cluster;
+- **sectors** — commercial sectors represented in the winning cluster.
+
+The winner and three runners-up are published as explicit color swatches with HEX values. The evidence card shows the strongest supporting sources in contribution order and the full result JSON retains the complete source list.
+
 ## Human review
 
 Humans may reject publication because:
@@ -223,6 +276,8 @@ Any change to:
 - scoring weights;
 - quality thresholds;
 - naming vocabulary;
+- recurrence threshold or family-label rules;
+- annual aggregation method;
 
 must be committed and documented. Material scoring changes increment the methodology version and apply prospectively.
 
@@ -230,7 +285,7 @@ Historical results are never silently recomputed under a new methodology.
 
 ## Known limitations
 
-Version 1.0:
+Version 1.2:
 
 - measures brand-owned official pages rather than paid-ad impression volume;
 - is US-facing and English-language;
@@ -239,6 +294,8 @@ Version 1.0:
 - may undercount video-first campaigns because video requests are blocked;
 - uses page prominence as a proxy, not audience exposure;
 - treats sectors as configured categories rather than learned cultural categories;
+- can group close shades differently when they sit near the published recurrence threshold;
+- uses broad human-readable family labels for communication, while the actual match remains numeric;
 - cannot infer why a color was chosen;
 - does not establish causation between simultaneous brand color choices.
 

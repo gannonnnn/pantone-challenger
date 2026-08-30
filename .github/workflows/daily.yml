@@ -97,7 +97,7 @@ jobs:
 
       - name: Upload private capture evidence
         if: always() && steps.run.outputs.target_date != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: raw-captures-${{ steps.run.outputs.target_date }}
           path: |
@@ -105,6 +105,15 @@ jobs:
             archive/${{ steps.run.outputs.target_date }}/capture-report.json
           retention-days: 14
           if-no-files-found: warn
+
+      - name: Upload review-ready social package
+        if: steps.run.outputs.result_status == 'ready'
+        uses: actions/upload-artifact@v7
+        with:
+          name: social-package-${{ steps.run.outputs.target_date }}
+          path: archive/${{ steps.run.outputs.target_date }}/
+          retention-days: 30
+          if-no-files-found: error
 
       - name: Stop when quality gate blocks publication
         if: steps.run.outputs.result_status != 'ready'
@@ -126,15 +135,101 @@ jobs:
           git add "archive/$date" site
           git commit -m "daily: publish Challenger result for $date" || true
           git push --force-with-lease origin "$branch"
+          sha="$(git rev-parse HEAD)"
+
+          python - "$date" "$sha" <<'PY'
+          import json
+          import os
+          import sys
+          from pathlib import Path
+
+          day, sha = sys.argv[1:]
+          result = json.loads((Path("archive") / day / "result.json").read_text())
+          winner = result["winner"]
+          recurrence = result.get("recurrence") or {}
+          repo = os.environ["GITHUB_REPOSITORY"]
+          base = f"https://github.com/{repo}/blob/{sha}/archive/{day}"
+          names = result.get("runner_up_names", [])
+
+          def image(name: str, alt: str) -> str:
+              return f"![{alt}]({base}/{name}?raw=1)"
+
+          runners = []
+          for index, candidate in enumerate(result.get("runners_up", [])[:3]):
+              label = names[index] if index < len(names) else candidate["hex"]
+              runners.append(
+                  f"- **#{index + 2} {label}** `{candidate['hex']}` — "
+                  f"{candidate['source_count']} sources / {candidate['sector_count']} sectors"
+              )
+
+          sources = []
+          source_sectors = winner.get("source_sectors", [])
+          for index, name in enumerate(winner.get("source_names", [])):
+              sector = source_sectors[index].replace("_", " ") if index < len(source_sectors) else "source"
+              sources.append(f"- **{name}** — {sector}")
+
+          body = "\n".join([
+              f"# Yesterday’s Challenger — {day}",
+              "",
+              image("feed-post.png", "Winner social card"),
+              "",
+              "## Coverage",
+              "",
+              "| Company pages monitored | Successfully analyzed | Unavailable | Analyzed sectors | Winner support |",
+              "|---:|---:|---:|---:|---:|",
+              f"| {result['panel_size']} | {result['captured_sources']} | "
+              f"{max(result['panel_size'] - result['captured_sources'], 0)} | "
+              f"{result['captured_sectors']} | "
+              f"{winner['source_count']} sources / {winner['sector_count']} sectors |",
+              "",
+              "## Year-to-date counter",
+              "",
+              (
+                  f"**{recurrence.get('winning_days', 1)} days in {recurrence.get('year', day[:4])}** "
+                  f"with **{recurrence.get('family_name', result.get('winner_name', winner['hex']))}** "
+                  "as the top color family in the monitored commercial panel."
+              ),
+              (
+                  f"Across matching days: **{recurrence.get('unique_company_count', winner['source_count'])} / "
+                  f"{recurrence.get('panel_company_count', result['panel_size'])} unique companies** · "
+                  f"**{recurrence.get('sector_count', winner['sector_count'])} sectors** · "
+                  f"current streak **{recurrence.get('current_streak', 1)} day(s)**."
+              ),
+              "",
+              "## Companies and organizations behind the signal",
+              "",
+              image("story-02-evidence.png", "Supporting source logos"),
+              "",
+              *sources,
+              "",
+              "## Runners-up",
+              "",
+              image("story-04-runners-up.png", "Runner-up colors"),
+              "",
+              *runners,
+              "",
+              "## Why it won",
+              "",
+              image("story-03-why-it-won.png", "Why the color won"),
+              "",
+              f"[Open the complete review summary]({base}/review-summary.md) · "
+              f"[Open result JSON]({base}/result.json) · "
+              f"[Open capture report]({base}/capture-report.json)",
+              "",
+              "> Merging this pull request approves the measured result. A reviewer may reject bad evidence, "
+              "but may not substitute a prettier color.",
+          ])
+          Path("/tmp/pantone-challenger-pr-body.md").write_text(body, encoding="utf-8")
+          PY
 
           if gh pr view "$branch" >/dev/null 2>&1; then
             gh pr edit "$branch" \
               --title "Yesterday's Challenger — $date" \
-              --body-file "archive/$date/caption.txt"
+              --body-file "/tmp/pantone-challenger-pr-body.md"
           else
             gh pr create \
               --base main \
               --head "$branch" \
               --title "Yesterday's Challenger — $date" \
-              --body-file "archive/$date/caption.txt"
+              --body-file "/tmp/pantone-challenger-pr-body.md"
           fi

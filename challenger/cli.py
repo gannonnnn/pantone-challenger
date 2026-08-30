@@ -9,6 +9,7 @@ from pathlib import Path
 import click
 
 from . import __version__
+from .annual import write_annual_package
 from .config import load_settings, load_sources, panel_summary
 from .pipeline import run_daily
 from .publish.bluesky import publish_bluesky
@@ -106,6 +107,33 @@ def build_site_command(config_dir: Path, archive_root: Path, site_root: Path) ->
     """Rebuild the public static archive from approved live results."""
     build_site(archive_root, site_root, load_sources(config_dir))
     click.echo(f"Built {site_root}")
+
+
+@main.command("year-end")
+@click.option("--year", type=int, required=True)
+@click.option("--config-dir", type=click.Path(path_type=Path), default=Path("config"))
+@click.option("--archive-root", type=click.Path(path_type=Path), default=Path("archive"))
+@click.option("--site-root", type=click.Path(path_type=Path), default=Path("site"))
+def year_end_command(
+    year: int,
+    config_dir: Path,
+    archive_root: Path,
+    site_root: Path,
+) -> None:
+    """Build the year-in-color summary from approved daily results."""
+    settings = load_settings(config_dir)
+    sources = load_sources(config_dir)
+    try:
+        output = write_annual_package(
+            archive_root=archive_root,
+            year=year,
+            sources=sources,
+            distance_threshold=settings.recurrence_distance,
+        )
+    except ValueError as exc:
+        raise click.ClickException(str(exc)) from exc
+    build_site(archive_root, site_root, sources)
+    click.echo(f"Built annual package: {output}")
 
 
 @main.command("publish")

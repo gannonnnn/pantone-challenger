@@ -263,6 +263,8 @@ def score_candidates(
                 neutral_penalty=round(neutral_penalty, 3),
                 concentration_penalty=round(concentration_penalty, 3),
                 components=components,
+                source_sectors=[item[0].sector for item in ordered],
+                source_salience=[round(item[1].adjusted_share, 5) for item in ordered],
             )
         )
 

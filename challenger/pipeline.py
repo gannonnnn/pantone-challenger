@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import json
 import shutil
-from datetime import date
 from pathlib import Path
 
 from .archive import (
@@ -17,6 +15,7 @@ from .dates import iso_now, resolve_marketing_date
 from .dedupe import deduplicate_records
 from .models import CaptureRecord, DailyResult, Source, SourceObservation
 from .naming import name_candidate
+from .recurrence import calculate_recurrence
 from .render import render_daily
 from .scoring import evaluate_quality, load_history, score_candidates
 from .site import build_site
@@ -45,6 +44,8 @@ def _balanced_limit(sources: list[Source], maximum: int) -> list[Source]:
         if not changed:
             break
     return selected
+
+
 
 
 def observations_from_captures(
@@ -140,6 +141,23 @@ def run_daily(
     winner = candidates[0] if candidates else None
     status = "ready" if gate.passed and winner else "blocked"
     name = name_candidate(winner, target) if status == "ready" and winner else None
+    runner_up_names = (
+        [name_candidate(candidate, target) for candidate in candidates[1:4]]
+        if status == "ready"
+        else []
+    )
+    recurrence = (
+        calculate_recurrence(
+            archive_root=archive_root,
+            target_date=target,
+            winner=winner,
+            panel_size=len(sources),
+            captured_sources=len(observations),
+            distance_threshold=settings.recurrence_distance,
+        )
+        if status == "ready" and winner
+        else None
+    )
     source_failures = [
         {
             "source_id": record.source_id,
@@ -165,6 +183,8 @@ def run_daily(
         runners_up=candidates[1:4],
         source_failures=source_failures,
         disclaimer=DISCLAIMER,
+        runner_up_names=runner_up_names,
+        recurrence=recurrence,
     )
 
     day_dir = write_analysis_archive(archive_root, result, observations, captures)

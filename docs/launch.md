@@ -10,7 +10,7 @@ Pantone Challenger is launched when all of the following are true:
 2. The full 48-source nightly workflow completes.
 3. A daily review pull request is generated.
 4. You merge the first result after inspecting it.
-5. The public GitHub Pages archive loads.
+5. The public archive is either deliberately enabled or deliberately deferred during calibration.
 6. A social account has successfully received one manually approved post.
 7. Automatic publishing remains off until at least several good daily runs have been reviewed.
 
@@ -97,7 +97,7 @@ git remote add origin YOUR_GITHUB_REPOSITORY_URL
 git push -u origin main
 ```
 
-The production package already contains Git history, so do not run `git init` again.
+A downloaded source snapshot may not contain a `.git` directory. When it does not, create or clone the GitHub repository first and copy the project files into that cloned folder. Do not assume Git history exists merely because the source files are present.
 
 ---
 
@@ -111,11 +111,14 @@ In the GitHub repository:
 4. Enable the option allowing GitHub Actions to create pull requests.
 5. Save.
 
-Then:
+GitHub Pages is optional during calibration. The Pages workflow is deliberately dormant until the repository variable `ENABLE_PAGES=true` exists. A private repository may also require an eligible paid GitHub plan for Pages. You can run Daily Challenger, review results, and build year-to-date history without enabling Pages.
 
-1. Open **Settings → Pages**.
-2. Set the deployment source to **GitHub Actions**.
-3. Save if GitHub presents a save button.
+When you are ready for a public archive:
+
+1. Make the repository public, or use a GitHub plan that permits private Pages.
+2. Open **Settings → Pages** and choose **GitHub Actions** as the source.
+3. Open **Settings → Secrets and variables → Actions → Variables**.
+4. Add `ENABLE_PAGES=true`.
 
 No social credentials are needed yet.
 
@@ -149,9 +152,11 @@ It will:
 7. apply source-level baseline suppression;
 8. score cross-industry color clusters;
 9. apply the data-quality gate;
-10. generate the feed post, Story cards, caption, and evidence files;
-11. upload raw screenshots as a private, temporary workflow artifact;
-12. open a daily review pull request only if the gate passes.
+10. capture first-party company marks from official page headers or official site icons;
+11. generate the feed post, Story cards, caption, review summary, and evidence files;
+12. upload raw screenshots as a private, temporary workflow artifact;
+13. upload a separate review-ready social package;
+14. open a daily review pull request only if the gate passes.
 
 A failed quality gate is a correct product outcome. It means “do not publish today,” not “invent a result.”
 
@@ -165,15 +170,17 @@ Open the pull request titled:
 Yesterday’s Challenger — YYYY-MM-DD
 ```
 
-Review:
+The pull request body embeds the winner swatch, company-logo evidence card, runner-up swatches, coverage table, and year-to-date recurrence counter. Review:
 
-1. `feed-post.png`
-2. all four Story cards;
-3. `caption.txt`;
-4. `result.json`;
-5. the number of usable sources and sectors;
-6. `capture-report.json` for failures;
-7. the private raw-capture workflow artifact if the outcome looks suspicious.
+1. `feed-post.png` and confirm the winner color is visually unmistakable;
+2. `story-02-evidence.png` and confirm the listed company marks actually correspond to the supporting sources;
+3. `story-04-runners-up.png` and confirm all three runner-up colors and HEX values are visible;
+4. the coverage table: company pages monitored, successfully analyzed, unavailable, and supporting the winner;
+5. the year-to-date counter: winning days, unique companies across matching days, panel denominator, sectors, and current streak;
+6. `caption.txt` and `review-summary.md`;
+7. `result.json`, especially its `review_summary` and `recurrence` sections;
+8. `capture-report.json` for failures and logo-capture provenance;
+9. the private raw-capture workflow artifact if the outcome looks suspicious.
 
 Merge only when:
 
@@ -190,11 +197,11 @@ Merging the pull request is the formal publication approval.
 
 ---
 
-## Phase 6 — Launch the public archive
+## Phase 6 — Optionally launch the public archive
 
-After the pull request is merged, the **Deploy public archive** workflow runs.
+Merging a pull request stores the approved result on `main` whether or not Pages is enabled. When `ENABLE_PAGES=true`, the **Deploy public archive** workflow runs after the merge.
 
-Open:
+When you are ready for the public site, open:
 
 ```text
 Settings → Pages
@@ -331,7 +338,7 @@ For the first seven successful days:
 - do not replace the winner;
 - allow the per-source baselines to calibrate.
 
-After at least seven successful days, momentum becomes active. Thirty days produces a more meaningful baseline.
+After at least seven successful days, momentum becomes active. Thirty days produces a more meaningful baseline. The recurrence counter starts immediately, but it counts only approved daily results on `main`. Similar shades are grouped using the published fixed OKLab rule; daily creative names and exact HEX equality do not determine a match.
 
 A sensible launch announcement happens after the first result is visible, not before:
 
@@ -363,6 +370,45 @@ The morning scheduled publisher then posts the latest approved result. “Approv
 
 Keep `INCLUDE_STORIES=false` initially. Story automation can be enabled separately after several successful tests.
 
+
+---
+
+## Phase 13 — Create the January Year in Color
+
+Pantone Challenger keeps the daily counter automatically. You do not need a separate spreadsheet.
+
+On January 2, the **Year-End Challenger** workflow is scheduled to build the previous calendar year from approved daily results. It can also be run manually at any time:
+
+1. Open **Actions**.
+2. Select **Year-End Challenger**.
+3. Choose **Run workflow**.
+4. Enter `previous` or a four-digit year such as `2026`.
+5. Run it.
+
+The workflow creates a review pull request containing:
+
+```text
+archive/yearly/YYYY/
+├── annual-summary.json
+├── annual-summary.md
+├── year-in-color.png
+└── year-color-grid.png
+```
+
+The annual report includes:
+
+- the most frequent daily color family and number of winning days;
+- the longest consecutive streak;
+- unique companies represented across that family's winning days, shown against the declared panel denominator;
+- cross-sector reach;
+- monthly leaders;
+- average daily panel coverage; and
+- a grid of every approved daily winner.
+
+The annual grouping uses the same complete-link OKLab rule as the daily counter, so the January total and the counters shown throughout the year remain methodologically consistent. Creative names may change from day to day while perceptually similar shades continue to count toward the same stable family label.
+
+Review and merge the annual pull request before sharing the January summary. The scheduled workflow never publishes the annual package directly to social media.
+
 ---
 
 ## Daily operating routine
@@ -370,7 +416,7 @@ Keep `INCLUDE_STORIES=false` initially. Story automation can be enabled separate
 The normal human workload should be approximately:
 
 1. Open the daily pull request.
-2. Inspect the card, caption, sample size, and failures.
+2. Inspect the card, caption, sample size, recurrence counter, and failures.
 3. Merge or close.
 4. Confirm the site/publisher workflows finish.
 
@@ -398,13 +444,15 @@ Make replacements in a dedicated pull request, update the panel version, explain
 - [ ] `challenger doctor` passes.
 - [ ] Source panel shows 48 sources and 12 sectors.
 - [ ] GitHub Actions has read/write and pull-request permission.
-- [ ] GitHub Pages uses GitHub Actions.
+- [ ] GitHub Pages is configured with GitHub Actions, or intentionally deferred.
 - [ ] First full real capture completed.
 - [ ] Daily result passed the quality gate.
 - [ ] Raw capture evidence was reviewed.
 - [ ] First daily pull request was merged.
-- [ ] Public archive is live.
+- [ ] Year-to-date counter appears in the approved result.
+- [ ] Public archive is live, or Pages is intentionally deferred.
 - [ ] Independence/trademark disclaimer is visible.
 - [ ] First social publish was manually approved.
 - [ ] Completion tag and receipt were created.
 - [ ] Automatic publishing remains off during calibration.
+- [ ] Year-End Challenger workflow is visible for the January summary.

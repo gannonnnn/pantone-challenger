@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from pathlib import Path
 from typing import Any
 
 
@@ -38,6 +37,9 @@ class CaptureRecord:
     blocked: bool = False
     error: str = ""
     frames: list[CaptureFrame] = field(default_factory=list)
+    logo_path: str = ""
+    logo_source: str = ""
+    logo_error: str = ""
     duration_seconds: float = 0.0
 
     def to_dict(self) -> dict[str, Any]:
@@ -100,6 +102,8 @@ class Candidate:
     neutral_penalty: float
     concentration_penalty: float
     components: dict[str, float]
+    source_sectors: list[str] = field(default_factory=list)
+    source_salience: list[float] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         data = asdict(self)
@@ -122,6 +126,34 @@ class QualityGate:
 
 
 @dataclass
+class RecurrenceSummary:
+    year: int
+    family_name: str
+    representative_hex: str
+    distance_threshold: float
+    winning_days: int
+    previous_winning_days: int
+    current_streak: int
+    longest_streak: int
+    first_win_date: str
+    latest_win_date: str
+    matching_dates: list[str]
+    unique_company_count: int
+    unique_company_ids: list[str]
+    unique_company_names: list[str]
+    panel_company_count: int
+    supporting_company_days: int
+    average_analyzed_company_pages: float
+    sectors: list[str]
+    sector_count: int
+    sector_day_counts: dict[str, int]
+    ready_days_in_year: int
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class DailyResult:
     date: str
     generated_at: str
@@ -138,6 +170,26 @@ class DailyResult:
     runners_up: list[Candidate]
     source_failures: list[dict[str, str]]
     disclaimer: str
+    runner_up_names: list[str] = field(default_factory=list)
+    source_logos: dict[str, str] = field(default_factory=dict)
+    recurrence: RecurrenceSummary | None = None
+
+    def review_summary(self) -> dict[str, int]:
+        winner_sources = self.winner.source_count if self.winner else 0
+        winner_sectors = self.winner.sector_count if self.winner else 0
+        return {
+            "company_pages_monitored": self.panel_size,
+            "company_pages_analyzed": self.captured_sources,
+            "company_pages_unavailable": max(self.panel_size - self.captured_sources, 0),
+            "brands_supporting_winner": winner_sources,
+            "sectors_in_panel": self.quality_gate.configured_sectors,
+            "sectors_analyzed": self.captured_sectors,
+            "sectors_supporting_winner": winner_sectors,
+            "winning_days_this_year": self.recurrence.winning_days if self.recurrence else 0,
+            "unique_companies_across_matching_days": (
+                self.recurrence.unique_company_count if self.recurrence else 0
+            ),
+        }
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -151,10 +203,14 @@ class DailyResult:
             "baseline_days": self.baseline_days,
             "status": self.status,
             "quality_gate": self.quality_gate.to_dict(),
+            "review_summary": self.review_summary(),
             "winner": self.winner.to_dict() if self.winner else None,
             "winner_name": self.winner_name,
-            "runners_up": [c.to_dict() for c in self.runners_up],
+            "runners_up": [candidate.to_dict() for candidate in self.runners_up],
+            "runner_up_names": self.runner_up_names,
             "source_failures": self.source_failures,
+            "source_logos": self.source_logos,
+            "recurrence": self.recurrence.to_dict() if self.recurrence else None,
             "disclaimer": self.disclaimer,
         }
 
@@ -162,8 +218,8 @@ class DailyResult:
 def swatch_from_dict(data: dict[str, Any]) -> Swatch:
     return Swatch(
         hex=data["hex"],
-        oklab=tuple(float(v) for v in data["oklab"]),
-        oklch=tuple(float(v) for v in data["oklch"]),
+        oklab=tuple(float(value) for value in data["oklab"]),
+        oklch=tuple(float(value) for value in data["oklch"]),
         share=float(data["share"]),
         adjusted_share=float(data.get("adjusted_share", 0.0)),
     )
@@ -177,5 +233,5 @@ def observation_from_dict(data: dict[str, Any]) -> SourceObservation:
         url=data["url"],
         captured_at=data["captured_at"],
         screenshot_hashes=list(data.get("screenshot_hashes", [])),
-        swatches=[swatch_from_dict(s) for s in data["swatches"]],
+        swatches=[swatch_from_dict(swatch) for swatch in data["swatches"]],
     )
