@@ -1,104 +1,68 @@
-# Source and Rights Policy
+# Source and Rights Policy — Version 1.3
 
 ## Inclusion criteria
 
-A Version 1.1 source must be:
+A panel source must be:
 
 - publicly reachable without authentication;
-- owned or officially operated by the represented brand or organization;
+- owned or officially operated by the represented company or organization;
 - substantially commercial or promotional;
-- visually meaningful at a consistent desktop viewport;
-- assignable to one declared sector;
+- visually meaningful at the configured desktop viewport;
+- assigned to exactly one declared sector in the registry;
 - appropriate for limited automated observation.
 
 ## Exclusions
 
-The production panel excludes:
-
-- private accounts;
-- login-only pages;
-- paywalled pages;
-- user-generated social feeds;
-- scraped ad repositories without a clear permitted access method;
-- pages requiring CAPTCHA circumvention;
-- pages requiring anti-bot evasion;
-- personal data;
-- pages primarily containing news reporting rather than brand marketing;
-- individual creators unless added under a separately declared panel.
+The project excludes login-only pages, paywalls, private accounts, CAPTCHA circumvention, anti-bot evasion, personal data, user-generated feeds, and unofficial logo repositories.
 
 ## Access behavior
 
-Pantone Challenger:
+Pantone Challenger limits concurrency and request rate, uses fixed viewports, does not log in, and records blocked pages as unavailable. It does not repeatedly retry a challenged source in a way intended to bypass restrictions.
 
-- identifies itself in its user agent;
-- limits concurrency and adds request delay;
-- captures only two fixed viewports per source;
-- does not log in;
-- does not bypass access controls;
-- does not solve or outsource CAPTCHAs;
-- records blocked pages as failures;
-- does not repeatedly hammer a failing source.
+## Evidence regions
 
-Source operators may request removal. A removal should be documented as a panel change rather than hidden.
+Full-page screenshots are private diagnostics. Public color support must come from an eligible marketing-creative region that passes the configured size and confidence checks.
 
-## Raw screenshots
+Headers, navigation, footers, cookie interfaces, modal overlays, chat widgets, logos, favicons, and small icons are not public color evidence.
 
-Raw browser screenshots are used for:
+## Raw captures
 
-- extraction;
-- duplicate checks;
-- private analyst review;
-- debugging failed or surprising results.
-
-They are excluded from Git, excluded from the public site, and retained only temporarily as private GitHub Actions artifacts.
+Raw page frames, region screenshots, and evidence contact sheets are used for extraction, audit, and debugging. They are excluded from Git and from the public archive. GitHub Actions retains them only for the configured limited period.
 
 ## Public evidence
 
-The public archive may include:
+Public packages may include:
 
-- source name;
-- a first-party company mark captured from the official page header or official site icon;
-- source URL;
-- capture timestamp;
-- screenshot hash;
-- extracted color values;
-- normalized shares;
-- scoring components;
-- capture status and error category;
-- original Pantone Challenger graphics.
+- company name;
+- authoritative sector;
+- official source URL;
+- capture status and counts;
+- local derived color swatch and HEX;
+- perceptual distance and normalized share;
+- scoring and methodology metadata;
+- original Pantone Challenger graphics;
+- an optional manually approved company mark.
 
-It does not republish the captured campaign photography in Version 1.1. When a company mark is unavailable or unusable, the project uses a typographic fallback rather than fetching an unofficial logo.
+V1.3 does not automatically republish campaign photography.
 
-## Attribution
+## Brand marks
 
-The source panel links to official pages. A source link or company mark documents where observation occurred; it does not imply endorsement, sponsorship, affiliation, or partnership. Company marks should be shown only alongside the evidence they identify, at a modest size, without alteration beyond normalization needed for legibility.
+Runtime favicon and header-logo scraping is not permitted in public assets. Every source defaults to text-only attribution.
 
-## Trademark and brand presentation
+A mark may be used only when:
 
-The project must not:
+1. it has been manually obtained from an appropriate first-party source;
+2. it has been reviewed for legibility and presentation;
+3. its repository path is declared in `config/sources.yml`;
+4. `brand_mark_status` is set to `approved`;
+5. its use remains modest and identification-only.
 
-- use Pantone logos;
-- use proprietary Pantone color codes;
-- copy Pantone swatch layouts in a way that suggests affiliation;
-- describe itself as an official Pantone product;
-- alter monitored company marks to imply a partnership;
-- use company marks as decorative sponsorship badges;
-- suggest that monitored brands endorse the index.
+If any condition fails, the renderer uses the company name without a logo.
 
-The independence disclaimer appears in the public site and caption.
+## Attribution and endorsement
 
-## Source replacement process
+A company’s inclusion documents an observation source. It does not imply sponsorship, endorsement, affiliation, partnership, or coordination. The project must not present monitored companies as clients or sponsors.
 
-A source should be replaced only after documented evidence that it is persistently unusable or no longer fits the panel.
+## Panel changes
 
-A replacement pull request must state:
-
-- old source;
-- new source;
-- sector;
-- reason;
-- effective date;
-- panel version change;
-- expected impact on comparability.
-
-No replacement should be made merely because a brand’s colors are producing inconvenient results.
+A source should be replaced only when it is persistently unusable, ceases to be official or promotional, or creates a structural panel problem. A replacement must be documented with its reason, effective date, sector, and panel-version change. Sources must never be swapped merely to produce a preferred color.

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pantone-challenger"
-version = "1.2.0"
-description = "A daily, reproducible commercial-color index built from official marketing pages."
+version = "1.3.0"
+description = "A traceable commercial-color index built from sampled marketing creative regions."
 readme = "README.md"
 requires-python = ">=3.11"
 license = {text = "MIT"}

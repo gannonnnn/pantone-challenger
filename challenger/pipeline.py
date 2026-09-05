@@ -3,34 +3,40 @@ from __future__ import annotations
 import shutil
 from pathlib import Path
 
-from .archive import (
-    write_analysis_archive,
-    write_manifest,
-    write_publish_package,
-)
+from .archive import write_analysis_archive, write_manifest, write_publish_package
 from .capture import capture_panel, load_capture_report
-from .colors import extract_palette
-from .config import Settings, load_settings, load_sources
+from .config import load_settings, load_source_panel
 from .dates import iso_now, resolve_marketing_date
 from .dedupe import deduplicate_records
+from .evidence import observation_from_capture
+from .integrity import validate_result_integrity
 from .models import CaptureRecord, DailyResult, Source, SourceObservation
-from .naming import name_candidate
+from .naming import candidate_labels
 from .recurrence import calculate_recurrence
-from .render import render_daily
-from .scoring import evaluate_quality, load_history, score_candidates
+from .render import render_daily, render_evidence_contact_sheet
+from .scoring import (
+    confidence_label,
+    evaluate_quality,
+    load_history,
+    publication_state,
+    score_candidates,
+    select_daily_candidates,
+    select_distinct_runners,
+)
 from .site import build_site
 
 
 DISCLAIMER = (
     "Pantone Challenger is an independent computational art project and is not "
     "affiliated with, sponsored by, or endorsed by Pantone LLC. The index measures "
-    "a declared panel of official marketing pages, not the entire internet."
+    "a declared panel of official marketing pages, not the entire internet. Company "
+    "names identify monitored sources and do not imply endorsement."
 )
 
 
 def _balanced_limit(sources: list[Source], maximum: int) -> list[Source]:
     if maximum <= 0 or maximum >= len(sources):
-        return sources
+        return list(sources)
     buckets: dict[str, list[Source]] = {}
     for source in sources:
         buckets.setdefault(source.sector, []).append(source)
@@ -46,46 +52,35 @@ def _balanced_limit(sources: list[Source], maximum: int) -> list[Source]:
     return selected
 
 
-
-
 def observations_from_captures(
     records: list[CaptureRecord],
-    settings: Settings,
+    settings,
 ) -> list[SourceObservation]:
     observations: list[SourceObservation] = []
     for record in records:
-        if not record.success or not record.frames:
+        # Dedupe, challenge-page, and capture failures remain available in the
+        # private report, but they must never cast a color vote.
+        if not record.success:
             continue
-        paths = [Path(frame.path) for frame in record.frames if Path(frame.path).exists()]
-        if not paths:
+        observation = observation_from_capture(record, settings)
+        if observation is None:
             record.success = False
-            record.error = "No captured frames remained available for analysis"
+            if not record.error:
+                record.error = (
+                    "Capture did not produce traceable color evidence from an eligible "
+                    "marketing-creative region"
+                )
             continue
-        try:
-            swatches = extract_palette(
-                paths,
-                merge_distance=settings.source_cluster_distance,
-            )
-        except Exception as exc:
-            record.success = False
-            record.error = f"Color extraction failed: {type(exc).__name__}: {exc}"
-            continue
-        if len(swatches) < 2:
-            record.success = False
-            record.error = "Color extraction produced fewer than two usable swatches"
-            continue
-        observations.append(
-            SourceObservation(
-                source_id=record.source_id,
-                source_name=record.source_name,
-                sector=record.sector,
-                url=record.final_url or record.url,
-                captured_at=record.captured_at,
-                screenshot_hashes=[frame.sha256 for frame in record.frames],
-                swatches=swatches,
-            )
-        )
+        record.success = True
+        observations.append(observation)
     return observations
+
+
+def _label_candidates(candidates, target) -> None:
+    for candidate in candidates:
+        family, creative, _ = candidate_labels(candidate, target)
+        candidate.family_label = family
+        candidate.creative_name = creative
 
 
 def run_daily(
@@ -100,13 +95,14 @@ def run_daily(
     reuse_capture: bool = False,
 ) -> DailyResult:
     settings = load_settings(config_dir)
-    all_sources = load_sources(config_dir)
+    registry_version, all_sources = load_source_panel(config_dir)
     sources = _balanced_limit(all_sources, max_sources)
     target = resolve_marketing_date(
         requested_date,
         timezone_name=settings.timezone,
         rollover_hour=settings.rollover_hour,
     )
+
     day_dir = archive_root / target.isoformat()
     if day_dir.exists() and not force:
         raise FileExistsError(
@@ -129,40 +125,78 @@ def run_daily(
 
     deduplicate_records(captures)
     observations = observations_from_captures(captures, settings)
-    history = load_history(archive_root, target, settings.baseline_lookback_days)
-    candidates = score_candidates(observations, sources, history, settings)
+    history = load_history(
+        archive_root,
+        target,
+        settings.baseline_lookback_days,
+        methodology_version=settings.methodology_version,
+    )
+    raw_candidates = score_candidates(observations, sources, history, settings)
+    candidates = select_daily_candidates(raw_candidates, len(history), settings)
+
+    # Recalculate margins after non-display neutrals have been removed.
+    for index, candidate in enumerate(candidates):
+        next_score = candidates[index + 1].score if index + 1 < len(candidates) else 0.0
+        candidate.score_margin_to_next = round(candidate.score - next_score, 3)
+
     gate = evaluate_quality(candidates, observations, sources, settings)
-    if 0 < max_sources < len(all_sources):
-        gate.passed = False
-        gate.reasons.append(
-            "This run used a limited live panel. Limited-panel runs are engineering "
-            "checks and can never create a publishable daily result."
+    if raw_candidates and not candidates:
+        message = (
+            "The detected clusters were near-neutral page infrastructure rather than a "
+            "qualified commercial color signal."
         )
+        if message not in gate.reasons:
+            gate.reasons.append(message)
+        gate.passed = False
+        gate.state = "blocked"
+
+    limited_panel = 0 < max_sources < len(all_sources)
+    if limited_panel:
+        gate.passed = False
+        gate.state = "blocked"
+        gate.reasons.append(
+            "This run used a limited panel. Limited-panel runs are engineering checks and "
+            "cannot create an official or calibration result."
+        )
+
+    state = publication_state(gate, len(history), settings)
+    result_confidence = confidence_label(candidates[0] if candidates else None, state)
     winner = candidates[0] if candidates else None
-    status = "ready" if gate.passed and winner else "blocked"
-    name = name_candidate(winner, target) if status == "ready" and winner else None
-    runner_up_names = (
-        [name_candidate(candidate, target) for candidate in candidates[1:4]]
-        if status == "ready"
+    runners = (
+        select_distinct_runners(winner, candidates[1:], settings)
+        if winner is not None and state != "blocked"
         else []
     )
+    _label_candidates([candidate for candidate in [winner, *runners] if candidate], target)
+
+    winner_name: str | None = None
+    runner_names: list[str] = []
+    if winner:
+        _, _, winner_name = candidate_labels(winner, target)
+        winner.confidence = confidence_label(winner, state)
+    for runner in runners:
+        _, _, display = candidate_labels(runner, target)
+        runner.confidence = "Calibration" if state == "review_only" else "Moderate"
+        runner_names.append(display)
+
     recurrence = (
         calculate_recurrence(
             archive_root=archive_root,
             target_date=target,
             winner=winner,
-            panel_size=len(sources),
+            panel_size=len(all_sources),
             captured_sources=len(observations),
             distance_threshold=settings.recurrence_distance,
         )
-        if status == "ready" and winner
+        if state == "ready" and winner
         else None
     )
+
     source_failures = [
         {
             "source_id": record.source_id,
             "source_name": record.source_name,
-            "error": record.error or "Capture did not produce usable evidence",
+            "error": record.error or "Capture did not produce eligible creative evidence",
         }
         for record in captures
         if not record.success
@@ -172,23 +206,47 @@ def run_daily(
         generated_at=iso_now(settings.timezone),
         project=settings.project_name,
         methodology_version=settings.methodology_version,
-        panel_size=len(sources),
+        panel_size=len(all_sources),
         captured_sources=len(observations),
         captured_sectors=len({item.sector for item in observations}),
         baseline_days=len(history),
-        status=status,
+        status=state,
+        confidence_label=result_confidence,
         quality_gate=gate,
         winner=winner,
-        winner_name=name,
-        runners_up=candidates[1:4],
+        winner_name=winner_name,
+        runners_up=runners,
         source_failures=source_failures,
         disclaimer=DISCLAIMER,
-        runner_up_names=runner_up_names,
+        runner_up_names=runner_names,
         recurrence=recurrence,
+        registry_version=registry_version,
+        calibration_day=(
+            min(len(history) + 1, settings.calibration_days)
+            if state == "review_only"
+            else 0
+        ),
     )
 
-    day_dir = write_analysis_archive(archive_root, result, observations, captures)
+    validate_result_integrity(result, sources, settings)
+    day_dir = write_analysis_archive(
+        archive_root,
+        result,
+        observations,
+        captures,
+        sources=sources,
+        project_root=config_dir.parent,
+    )
+    validate_result_integrity(result, sources, settings)
+
     assets = render_daily(result, day_dir)
+    review_dir = work_root / "review" / target.isoformat()
+    if review_dir.exists():
+        shutil.rmtree(review_dir)
+    review_dir.mkdir(parents=True, exist_ok=True)
+    if winner:
+        render_evidence_contact_sheet(result, review_dir / "evidence-contact-sheet.png")
+
     write_publish_package(day_dir, result, assets)
     write_manifest(day_dir)
     build_site(archive_root, site_root, all_sources)

@@ -1,89 +1,47 @@
-# Social Publishing Design
+# Social Publishing Design — Version 1.3
 
-## Default state
+## Current state
 
-Social publishing is disabled until account credentials are added.
+Social publishing must remain disabled during V1.3 calibration. The first seven accepted full-panel runs are internal evidence checks, not content for Instagram or Bluesky.
 
-The data product, daily images, caption, GitHub pull request, and public archive all operate without social credentials.
+## Approval model after calibration
 
-## Approval model
+1. A full-panel run produces a `ready` review package.
+2. A human inspects the evidence contact sheet, coverage, swatches, company metadata, and runner-ups.
+3. Merging the daily pull request places the approved result on `main`.
+4. A manual publisher may then use the approved package.
+5. Scheduled publishing may be considered only after a stable manual period.
 
-1. Nightly capture opens a pull request.
-2. The pull request contains the complete daily publishing package.
-3. Merging the pull request places the result on `main`.
-4. The public archive deploys.
-5. A manual or scheduled publisher can then use the public image URL.
+An unmerged, blocked, or review-only result is not publishable.
 
-An unmerged result cannot be selected by the publisher.
+## Credentials
 
-## Instagram
+Sensitive credentials belong in GitHub Actions **Secrets**, never in workflow files, commits, issues, pull requests, or repository Variables.
 
-The publisher expects:
+Instagram publishing expects:
 
 ```text
-PUBLIC_BASE_URL
-META_GRAPH_VERSION
 INSTAGRAM_USER_ID
 INSTAGRAM_ACCESS_TOKEN
 ```
 
-The feed image must be publicly reachable because Meta’s publishing flow retrieves it by URL.
-
-Story publishing is optional and disabled by default. It is attempted only with the explicit `--include-stories` flag or repository variable.
-
-Use a professional Instagram account and Meta’s currently supported official content-publishing authorization flow. Permission names, account linkage requirements, token lifetimes, and supported media behavior can change. Do not rely on an old third-party tutorial.
-
-## Bluesky
-
-The publisher expects:
+Bluesky publishing expects:
 
 ```text
 BLUESKY_HANDLE
 BLUESKY_APP_PASSWORD
 ```
 
-Use an app password rather than the primary account password.
+Non-sensitive settings such as `PUBLIC_BASE_URL`, `META_GRAPH_VERSION`, and `AUTO_PUBLISH` may use repository Variables.
 
 ## Duplicate prevention
 
-Before automatic publishing, the workflow pushes:
-
-```text
-publish-lock-PLATFORM-YYYY-MM-DD
-```
-
-If that lock exists without a completion tag, automation stops. It does not assume the prior API call failed.
-
-After confirmed success it adds:
-
-```text
-published-PLATFORM-YYYY-MM-DD
-```
-
-and writes `published.json`.
-
-A force retry is intentionally difficult. Check the actual social account before clearing or bypassing a lock.
+The publisher creates a durable reservation tag before calling a social API. If a lock exists without a completion tag, automation stops rather than blindly retrying. A human must inspect the social account before forcing a retry.
 
 ## Recommended rollout
 
-Days 1–7:
-
-- review pull requests;
-- post manually through the workflow;
-- keep Stories manual or disabled;
-- verify token behavior;
-- inspect source failure patterns.
-
-Days 8–30:
-
-- consider scheduled feed publishing;
-- continue manual merge approval;
-- keep a human eye on every result;
-- activate Story automation only after separate testing.
-
-After Day 30:
-
-- evaluate the baseline;
-- publish a monthly color strip;
-- audit whether any sector or brand is systematically overrepresented;
-- decide whether the panel should remain fixed for the rest of the year.
+- Calibration: no social posting.
+- First 7–14 public days: manual posting only.
+- After a stable manual period: test one manual workflow publish.
+- Later: consider scheduled feed publishing while keeping daily merge approval human-controlled.
+- Stories should remain manual until separately tested.

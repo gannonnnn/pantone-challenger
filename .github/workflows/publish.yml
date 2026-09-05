@@ -1,8 +1,6 @@
 name: Publish approved social package
 
 on:
-  schedule:
-    - cron: "15 15 * * *"
   workflow_dispatch:
     inputs:
       date:
@@ -35,7 +33,6 @@ permissions:
 
 jobs:
   publish:
-    if: github.event_name == 'workflow_dispatch' || vars.AUTO_PUBLISH == 'true'
     runs-on: ubuntu-latest
     env:
       REQUESTED_DATE: ${{ github.event.inputs.date || 'latest' }}

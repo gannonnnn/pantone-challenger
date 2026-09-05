@@ -24,10 +24,12 @@ header{display:flex;justify-content:space-between;align-items:baseline;border-bo
 .stat{border-top:1px solid currentColor;padding-top:14px}.stat strong{font-size:2rem;display:block}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
 .tile{aspect-ratio:1;border-radius:18px;padding:18px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between}
-.logo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:16px}
-.logo-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:155px;display:flex;flex-direction:column;justify-content:space-between}
-.logo-card img{display:block;width:100%;height:76px;object-fit:contain;margin-bottom:12px}
-.logo-card small{color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.evidence-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
+.evidence-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:190px;display:flex;flex-direction:column;gap:12px}
+.evidence-top{display:flex;gap:14px;align-items:center}.evidence-swatch{width:74px;height:74px;border-radius:16px;border:2px solid var(--line);flex:none}
+.evidence-copy{display:flex;flex-direction:column;gap:5px}.evidence-copy small{color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.evidence-card img{display:block;max-width:110px;max-height:34px;object-fit:contain;object-position:left center}
+.evidence-meta{font-size:.88rem;color:var(--muted);line-height:1.45}
 .runner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .runner{border-radius:20px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
 .runner-color{min-height:180px;padding:20px;display:flex;justify-content:space-between;align-items:flex-end}
@@ -56,7 +58,11 @@ def _load_results(archive_root: Path) -> list[dict[str, Any]]:
             item = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             continue
-        if item.get("status") == "ready" and item.get("winner"):
+        if (
+            item.get("status") == "ready"
+            and item.get("winner")
+            and str(item.get("methodology_version", "")).startswith("1.3.")
+        ):
             results.append(item)
     return results
 
@@ -79,7 +85,7 @@ def _page(title: str, body: str, home_href: str = "./") -> str:
 <header><a class="brand" href="{home_href}">PANTONE CHALLENGER</a><span class="sub">THE COMMERCIAL COLOR INDEX</span></header>
 {body}
 <footer><p>Pantone Challenger is an independent computational art project. It is not affiliated with, sponsored by, or endorsed by Pantone LLC. No Pantone color codes or Pantone-branded swatches are used.</p>
-<p>Company marks identify monitored official marketing pages and do not imply endorsement. The index describes a declared panel—not the entire internet. Methodology, coverage, and source failures are published with each result.</p></footer>
+<p>Company names identify monitored official marketing pages and do not imply endorsement. A manually approved mark may be used only for attribution; it is never treated as color evidence. The index describes a declared panel—not the entire internet.</p></footer>
 </body></html>"""
 
 
@@ -128,15 +134,15 @@ def _archive_tile(result: dict[str, Any]) -> str:
     )
 
 
-def _logo_cards(result: dict[str, Any]) -> str:
+def _evidence_cards(result: dict[str, Any]) -> str:
     winner = result["winner"]
     logos = result.get("source_logos") or {}
-    sectors = winner.get("source_sectors") or []
     cards: list[str] = []
-    for index, (source_id, name) in enumerate(
-        zip(winner.get("source_ids", []), winner.get("source_names", []))
-    ):
-        sector = sectors[index] if index < len(sectors) else "commercial source"
+    for evidence in winner.get("evidence", [])[:12]:
+        source_id = str(evidence.get("source_id", ""))
+        name = str(evidence.get("source_name", source_id))
+        sector = str(evidence.get("sector", "commercial source"))
+        local_hex = str(evidence.get("local_hex", winner.get("hex", "#777777")))
         logo = logos.get(source_id)
         image = (
             f'<img src="../../assets/{result["date"]}/{html.escape(logo)}" '
@@ -145,8 +151,18 @@ def _logo_cards(result: dict[str, Any]) -> str:
             else ""
         )
         cards.append(
-            f'<article class="logo-card">{image}<strong>{html.escape(name)}</strong>'
-            f'<small>{html.escape(sector.replace("_", " "))}</small></article>'
+            '<article class="evidence-card">'
+            '<div class="evidence-top">'
+            f'<span class="evidence-swatch" style="background:{html.escape(local_hex)}"></span>'
+            '<div class="evidence-copy">'
+            f'<strong>{html.escape(name)}</strong>'
+            f'<small>{html.escape(sector.replace("_", " "))}</small>'
+            f'{image}'
+            '</div></div>'
+            f'<div class="evidence-meta"><code>{html.escape(local_hex)}</code> measured in '
+            f'sampled creative · distance {float(evidence.get("distance_to_candidate", 0.0)):.3f} · '
+            f'local share {float(evidence.get("local_share", 0.0)):.1%}</div>'
+            '</article>'
         )
     return "".join(cards)
 
@@ -188,8 +204,8 @@ def _build_detail(result: dict[str, Any]) -> str:
 <div class="stat"><strong>{winner['score']:.1f}</strong>Challenger Score</div>
 </div></section>
 <section><h2>Year-to-date counter</h2><p class="note">This is day <strong>{recurrence['winning_days']}</strong> in {recurrence['year']} with <strong>{html.escape(recurrence['family_name'])}</strong> as the top color family in the monitored commercial panel. Across matching days, {recurrence['unique_company_count']} unique companies in the {recurrence['panel_company_count']}-company panel contributed across {recurrence['sector_count']} sectors.</p></section>
-<section><h2>Why it surfaced</h2><p class="note">These official company pages independently contributed to the winning color cluster. Company marks are used only to identify the monitored source.</p>
-<div class="logo-grid">{_logo_cards(result)}</div></section>
+<section><h2>Why it surfaced</h2><p class="note">Each card shows the local color measured inside that company’s sampled marketing creative. A company mark may identify the source, but the mark itself is never treated as color evidence.</p>
+<div class="evidence-grid">{_evidence_cards(result)}</div></section>
 <section><h2>Runners-up</h2><div class="runner-grid">{_runner_cards(result)}</div></section>
 <section><h2>Run coverage</h2><p class="note">The panel monitored {summary['company_pages_monitored']} company pages. {summary['company_pages_analyzed']} were successfully captured and analyzed; {summary['company_pages_unavailable']} were blocked, failed, or unusable. The winner was supported by {summary['brands_supporting_winner']} brands across {summary['sectors_supporting_winner']} sectors.</p></section>
 <section><h2>Evidence files</h2><p><a href="../../assets/{result['date']}/result.json">Result JSON</a> ·
@@ -295,7 +311,7 @@ def build_site(archive_root: Path, site_root: Path, sources: list[Source]) -> No
 {_year_links(year_summaries)}
 <section><h2>The declared panel</h2><p class="note">Every enabled source is an official commercial or brand-owned page. Each brand receives one normalized vote per day regardless of how many visual elements appear on its page.</p>
 <table><thead><tr><th>Source</th><th>Sector</th><th>Page</th></tr></thead><tbody>{source_rows}</tbody></table></section>
-<section><h2>How it works</h2><p class="note">Each day the project browser-renders a balanced panel of marketing pages, extracts perceptually prominent colors, clusters similar shades in OKLab, suppresses colors that are ordinary for a particular brand, and rewards independent cross-sector spread. A separate perceptual match tracks how often the same color family wins during the year. A quality gate blocks weak days. The algorithmic winner cannot be swapped out because it is unattractive.</p></section>
+<section><h2>How it works</h2><p class="note">The project browser-renders a balanced panel of official marketing pages, finds eligible marketing-creative regions, and extracts local colors from those regions. Every supporting company must retain a traceable local swatch. Company votes are normalized, persistent house colors are reduced, and independent cross-sector spread is rewarded. Weak days are blocked, and the first accepted runs remain internal calibration.</p></section>
 </main>"""
     (site_root / "index.html").write_text(
         _page("Pantone Challenger — The Commercial Color Index", body),

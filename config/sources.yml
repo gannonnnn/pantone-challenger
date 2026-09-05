@@ -1,387 +1,1156 @@
-panel_version: 1.0
-description: A balanced panel of official US-facing commercial marketing pages.
+panel_version: '1.3'
+description: A balanced panel of official US-facing commercial marketing pages with authoritative sector
+  metadata.
 sources:
-  - id: "apple"
-    name: "Apple"
-    sector: "technology"
-    url: "https://www.apple.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "microsoft"
-    name: "Microsoft"
-    sector: "technology"
-    url: "https://www.microsoft.com/en-us/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "adobe"
-    name: "Adobe"
-    sector: "technology"
-    url: "https://www.adobe.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "samsung"
-    name: "Samsung"
-    sector: "technology"
-    url: "https://www.samsung.com/us/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "target"
-    name: "Target"
-    sector: "retail"
-    url: "https://www.target.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "walmart"
-    name: "Walmart"
-    sector: "retail"
-    url: "https://www.walmart.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "etsy"
-    name: "Etsy"
-    sector: "retail"
-    url: "https://www.etsy.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "best-buy"
-    name: "Best Buy"
-    sector: "retail"
-    url: "https://www.bestbuy.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "starbucks"
-    name: "Starbucks"
-    sector: "food_beverage"
-    url: "https://www.starbucks.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "coca-cola"
-    name: "Coca-Cola"
-    sector: "food_beverage"
-    url: "https://www.coca-cola.com/us/en"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "mcdonalds"
-    name: "McDonald's"
-    sector: "food_beverage"
-    url: "https://www.mcdonalds.com/us/en-us.html"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "chipotle"
-    name: "Chipotle"
-    sector: "food_beverage"
-    url: "https://www.chipotle.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "netflix"
-    name: "Netflix"
-    sector: "entertainment"
-    url: "https://www.netflix.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "disney-plus"
-    name: "Disney+"
-    sector: "entertainment"
-    url: "https://www.disneyplus.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "spotify"
-    name: "Spotify"
-    sector: "entertainment"
-    url: "https://www.spotify.com/us/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "max"
-    name: "Max"
-    sector: "entertainment"
-    url: "https://www.max.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "sephora"
-    name: "Sephora"
-    sector: "beauty"
-    url: "https://www.sephora.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "glossier"
-    name: "Glossier"
-    sector: "beauty"
-    url: "https://www.glossier.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "fenty-beauty"
-    name: "Fenty Beauty"
-    sector: "beauty"
-    url: "https://fentybeauty.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "ulta"
-    name: "Ulta Beauty"
-    sector: "beauty"
-    url: "https://www.ulta.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "airbnb"
-    name: "Airbnb"
-    sector: "travel"
-    url: "https://www.airbnb.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "marriott"
-    name: "Marriott"
-    sector: "travel"
-    url: "https://www.marriott.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "delta"
-    name: "Delta Air Lines"
-    sector: "travel"
-    url: "https://www.delta.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "visit-california"
-    name: "Visit California"
-    sector: "travel"
-    url: "https://www.visitcalifornia.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "capital-one"
-    name: "Capital One"
-    sector: "finance"
-    url: "https://www.capitalone.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "chase"
-    name: "Chase"
-    sector: "finance"
-    url: "https://www.chase.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "american-express"
-    name: "American Express"
-    sector: "finance"
-    url: "https://www.americanexpress.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "cash-app"
-    name: "Cash App"
-    sector: "finance"
-    url: "https://cash.app/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "tesla"
-    name: "Tesla"
-    sector: "automotive"
-    url: "https://www.tesla.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "ford"
-    name: "Ford"
-    sector: "automotive"
-    url: "https://www.ford.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "toyota"
-    name: "Toyota"
-    sector: "automotive"
-    url: "https://www.toyota.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "rivian"
-    name: "Rivian"
-    sector: "automotive"
-    url: "https://rivian.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "nike"
-    name: "Nike"
-    sector: "sports"
-    url: "https://www.nike.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "adidas"
-    name: "Adidas"
-    sector: "sports"
-    url: "https://www.adidas.com/us/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "nba"
-    name: "NBA"
-    sector: "sports"
-    url: "https://www.nba.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "peloton"
-    name: "Peloton"
-    sector: "sports"
-    url: "https://www.onepeloton.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "ikea"
-    name: "IKEA"
-    sector: "home"
-    url: "https://www.ikea.com/us/en/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "west-elm"
-    name: "West Elm"
-    sector: "home"
-    url: "https://www.westelm.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "crate-and-barrel"
-    name: "Crate & Barrel"
-    sector: "home"
-    url: "https://www.crateandbarrel.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "sherwin-williams"
-    name: "Sherwin-Williams"
-    sector: "home"
-    url: "https://www.sherwin-williams.com/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "zara"
-    name: "Zara"
-    sector: "fashion"
-    url: "https://www.zara.com/us/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "hm"
-    name: "H&M"
-    sector: "fashion"
-    url: "https://www2.hm.com/en_us/index.html"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "gucci"
-    name: "Gucci"
-    sector: "fashion"
-    url: "https://www.gucci.com/us/en/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "uniqlo"
-    name: "UNIQLO"
-    sector: "fashion"
-    url: "https://www.uniqlo.com/us/en/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "playstation"
-    name: "PlayStation"
-    sector: "gaming"
-    url: "https://www.playstation.com/en-us/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "xbox"
-    name: "Xbox"
-    sector: "gaming"
-    url: "https://www.xbox.com/en-US/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "nintendo"
-    name: "Nintendo"
-    sector: "gaming"
-    url: "https://www.nintendo.com/us/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
-  - id: "epic-games"
-    name: "Epic Games Store"
-    sector: "gaming"
-    url: "https://store.epicgames.com/en-US/"
-    enabled: true
-    weight: 1.0
-    region: "US"
-    frames: 2
+- id: apple
+  name: Apple
+  sector: technology
+  url: https://www.apple.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: microsoft
+  name: Microsoft
+  sector: technology
+  url: https://www.microsoft.com/en-us/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: adobe
+  name: Adobe
+  sector: technology
+  url: https://www.adobe.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: samsung
+  name: Samsung
+  sector: technology
+  url: https://www.samsung.com/us/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: target
+  name: Target
+  sector: retail
+  url: https://www.target.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: walmart
+  name: Walmart
+  sector: retail
+  url: https://www.walmart.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: etsy
+  name: Etsy
+  sector: retail
+  url: https://www.etsy.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: best-buy
+  name: Best Buy
+  sector: retail
+  url: https://www.bestbuy.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: starbucks
+  name: Starbucks
+  sector: food_beverage
+  url: https://www.starbucks.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: coca-cola
+  name: Coca-Cola
+  sector: food_beverage
+  url: https://www.coca-cola.com/us/en
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: mcdonalds
+  name: McDonald's
+  sector: food_beverage
+  url: https://www.mcdonalds.com/us/en-us.html
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: chipotle
+  name: Chipotle
+  sector: food_beverage
+  url: https://www.chipotle.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: netflix
+  name: Netflix
+  sector: entertainment
+  url: https://www.netflix.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: disney-plus
+  name: Disney+
+  sector: entertainment
+  url: https://www.disneyplus.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: spotify
+  name: Spotify
+  sector: entertainment
+  url: https://www.spotify.com/us/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: max
+  name: Max
+  sector: entertainment
+  url: https://www.max.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: sephora
+  name: Sephora
+  sector: beauty
+  url: https://www.sephora.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: glossier
+  name: Glossier
+  sector: beauty
+  url: https://www.glossier.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: fenty-beauty
+  name: Fenty Beauty
+  sector: beauty
+  url: https://fentybeauty.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: ulta
+  name: Ulta Beauty
+  sector: beauty
+  url: https://www.ulta.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: airbnb
+  name: Airbnb
+  sector: travel
+  url: https://www.airbnb.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: marriott
+  name: Marriott
+  sector: travel
+  url: https://www.marriott.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: delta
+  name: Delta Air Lines
+  sector: travel
+  url: https://www.delta.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: visit-california
+  name: Visit California
+  sector: travel
+  url: https://www.visitcalifornia.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: capital-one
+  name: Capital One
+  sector: finance
+  url: https://www.capitalone.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: chase
+  name: Chase
+  sector: finance
+  url: https://www.chase.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: american-express
+  name: American Express
+  sector: finance
+  url: https://www.americanexpress.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: cash-app
+  name: Cash App
+  sector: finance
+  url: https://cash.app/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: tesla
+  name: Tesla
+  sector: automotive
+  url: https://www.tesla.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: ford
+  name: Ford
+  sector: automotive
+  url: https://www.ford.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: toyota
+  name: Toyota
+  sector: automotive
+  url: https://www.toyota.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: rivian
+  name: Rivian
+  sector: automotive
+  url: https://rivian.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: nike
+  name: Nike
+  sector: sports
+  url: https://www.nike.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: adidas
+  name: Adidas
+  sector: sports
+  url: https://www.adidas.com/us/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: nba
+  name: NBA
+  sector: sports
+  url: https://www.nba.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: peloton
+  name: Peloton
+  sector: sports
+  url: https://www.onepeloton.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: ikea
+  name: IKEA
+  sector: home
+  url: https://www.ikea.com/us/en/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: west-elm
+  name: West Elm
+  sector: home
+  url: https://www.westelm.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: crate-and-barrel
+  name: Crate & Barrel
+  sector: home
+  url: https://www.crateandbarrel.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: sherwin-williams
+  name: Sherwin-Williams
+  sector: home
+  url: https://www.sherwin-williams.com/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: zara
+  name: Zara
+  sector: fashion
+  url: https://www.zara.com/us/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: hm
+  name: H&M
+  sector: fashion
+  url: https://www2.hm.com/en_us/index.html
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: gucci
+  name: Gucci
+  sector: fashion
+  url: https://www.gucci.com/us/en/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: uniqlo
+  name: UNIQLO
+  sector: fashion
+  url: https://www.uniqlo.com/us/en/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: playstation
+  name: PlayStation
+  sector: gaming
+  url: https://www.playstation.com/en-us/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: xbox
+  name: Xbox
+  sector: gaming
+  url: https://www.xbox.com/en-US/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: nintendo
+  name: Nintendo
+  sector: gaming
+  url: https://www.nintendo.com/us/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []
+- id: epic-games-store
+  name: Epic Games Store
+  sector: gaming
+  url: https://store.epicgames.com/en-US/
+  enabled: true
+  weight: 1.0
+  region: US
+  frames: 2
+  brand_mark_path: ''
+  brand_mark_status: text_only
+  brand_mark_fit: contain
+  include_selectors: []
+  exclude_selectors:
+  - header
+  - nav
+  - footer
+  - '[role="banner"]'
+  - '[role="navigation"]'
+  - '[role="contentinfo"]'
+  - '[aria-modal="true"]'
+  - '[class*="cookie" i]'
+  - '[id*="cookie" i]'
+  - '[class*="chat" i]'
+  known_house_colors: []

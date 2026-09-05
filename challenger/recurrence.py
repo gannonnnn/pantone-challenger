@@ -46,34 +46,39 @@ def human_sector_list(values: Iterable[str], *, limit: int = 4) -> str:
 
 
 def _base_hue_family(hue: float) -> str:
-    if hue < 15 or hue >= 345:
-        return "Rose"
-    if hue < 45:
+    hue = hue % 360
+    if hue < 12 or hue >= 348:
         return "Red"
-    if hue < 70:
+    if hue < 32:
+        return "Red-Orange"
+    if hue < 58:
         return "Orange"
-    if hue < 95:
-        return "Gold"
-    if hue < 118:
+    if hue < 78:
+        return "Amber"
+    if hue < 102:
         return "Yellow"
-    if hue < 138:
+    if hue < 128:
+        return "Yellow-Green"
+    if hue < 152:
         return "Chartreuse"
-    if hue < 175:
+    if hue < 185:
         return "Green"
-    if hue < 210:
+    if hue < 215:
         return "Teal"
-    if hue < 240:
+    if hue < 245:
         return "Cyan Blue"
-    if hue < 280:
+    if hue < 282:
         return "Blue"
     if hue < 315:
+        return "Indigo"
+    if hue < 342:
         return "Violet"
     return "Magenta"
 
 
 def color_family_name(lab: Iterable[float]) -> str:
     lightness, chroma, hue = oklab_to_oklch(lab)
-    if chroma < 0.028:
+    if chroma < 0.035:
         if lightness >= 0.93:
             return "White"
         if lightness >= 0.76:
@@ -85,19 +90,19 @@ def color_family_name(lab: Iterable[float]) -> str:
         return "Black"
 
     if chroma < 0.095:
-        if 12 <= hue < 48:
+        if 8 <= hue < 42:
             return "Clay Red"
-        if 48 <= hue < 78:
+        if 42 <= hue < 74:
             return "Burnt Orange"
-        if 78 <= hue < 108:
+        if 74 <= hue < 108:
             return "Ochre"
-        if 108 <= hue < 145:
+        if 108 <= hue < 143:
             return "Olive Green"
-        if 145 <= hue < 185:
+        if 143 <= hue < 183:
             return "Sage Green"
-        if 185 <= hue < 235:
+        if 183 <= hue < 232:
             return "Slate Teal"
-        if 235 <= hue < 305:
+        if 232 <= hue < 305:
             return "Slate Blue"
         if 305 <= hue < 345:
             return "Dusty Magenta"
@@ -128,6 +133,7 @@ def load_ready_results(
     *,
     year: int | None = None,
     before: date | None = None,
+    methodology_series: str = "1.3.",
 ) -> list[dict[str, Any]]:
     results: list[dict[str, Any]] = []
     if not archive_root.exists():
@@ -139,6 +145,10 @@ def load_ready_results(
         except (OSError, ValueError, TypeError):
             continue
         if payload.get("status") != "ready" or not payload.get("winner"):
+            continue
+        if not str(payload.get("methodology_version", "")).startswith(
+            methodology_series
+        ):
             continue
         if year is not None and result_date.year != year:
             continue

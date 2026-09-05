@@ -1,302 +1,137 @@
-# Challenger Color Index Methodology — Version 1.2
+# Challenger Color Index Methodology — Version 1.3
 
 ## Research question
 
 Pantone Challenger asks:
 
-> Which color was most unusually prominent across the usable official marketing pages in the declared panel for a given commercial day?
+> Which color was most unusually prominent across the usable marketing creative in the declared commercial panel for a given day?
 
-It does not claim to identify the most common color across all advertising, all social media, or the entire internet.
+It does not claim to measure every advertisement, social post, campaign, or website on the internet.
 
-## Sampling unit
+## Panel and voting unit
 
-The voting unit is an **independent source**, not a pixel and not an image.
+The declared panel contains 48 official US-facing marketing pages across 12 sectors, four companies per sector. The source registry is versioned in `config/sources.yml`.
 
-Each configured brand or commercial organization receives one normalized daily contribution regardless of:
-
-- how many images are present;
-- how many repeated tiles appear;
-- how long the page is;
-- how many products it lists.
-
-This prevents a visually dense retailer from outweighing a simpler campaign page merely because it renders more pixels.
-
-## Panel
-
-Version 1.2 uses 48 official marketing pages across 12 sectors, with four sources in each sector. The panel is declared in `config/sources.yml`.
-
-The panel is intentionally broad but not globally representative. It is currently US-facing and English-language. Future geographic panels should be published as separate indices rather than silently mixed into the baseline.
+The voting unit is an **independent company**, not a pixel, image, tile, or webpage length. Each company’s daily contribution is normalized to one total vote before cross-company scoring.
 
 ## Capture
 
-Each source is rendered in Chromium with:
+Each page is rendered in Chromium at a fixed viewport and two configured scroll positions. The system does not log in, bypass access controls, solve CAPTCHAs, or evade blocking.
 
-- a fixed 1440 × 1200 CSS-pixel viewport;
-- US English locale;
-- America/New_York timezone;
-- light color scheme;
-- reduced motion;
-- two fixed scroll positions;
-- a limited request rate.
+Full-page frames are retained as private diagnostics. They are not themselves color evidence.
 
-Video and websocket resources are blocked to improve reproducibility. Images, CSS, and fonts remain available.
+## Eligible marketing-creative regions
 
-The system attempts to dismiss a small list of ordinary consent buttons. It does not bypass CAPTCHAs, authentication, paywalls, or access controls.
+V1.3 searches visible page content for likely creative regions such as large `main`, `section`, `article`, `picture`, image, poster, and background-image areas.
 
-Pages displaying likely block or challenge signatures are marked unusable.
+The system excludes or rejects regions associated with:
 
-### Source identity marks
+- headers and navigation;
+- footers and legal interfaces;
+- cookie banners and modal overlays;
+- chat widgets and account controls;
+- logos, favicons, and small icons;
+- regions below the minimum size or confidence thresholds;
+- exact duplicate regions.
 
-After a page is accepted, the capture process attempts to save a small first-party brand mark from the visible page header. If no suitable visible mark is available, it tries the official page icon or favicon. If neither succeeds, public graphics use a text-initials fallback.
+A company can support a public candidate only when at least one eligible region exists.
 
-Brand marks are presentation metadata only. They do not affect palette extraction, clustering, score, source weighting, or quality-gate decisions. Raw brand photography remains private and is not republished in the public social package.
+## Region-level color extraction
 
-## Commercial date
+Each eligible region is converted from sRGB into OKLab/OKLCH and reduced to perceptually prominent swatches. Visually similar swatches are merged within the company. Near-black, white, and gray remain measurable but are subject to strict display eligibility and neutral-trend gates.
 
-GitHub cron schedules use UTC. The index resolves each run into `America/New_York` and applies a 4 a.m. local rollover. This prevents a near-midnight scheduled run from being archived under the wrong Eastern calendar date during daylight-saving transitions.
+For every company-to-candidate match, the system retains:
 
-The production capture is scheduled for 03:30 UTC, corresponding to late evening Eastern in both standard and daylight time.
+- region identifier and private screenshot path;
+- local HEX and OKLab value;
+- distance to the cross-company candidate;
+- local matched-color share;
+- region confidence;
+- company name, sector, URL, and page title.
 
-## Duplicate control
+This record is called `CandidateEvidence`.
 
-The system removes:
+## Cross-company clustering
 
-1. exact screenshot duplicates using SHA-256;
-2. only highly conservative near duplicates requiring:
-   - near-identical difference hashes;
-   - nearly identical mean RGB;
-   - similar file sizes.
+Company-normalized swatches are clustered by perceptual distance in OKLab. A company may count at most once for a candidate. Runner-ups must be perceptually distinct from the winner and from one another.
 
-Near-duplicate thresholds intentionally favor false negatives over suppressing independent pages.
+## Persistent house colors
 
-## Color extraction
+The system reduces colors that are ordinary for a particular company using:
 
-Each captured frame is:
+1. optional declared house colors in the source registry; and
+2. a learned source-specific baseline from prior accepted V1.3 observations.
 
-1. converted to RGB;
-2. cropped slightly to reduce browser-edge and persistent navigation influence;
-3. resized for stable computation;
-4. converted from sRGB into OKLab;
-5. center-weighted;
-6. weighted partly by chroma;
-7. stripped only of nearly empty pure-white and pure-black extremes;
-8. clustered with deterministic weighted k-means;
-9. merged across frames by perceptual distance.
+Persistent colors are suppressed rather than deleted. They can still matter when their use materially exceeds the company’s own baseline.
 
-Ordinary whites, grays, blacks, and beiges remain eligible. They are not secretly removed; they face a published neutral penalty later.
+## Candidate score
 
-Each source’s retained swatches are normalized to sum to one.
+The Challenger Score combines:
 
-## Source-specific baseline suppression
+- independent company breadth;
+- cross-sector breadth;
+- source-normalized prevalence;
+- creative-region salience;
+- source-history momentum;
+- evidence-region confidence;
+- neutral penalties;
+- company and sector concentration penalties.
 
-A brand’s ordinary identity color is not automatically a cultural trend.
+The method is deterministic for the same inputs and configuration.
 
-For each source and current swatch, the system looks for perceptually similar swatches in that same source’s trailing history. Persistent colors are downweighted using:
+## Publication states
 
-```text
-rarity = current_share / (current_share + 2 × baseline_share)
+### Blocked
 
-rarity_factor =
-    (1 − suppression_strength)
-    + suppression_strength × rarity
-```
+The run fails the minimum evidence requirements. Diagnostics are retained, but the result must not be posted.
 
-The adjusted share is blended with the original share during a seven-day warmup. Full suppression begins only when enough source history exists.
+### Review only
 
-If a source's current screenshot hashes exactly match its most recent usable day,
-all of its color contributions receive an additional unchanged-page factor. Version
-1.0 uses `0.35`. A page that has not visibly changed can still provide context, but
-it cannot carry the same daily-trend weight as new creative.
+The run has enough evidence to inspect but is still calibrating, has insufficient public-ready coverage, or is a close call. Assets are labeled `INTERNAL CALIBRATION — NOT FOR POSTING`. Review-only days can warm source baselines after merge, but they do not enter recurrence or annual history.
 
-This means:
+### Ready
 
-- Spotify green does not win merely because Spotify remains green.
-- Target red does not win merely because Target remains red.
-- A red that suddenly spreads across unrelated brands and industries can still win.
+The run passes stronger coverage, breadth, region-confidence, distance, concentration, score-margin, and baseline requirements. A human may approve it by merging its review pull request.
 
-## Cross-source clustering
+## Default quality thresholds
 
-Current source swatches are merged into global color candidates using Euclidean distance in OKLab.
+The defaults in `config/settings.yml` include:
 
-A source can contribute only its strongest matching swatch to a given global candidate.
+- internal review: at least 20 evidence-bearing company pages, seven sectors, and 40% panel coverage;
+- public readiness: at least 30 evidence-bearing company pages, nine sectors, and 60% panel coverage;
+- winner: at least six companies, four sectors, four traceable regions, sufficient region confidence, and bounded perceptual distance;
+- concentration: no company or sector may dominate beyond the configured limits;
+- close call: a small score margin remains review-only;
+- calibration: seven accepted prior observations are required before a result may become ready.
 
-Candidates supported by fewer than two sources are discarded before ranking.
+The configuration file is the authoritative source for exact numeric thresholds.
 
-## Challenger Score
+## Evidence presentation
 
-The score begins with five positive components:
+A logo is attribution only and never color evidence. V1.3 ships with every source set to `text_only`. Public evidence cards show the local matched swatch, company name, authoritative sector, and local share. A brand mark may appear only after a human adds an approved asset and updates the registry.
 
-```text
-30 points — independent source breadth
-22 points — commercial sector breadth
-20 points — momentum versus trailing prevalence
-18 points — mean adjusted visual salience
-10 points — prevalence within the usable panel
-```
-
-The system then subtracts:
-
-```text
-up to 23 points — neutral/extreme-lightness penalty
-up to 12 points — single-sector concentration penalty
-```
-
-### Independent source breadth
-
-Full credit is reached at 12 independent sources.
-
-### Sector breadth
-
-Full credit is reached when the candidate appears across approximately 65% of the usable sectors.
-
-### Momentum
-
-During the first seven baseline days, momentum is held at a neutral value.
-
-After warmup:
-
-```text
-ratio = (current_prevalence + 0.02)
-        / (baseline_prevalence + 0.02)
-
-momentum = clamp(
-    0.40 + 0.30 × log2(ratio),
-    0,
-    1
-)
-```
-
-### Visual salience
-
-Adjusted per-source swatch share is normalized against a 30% reference level.
-
-### Neutral penalty
-
-Colors below approximately 0.065 OKLCH chroma receive a graduated penalty. Near-white or near-black low-chroma colors receive an additional penalty.
-
-Neutral colors can still win if their breadth, salience, and momentum are strong enough.
-
-### Concentration penalty
-
-If more than half of a candidate’s sources come from one sector, the score is reduced. This rewards genuinely cross-commercial spread.
-
-## Quality gate
-
-A result is blocked unless all of the following are true:
-
-- at least 20 sources are usable;
-- at least 8 sectors are usable;
-- at least 3 supported color candidates exist;
-- the leader appears in at least 5 independent sources;
-- the leader crosses at least 3 sectors.
-
-A blocked day remains available for technical diagnosis but produces no social package and no public result.
+Raw region screenshots and contact sheets remain private review artifacts.
 
 ## Naming
 
-The color name is deterministic, using:
+Each candidate has:
 
-- OKLCH hue family;
-- lightness;
-- chroma;
-- the date;
-- supporting sectors;
-- a fixed vocabulary of contemporary commercial objects and qualifiers.
+- a deterministic color-family label based on its measured OKLCH values; and
+- an optional playful creative nickname.
 
-The naming system does not choose the color. Editing a name for safety or clarity does not alter the result, but Version 1.0 does not include an automated override path.
+The nickname cannot determine the family. Near-neutral values receive neutral family labels rather than unstable hue names.
 
-## Year-to-date color-family recurrence
+## Recurrence and annual summary
 
-A daily generated name is intentionally creative and may vary even when two winning shades are visually similar. Recurrence is therefore **not** counted by name and does not require an exact HEX match.
+Only `ready` results merged into `main` contribute to recurrence and the January Year in Color report. Review-only, blocked, duplicate-date, and reverted results do not count.
 
-For each ready result, the system loads all earlier approved winners from the same calendar year and groups them in OKLab using a fixed complete-link distance threshold. Version 1.2 uses `0.055`.
+Similar colors can belong to the same annual family without requiring identical HEX values. The recurrence method uses conservative complete-link perceptual matching to prevent gradual hue drift.
 
-Complete-link means a shade may join a color family only when it is within the threshold of **every** existing member of that family. This prevents a chain such as green → yellow-green → yellow from gradually turning one family into a different color.
+## Limitations
 
-The current result stores:
-
-- a stable descriptive family label such as Chartreuse, Olive Green, Blue, or Clay Red;
-- representative family HEX and OKLab values;
-- winning days in the current calendar year;
-- every matching approved date;
-- current and longest calendar-day streaks;
-- unique supporting companies across matching days;
-- the declared company-panel denominator;
-- supporting-company-day count;
-- average analyzed company pages across matching days; and
-- sectors represented across matching days.
-
-The counter resets on January 1. A missing or rejected calendar day breaks a consecutive streak, but does not erase cumulative winning-day history. Only results merged into the approved archive are eligible as historical evidence.
-
-Recurrence does not affect which color wins today. It is a longitudinal description applied after the daily quality gate and score have selected the winner.
-
-## Year in Color summary
-
-The `challenger year-end --year YYYY` command groups that year's approved daily winners using the same complete-link threshold and creates:
-
-- a structured annual JSON summary;
-- a human-readable Markdown report;
-- a feed-ready “Year in Color” card; and
-- a chronological grid containing every approved daily winner.
-
-The annual package reports the most frequent daily winning family, longest streak, widest unique-company reach, widest sector reach, monthly leaders, average source coverage, and the full family ranking. The scheduled workflow runs on January 2 for the previous calendar year and opens a review pull request; it does not publish automatically.
-
-## Published result package
-
-Every ready result states four different counts so the claim remains auditable:
-
-- **monitored** — the complete configured panel used for the run;
-- **analyzed** — sources that produced usable captures and palettes;
-- **supported** — analyzed sources contributing to the winning color cluster;
-- **sectors** — commercial sectors represented in the winning cluster.
-
-The winner and three runners-up are published as explicit color swatches with HEX values. The evidence card shows the strongest supporting sources in contribution order and the full result JSON retains the complete source list.
-
-## Human review
-
-Humans may reject publication because:
-
-- the capture sample is misleading;
-- a block page survived detection;
-- rights metadata or attribution is wrong;
-- the output is broken;
-- the written claim exceeds the methodology;
-- a safety issue exists.
-
-Humans may not substitute another candidate because the winner is unattractive, unfashionable, boring, or inconvenient.
-
-## Versioning
-
-Any change to:
-
-- source panel composition;
-- sampling method;
-- color extraction;
-- baseline suppression;
-- scoring weights;
-- quality thresholds;
-- naming vocabulary;
-- recurrence threshold or family-label rules;
-- annual aggregation method;
-
-must be committed and documented. Material scoring changes increment the methodology version and apply prospectively.
-
-Historical results are never silently recomputed under a new methodology.
-
-## Known limitations
-
-Version 1.2:
-
-- measures brand-owned official pages rather than paid-ad impression volume;
-- is US-facing and English-language;
-- observes a late-evening snapshot, not every creative shown throughout the day;
-- can lose sources to bot protection or geographic variation;
-- may undercount video-first campaigns because video requests are blocked;
-- uses page prominence as a proxy, not audience exposure;
-- treats sectors as configured categories rather than learned cultural categories;
-- can group close shades differently when they sit near the published recurrence threshold;
-- uses broad human-readable family labels for communication, while the actual match remains numeric;
-- cannot infer why a color was chosen;
-- does not establish causation between simultaneous brand color choices.
-
-These limitations are part of the public interpretation, not hidden implementation details.
+- The panel is declared, finite, US-facing, and not globally representative.
+- Official webpages are only one part of commercial visual culture.
+- Websites change structure and may block automated browsers.
+- Region detection can still miss creative or admit ambiguous content.
+- Early source baselines are weak; this is why V1.3 begins with manual calibration.
+- A measured association does not imply that a company coordinated with any other company or endorsed the project.

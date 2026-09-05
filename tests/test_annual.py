@@ -39,6 +39,7 @@ def write_result(root: Path, day: str, item: Candidate) -> None:
             {
                 "date": day,
                 "status": "ready",
+                "methodology_version": "1.3.0",
                 "panel_size": 4,
                 "captured_sources": 4,
                 "winner": item.to_dict(),
