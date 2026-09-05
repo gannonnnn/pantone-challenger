@@ -2,17 +2,13 @@ from __future__ import annotations
 
 import asyncio
 import hashlib
-import io
 import json
 import time
 from pathlib import Path
-from urllib.parse import urljoin
-
-from PIL import Image
 
 from .config import Settings
 from .dates import iso_now
-from .models import CaptureFrame, CaptureRecord, Source
+from .models import CaptureFrame, CaptureRecord, EvidenceRegion, Source
 
 BLOCK_SIGNATURES = (
     "access denied",
@@ -36,15 +32,34 @@ COOKIE_BUTTON_LABELS = (
     "Continue",
 )
 
-LOGO_SELECTORS = (
-    'header img[alt*="logo" i]',
-    '[role="banner"] img[alt*="logo" i]',
-    'header a[href="/"] img',
-    '[role="banner"] a[href="/"] img',
-    'header img',
-    '[role="banner"] img',
-    'header svg',
-    '[role="banner"] svg',
+DEFAULT_REGION_SELECTORS = (
+    "main section",
+    "main article",
+    "[role='main'] section",
+    "[role='main'] article",
+    "main picture",
+    "main img",
+    "[role='main'] picture",
+    "[role='main'] img",
+    "section",
+    "article",
+    "picture",
+    "[style*='background-image']",
+)
+
+DEFAULT_EXCLUDE_SELECTORS = (
+    "header",
+    "nav",
+    "footer",
+    "aside",
+    "[role='banner']",
+    "[role='navigation']",
+    "[role='dialog']",
+    "[aria-modal='true']",
+    "[class*='cookie' i]",
+    "[id*='cookie' i]",
+    "[class*='chat' i]",
+    "[id*='chat' i]",
 )
 
 
@@ -54,77 +69,6 @@ def _sha256(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
-
-
-def _trim_near_white_background(image: Image.Image) -> Image.Image:
-    """Remove a plain near-white backdrop while preserving colored/black marks."""
-    rgba = image.convert("RGBA")
-    if rgba.width < 2 or rgba.height < 2:
-        return rgba
-    corners = [
-        rgba.getpixel((0, 0)),
-        rgba.getpixel((rgba.width - 1, 0)),
-        rgba.getpixel((0, rgba.height - 1)),
-        rgba.getpixel((rgba.width - 1, rgba.height - 1)),
-    ]
-    white_corners = sum(
-        1 for r, g, b, a in corners if a > 220 and min(r, g, b) >= 244
-    )
-    if white_corners < 3:
-        return rgba
-
-    pixels = []
-    flattened = (
-        rgba.get_flattened_data()
-        if hasattr(rgba, "get_flattened_data")
-        else rgba.getdata()
-    )
-    for r, g, b, a in flattened:
-        if a > 0 and min(r, g, b) >= 246 and max(r, g, b) - min(r, g, b) <= 5:
-            pixels.append((r, g, b, 0))
-        else:
-            pixels.append((r, g, b, a))
-    rgba.putdata(pixels)
-    return rgba
-
-
-def _normalise_logo_image(image: Image.Image, output: Path) -> bool:
-    """Create a consistent transparent brand-mark asset for social rendering."""
-    rgba = _trim_near_white_background(image)
-    alpha = rgba.getchannel("A")
-    bbox = alpha.getbbox()
-    if not bbox:
-        return False
-    rgba = rgba.crop(bbox)
-    if rgba.width < 12 or rgba.height < 8:
-        return False
-    if rgba.width > 1600 or rgba.height > 800:
-        return False
-
-    rgba.thumbnail((244, 112), Image.Resampling.LANCZOS)
-    canvas = Image.new("RGBA", (260, 128), (0, 0, 0, 0))
-    x = (canvas.width - rgba.width) // 2
-    y = (canvas.height - rgba.height) // 2
-    canvas.alpha_composite(rgba, (x, y))
-    output.parent.mkdir(parents=True, exist_ok=True)
-    canvas.save(output, format="PNG", optimize=True)
-    return True
-
-
-def _normalise_logo_file(source: Path, output: Path) -> bool:
-    try:
-        with Image.open(source) as image:
-            return _normalise_logo_image(image, output)
-    except (OSError, ValueError):
-        return False
-
-
-def _normalise_logo_bytes(payload: bytes, output: Path) -> bool:
-    try:
-        with Image.open(io.BytesIO(payload)) as image:
-            return _normalise_logo_image(image, output)
-    except (OSError, ValueError):
-        return False
 
 
 async def _dismiss_cookie_banner(page) -> None:
@@ -139,139 +83,213 @@ async def _dismiss_cookie_banner(page) -> None:
             continue
 
 
-async def _capture_visible_brand_mark(page, source: Source, source_dir: Path) -> str:
-    """Prefer the visible first-party header mark over a generic favicon."""
-    brand_tokens = {
-        token.lower().strip("+&.,'’")
-        for token in source.name.split()
-        if len(token.strip("+&.,'’")) >= 3
+def _intersection_over_union(
+    first: tuple[int, int, int, int],
+    second: tuple[int, int, int, int],
+) -> float:
+    ax, ay, aw, ah = first
+    bx, by, bw, bh = second
+    left = max(ax, bx)
+    top = max(ay, by)
+    right = min(ax + aw, bx + bw)
+    bottom = min(ay + ah, by + bh)
+    if right <= left or bottom <= top:
+        return 0.0
+    intersection = (right - left) * (bottom - top)
+    union = aw * ah + bw * bh - intersection
+    return intersection / max(union, 1)
+
+
+async def _discover_visible_regions(
+    page,
+    source: Source,
+    settings: Settings,
+    frame_id: str,
+) -> list[dict[str, object]]:
+    selectors = [*DEFAULT_REGION_SELECTORS, *source.include_selectors]
+    excludes = [*DEFAULT_EXCLUDE_SELECTORS, *source.exclude_selectors]
+    payload = {
+        "selectors": selectors,
+        "excludes": excludes,
+        "frameId": frame_id,
+        "minWidth": settings.min_region_width,
+        "minHeight": settings.min_region_height,
+        "minArea": settings.min_region_viewport_area,
+        "minConfidence": settings.min_region_confidence,
+        "limit": settings.max_region_candidates_per_frame,
     }
-    candidates: list[tuple[float, object]] = []
-    seen: set[str] = set()
+    return await page.evaluate(
+        """
+        args => {
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const viewportArea = Math.max(viewportWidth * viewportHeight, 1);
+          const excludeSelector = args.excludes.join(',');
+          const unique = new Set();
+          const elements = [];
+          for (const selector of args.selectors) {
+            let found = [];
+            try { found = document.querySelectorAll(selector); } catch (_) { continue; }
+            for (const element of found) {
+              if (!unique.has(element)) {
+                unique.add(element);
+                elements.push(element);
+              }
+            }
+          }
 
-    for selector in LOGO_SELECTORS:
-        try:
-            locator = page.locator(selector)
-            count = min(await locator.count(), 10)
-        except Exception:
-            continue
-        for index in range(count):
-            item = locator.nth(index)
-            try:
-                if not await item.is_visible(timeout=250):
-                    continue
-                box = await item.bounding_box()
-                if not box:
-                    continue
-                width, height = box["width"], box["height"]
-                if width < 24 or height < 10 or width > 700 or height > 340:
-                    continue
-                signature = f"{round(box['x'])}:{round(box['y'])}:{round(width)}:{round(height)}"
-                if signature in seen:
-                    continue
-                seen.add(signature)
-                metadata = " ".join(
-                    filter(
-                        None,
-                        [
-                            await item.get_attribute("alt"),
-                            await item.get_attribute("aria-label"),
-                            await item.get_attribute("title"),
-                            await item.get_attribute("src"),
-                            await item.get_attribute("class"),
-                        ],
-                    )
-                ).lower()
-                score = 0.0
-                if "logo" in metadata or "brand" in metadata:
-                    score += 70.0
-                if any(token in metadata for token in brand_tokens):
-                    score += 85.0
-                if box["y"] < 180:
-                    score += 25.0
-                ratio = width / max(height, 1)
-                if 1.1 <= ratio <= 8.0:
-                    score += 15.0
-                score += min(width, 250) / 25.0
-                candidates.append((score, item))
-            except Exception:
-                continue
+          const intersectionArea = rect => {
+            const left = Math.max(rect.left, 0);
+            const top = Math.max(rect.top, 0);
+            const right = Math.min(rect.right, viewportWidth);
+            const bottom = Math.min(rect.bottom, viewportHeight);
+            return Math.max(0, right - left) * Math.max(0, bottom - top);
+          };
 
-    for _, item in sorted(candidates, key=lambda value: value[0], reverse=True):
-        temporary = source_dir / "logo-visible-raw.png"
-        output = source_dir / "logo.png"
-        try:
-            await item.screenshot(path=str(temporary), type="png")
-            if _normalise_logo_file(temporary, output):
-                temporary.unlink(missing_ok=True)
-                return str(output)
-        except Exception:
-            pass
-        temporary.unlink(missing_ok=True)
-    return ""
+          const results = [];
+          let serial = 0;
+          for (const element of elements) {
+            if (!(element instanceof HTMLElement) && !(element instanceof SVGElement)) continue;
+            if (excludeSelector && element.closest(excludeSelector)) continue;
+            const style = getComputedStyle(element);
+            if (style.display === 'none' || style.visibility === 'hidden' || Number(style.opacity) < 0.05) continue;
+            const rect = element.getBoundingClientRect();
+            const visibleArea = intersectionArea(rect);
+            const visibleWidth = Math.min(rect.right, viewportWidth) - Math.max(rect.left, 0);
+            const visibleHeight = Math.min(rect.bottom, viewportHeight) - Math.max(rect.top, 0);
+            if (visibleWidth < args.minWidth || visibleHeight < args.minHeight) continue;
+            const areaRatio = visibleArea / viewportArea;
+            if (areaRatio < args.minArea) continue;
+
+            const tag = element.tagName.toLowerCase();
+            const textLength = ((element.innerText || element.getAttribute('alt') || '')).trim().length;
+            const textDensity = textLength / Math.max(visibleArea / 10000, 1);
+            let imageArea = 0;
+            const media = [];
+            if (['img', 'picture', 'video', 'canvas'].includes(tag)) media.push(element);
+            for (const child of element.querySelectorAll('img,picture,video,canvas')) media.push(child);
+            for (const child of media.slice(0, 30)) {
+              const childRect = child.getBoundingClientRect();
+              imageArea += intersectionArea(childRect);
+            }
+            const hasBackground = style.backgroundImage && style.backgroundImage !== 'none';
+            if (hasBackground) imageArea = Math.max(imageArea, visibleArea * 0.85);
+            if (['img', 'picture', 'video', 'canvas'].includes(tag)) imageArea = visibleArea;
+            const imageRatio = Math.min(imageArea / Math.max(visibleArea, 1), 1);
+
+            const areaScore = Math.min(areaRatio / 0.35, 1);
+            const imageScore = Math.min(imageRatio / 0.70, 1);
+            const topScore = 1 - Math.min(Math.max(rect.top, 0) / Math.max(viewportHeight, 1), 1);
+            const textScore = 1 - Math.min(textDensity / 16, 1);
+            let confidence = 0.35 * areaScore + 0.35 * imageScore + 0.20 * topScore + 0.10 * textScore;
+            if (tag === 'img' || tag === 'picture') confidence += 0.05;
+            confidence = Math.min(confidence, 1);
+            if (confidence < args.minConfidence) continue;
+
+            const regionId = `${args.frameId}-r${String(++serial).padStart(2, '0')}`;
+            element.setAttribute('data-pc-region-id', regionId);
+            const classes = typeof element.className === 'string'
+              ? element.className.split(/\\s+/).filter(Boolean).slice(0, 3).join('.')
+              : '';
+            const hint = `${tag}${element.id ? '#' + element.id : ''}${classes ? '.' + classes : ''}`.slice(0, 180);
+            const regionType = ['img', 'picture', 'video', 'canvas'].includes(tag)
+              ? 'media'
+              : hasBackground
+                ? 'background_media'
+                : (rect.top < viewportHeight * 0.65 && areaRatio > 0.18 ? 'hero' : 'section');
+            results.push({
+              region_id: regionId,
+              selector_hint: hint,
+              region_type: regionType,
+              page_x: Math.max(0, rect.left + window.scrollX),
+              page_y: Math.max(0, rect.top + window.scrollY),
+              width: Math.min(visibleWidth, viewportWidth),
+              height: Math.min(visibleHeight, viewportHeight),
+              viewport_area_ratio: areaRatio,
+              image_area_ratio: imageRatio,
+              text_density: textDensity,
+              confidence,
+            });
+          }
+          results.sort((a, b) => b.confidence - a.confidence || b.viewport_area_ratio - a.viewport_area_ratio);
+          return results.slice(0, args.limit);
+        }
+        """,
+        payload,
+    )
 
 
-async def _capture_favicon(context, page, source_dir: Path) -> str:
-    """Fetch a first-party icon when a visible header logo cannot be captured."""
-    candidates: list[str] = []
+async def _capture_regions_for_frame(
+    page,
+    source: Source,
+    source_dir: Path,
+    settings: Settings,
+    frame_id: str,
+    existing: list[EvidenceRegion],
+) -> list[EvidenceRegion]:
     try:
-        items = await page.locator(
-            'link[rel~="icon"], link[rel="apple-touch-icon"], link[rel="shortcut icon"]'
-        ).evaluate_all(
-            """elements => elements.map(element => ({
-                href: element.href || '',
-                rel: element.rel || '',
-                sizes: element.sizes ? element.sizes.value : '',
-                type: element.type || ''
-            }))"""
-        )
+        candidates = await _discover_visible_regions(page, source, settings, frame_id)
     except Exception:
-        items = []
+        return []
 
-    def icon_rank(item: dict[str, str]) -> tuple[int, int]:
-        rel = item.get("rel", "").lower()
-        sizes = item.get("sizes", "")
-        numeric = [int(value) for value in sizes.replace("x", " ").split() if value.isdigit()]
-        size = max(numeric, default=0)
-        return (2 if "apple-touch" in rel else 1, size)
-
-    for item in sorted(items, key=icon_rank, reverse=True):
-        href = item.get("href", "")
-        if href and href not in candidates:
-            candidates.append(href)
-    fallback = urljoin(page.url, "/favicon.ico")
-    if fallback not in candidates:
-        candidates.append(fallback)
-
-    output = source_dir / "logo.png"
-    for icon_url in candidates[:8]:
-        if icon_url.startswith("data:"):
+    captured: list[EvidenceRegion] = []
+    existing_boxes = [region.bbox for region in existing]
+    existing_hashes = {region.sha256 for region in existing}
+    for item in candidates:
+        if len(existing) + len(captured) >= settings.max_regions_per_source:
+            break
+        bbox = (
+            int(round(float(item["page_x"]))),
+            int(round(float(item["page_y"]))),
+            max(1, int(round(float(item["width"])))),
+            max(1, int(round(float(item["height"])))),
+        )
+        if any(_intersection_over_union(bbox, old) >= 0.72 for old in [*existing_boxes, *[r.bbox for r in captured]]):
             continue
+        local_region_id = str(item["region_id"])
+        region_id = f"{source.id}-{local_region_id}"
+        path = source_dir / f"region-{region_id}.png"
         try:
-            response = await context.request.get(icon_url, timeout=7000, fail_on_status_code=False)
-            if not response.ok:
-                continue
-            content_type = (response.headers.get("content-type") or "").lower()
-            if "svg" in content_type or icon_url.lower().endswith(".svg"):
-                continue
-            body = await response.body()
-            if not body or len(body) > 2_000_000:
-                continue
-            if _normalise_logo_bytes(body, output):
-                return str(output)
+            await page.screenshot(
+                path=str(path),
+                type="png",
+                clip={
+                    "x": bbox[0],
+                    "y": bbox[1],
+                    "width": bbox[2],
+                    "height": bbox[3],
+                },
+                animations="disabled",
+                caret="hide",
+                scale="css",
+            )
         except Exception:
+            path.unlink(missing_ok=True)
             continue
-    return ""
-
-
-async def _capture_brand_mark(context, page, source: Source, source_dir: Path) -> tuple[str, str]:
-    visible = await _capture_visible_brand_mark(page, source, source_dir)
-    if visible:
-        return visible, "official_page_header"
-    favicon = await _capture_favicon(context, page, source_dir)
-    if favicon:
-        return favicon, "official_page_icon"
-    return "", ""
+        digest = _sha256(path)
+        if digest in existing_hashes or any(region.sha256 == digest for region in captured):
+            path.unlink(missing_ok=True)
+            continue
+        captured.append(
+            EvidenceRegion(
+                source_id=source.id,
+                frame_id=frame_id,
+                # Region ids are globally unique inside a daily run. This keeps
+                # evidence-count gates from collapsing identical f01-r01 ids
+                # across unrelated companies into one region.
+                region_id=region_id,
+                selector_hint=str(item["selector_hint"]),
+                region_type=str(item["region_type"]),
+                path=str(path),
+                sha256=digest,
+                bbox=bbox,
+                viewport_area_ratio=round(float(item["viewport_area_ratio"]), 5),
+                image_area_ratio=round(float(item["image_area_ratio"]), 5),
+                text_density=round(float(item["text_density"]), 5),
+                confidence=round(float(item["confidence"]), 5),
+            )
+        )
+    return captured
 
 
 async def _capture_source(
@@ -320,10 +338,6 @@ async def _capture_source(
 
             source_dir = output_dir / source.id
             source_dir.mkdir(parents=True, exist_ok=True)
-            logo_path, logo_source = await _capture_brand_mark(context, page, source, source_dir)
-            record.logo_path = logo_path
-            record.logo_source = logo_source
-
             positions = [0]
             if min(source.frames, settings.frames_per_source) > 1:
                 positions.append(settings.second_frame_scroll_y)
@@ -331,6 +345,7 @@ async def _capture_source(
             for index, scroll_y in enumerate(positions, start=1):
                 await page.evaluate("(y) => window.scrollTo(0, y)", scroll_y)
                 await page.wait_for_timeout(900)
+                frame_id = f"f{index:02d}"
                 path = source_dir / f"frame-{index:02d}.jpg"
                 await page.screenshot(
                     path=str(path),
@@ -344,7 +359,20 @@ async def _capture_source(
                 record.frames.append(
                     CaptureFrame(path=str(path), scroll_y=scroll_y, sha256=_sha256(path))
                 )
-            record.success = bool(record.frames)
+                record.regions.extend(
+                    await _capture_regions_for_frame(
+                        page,
+                        source,
+                        source_dir,
+                        settings,
+                        frame_id,
+                        record.regions,
+                    )
+                )
+
+            record.success = bool(record.regions)
+            if not record.success:
+                record.error = "Page loaded, but no eligible marketing-creative region was found"
         except Exception as exc:
             record.error = f"{type(exc).__name__}: {exc}"
         finally:
@@ -381,10 +409,7 @@ async def capture_panel_async(
             ],
         )
         context = await browser.new_context(
-            viewport={
-                "width": settings.viewport_width,
-                "height": settings.viewport_height,
-            },
+            viewport={"width": settings.viewport_width, "height": settings.viewport_height},
             locale="en-US",
             timezone_id=settings.timezone,
             color_scheme="light",
@@ -393,7 +418,7 @@ async def capture_panel_async(
             user_agent=(
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) "
-                "Chrome/131.0.0.0 Safari/537.36 PantoneChallenger/1.1"
+                "Chrome/131.0.0.0 Safari/537.36 PantoneChallenger/1.3"
             ),
         )
 
@@ -404,11 +429,12 @@ async def capture_panel_async(
                 await route.continue_()
 
         await context.route("**/*", route_handler)
-        tasks = [
-            _capture_source(context, source, output_dir, settings, semaphore)
-            for source in sources
-        ]
-        records = await asyncio.gather(*tasks)
+        records = await asyncio.gather(
+            *[
+                _capture_source(context, source, output_dir, settings, semaphore)
+                for source in sources
+            ]
+        )
         await context.close()
         await browser.close()
 
@@ -416,7 +442,8 @@ async def capture_panel_async(
         "generated_at": iso_now(settings.timezone),
         "configured_sources": len(sources),
         "captured_sources": sum(1 for record in records if record.success),
-        "captured_logos": sum(1 for record in records if record.logo_path),
+        "sources_with_regions": sum(1 for record in records if record.regions),
+        "eligible_regions": sum(len(record.regions) for record in records),
         "records": [record.to_dict() for record in records],
     }
     (output_dir / "capture-report.json").write_text(
@@ -436,8 +463,18 @@ def capture_panel(
 def load_capture_report(path: Path) -> list[CaptureRecord]:
     data = json.loads(path.read_text(encoding="utf-8"))
     records: list[CaptureRecord] = []
-    for item in data.get("records", []):
-        item = dict(item)
+    for raw in data.get("records", []):
+        item = dict(raw)
         item["frames"] = [CaptureFrame(**frame) for frame in item.get("frames", [])]
+        regions = []
+        for region in item.get("regions", []):
+            region = dict(region)
+            region["bbox"] = tuple(int(value) for value in region.get("bbox", (0, 0, 0, 0)))
+            regions.append(EvidenceRegion(**region))
+        item["regions"] = regions
+        # V1.2 reports may contain deprecated logo fields. Ignore them safely.
+        item.pop("logo_path", None)
+        item.pop("logo_source", None)
+        item.pop("logo_error", None)
         records.append(CaptureRecord(**item))
     return records

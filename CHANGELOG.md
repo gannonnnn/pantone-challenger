@@ -1,54 +1,40 @@
 # Changelog
 
+## 1.3.0 — Evidence integrity and calibration repair
+
+- Replaced full-page palette support with traceable marketing-creative regions.
+- Added `EvidenceRegion` and `CandidateEvidence` records so every displayed company match retains a source region, local HEX, perceptual distance, share, and confidence.
+- Prevented headers, navigation, footers, cookie overlays, logos, icons, and full-page backgrounds from casting public color votes.
+- Normalized each company to one vote per cross-source candidate.
+- Added authoritative source-registry validation for company names and sectors.
+- Set all 48 public source cards to text-only attribution by default; runtime favicon fallback is prohibited.
+- Redesigned evidence cards around the company’s measured local swatch rather than its logo.
+- Added `ready`, `review_only`, and `blocked` publication states.
+- Marked the first seven accepted runs as internal calibration and excluded them from recurrence and year-end history.
+- Made Daily Challenger manual-only during the V1.3 shadow-run period.
+- Added stronger panel coverage, source breadth, sector breadth, evidence confidence, perceptual distance, concentration, and close-call gates.
+- Added exact winner and runner-up swatch rendering checks, color-family validation, and text-fallback behavior.
+- Added a private evidence contact sheet for human review.
+- Added regression tests for page-background winners, favicon-as-evidence, sector mismatches, neutral misnaming, placeholder contamination, and incorrect rendered HEX values.
+- Updated GitHub artifact workflows to `actions/upload-artifact@v7`.
+
+## 1.2.1 — Chromatic-result and logo normalization hotfix
+
+- Prevented cold-start page infrastructure colors such as near-black, white, and gray from becoming the public winner or runner-ups.
+- Added neutral-aware naming, swatch borders, logo normalization, and singular recurrence copy.
+
 ## 1.2.0 — Year-to-date recurrence and Year in Color
 
-- Added a visible year-to-date counter to the feed card and first Story.
-- Counts perceptually similar winning shades as one color family; exact HEX matches are not required.
-- Uses complete-link OKLab matching so a chain of gradually shifting shades cannot silently drift into a different family.
-- Added annual family fields to every ready result: winning days, matching dates, current and longest streaks, unique supporting companies, company-page denominator, and sector reach.
-- Added recurrence context to captions, review summaries, daily pull requests, publish packages, and the public archive.
-- Added `challenger year-end --year YYYY` to generate a January-ready annual report.
-- Added a year-in-color social card, a daily winner color grid, annual JSON, and annual Markdown report.
-- Added a January 2 GitHub Actions workflow that creates a review pull request for the previous calendar year.
-- Added annual pages to the static archive.
-- Added recurrence and annual-report regression tests.
+- Added perceptual color-family recurrence, streaks, company and sector reach, annual summary JSON, social graphics, and the January Year-End Challenger workflow.
 
 ## 1.1.0 — Evidence-first social results
 
-- Rebuilt the feed card around a clearly bounded, dominant winner swatch.
-- Added named, full-size runner-up swatches with HEX values, source counts, sector counts, and scores.
-- Added clear panel denominators throughout the review package: monitored, analyzed, unavailable, supporting, and represented sectors.
-- Added first-party brand-mark capture from official page headers, with official site-icon and typographic fallbacks.
-- Added supporting-company logo cards with company names, sectors, and source-level visual salience.
-- Added runner-up names, source sectors, source salience, source-logo provenance, and a structured `review_summary` to the evidence archive.
-- Added a visual review summary and an image-rich pull-request body.
-- Added a downloadable social-package artifact alongside private raw-capture evidence.
-- Added company/source coverage, supporting marks, and runner-up swatches to the public archive.
-- Added explicit no-endorsement language for monitored company marks.
-- Updated the daily artifact uploader and added rendering/logo-normalization regression tests.
+- Added visible winner and runner-up swatches, panel denominators, supporting-company cards, image-rich review pull requests, and social-package artifacts.
 
 ## 1.0.1 — Launch workflow hotfix
 
-- Corrected a scoring test fixture that unintentionally triggered the unchanged-page penalty.
-- Gated GitHub Pages deployment behind the `ENABLE_PAGES=true` repository variable.
-- Prevented a private repository from showing a failed Pages build before Pages is enabled.
+- Corrected the initial scoring fixture and gated Pages behind `ENABLE_PAGES=true`.
 
 ## 1.0.0 — Production launch build
 
-- Replaced synthetic input with browser-rendered official marketing pages.
-- Added 48-source, 12-sector declared panel.
-- Added exact and conservative near-duplicate checks.
-- Added perceptual OKLab/OKLCH color extraction.
-- Added one-normalized-vote-per-source behavior.
-- Added source-specific brand-color baseline suppression.
-- Added unchanged-page suppression.
-- Added transparent Challenger Score and quality gate.
-- Added deterministic cultural color naming.
-- Added feed and four Story renderers.
-- Added evidence archive and static public site.
-- Added nightly review-pull-request workflow.
-- Added GitHub Pages workflow.
-- Added approval-gated Instagram and Bluesky publishers.
-- Added social publish locks and receipts.
-- Added Eastern marketing-day resolution with regression tests.
-- Added source/rights policy and non-affiliation notice.
+- Added the 48-source panel, browser capture, perceptual clustering, source-normalized scoring, social rendering, GitHub review workflows, static archive, and optional publishers.

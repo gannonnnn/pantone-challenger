@@ -23,6 +23,7 @@ def test_site_exposes_recurrence_and_year_end_summary(tmp_path):
     result = {
         "date": "2026-08-26",
         "status": "ready",
+        "methodology_version": "1.3.0",
         "winner_name": "Electric Grocery Aisle",
         "panel_size": 48,
         "captured_sources": 41,

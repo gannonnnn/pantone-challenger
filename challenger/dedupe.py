@@ -43,9 +43,9 @@ def deduplicate_records(records: list[CaptureRecord]) -> list[CaptureRecord]:
     accepted: list[tuple[CaptureRecord, int, np.ndarray, int]] = []
     seen_sha: dict[str, str] = {}
     for record in records:
-        if not record.success or not record.frames:
+        if not record.success or not record.regions:
             continue
-        first = record.frames[0]
+        first = record.regions[0]
         duplicate_of = seen_sha.get(first.sha256)
         if duplicate_of:
             record.success = False
@@ -59,7 +59,7 @@ def deduplicate_records(records: list[CaptureRecord]) -> list[CaptureRecord]:
             size = path.stat().st_size
         except OSError:
             record.success = False
-            record.error = "Captured frame could not be read"
+            record.error = "Captured evidence region could not be read"
             continue
 
         near_duplicate = None

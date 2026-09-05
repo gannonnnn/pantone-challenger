@@ -134,16 +134,22 @@ def _weighted_kmeans(
     return centers, labels
 
 
-def _prepare_pixels(path: Path, max_pixels: int = 30000) -> tuple[np.ndarray, np.ndarray]:
+def _prepare_pixels(
+    path: Path,
+    max_pixels: int = 30000,
+    *,
+    crop_page_edges: bool = True,
+) -> tuple[np.ndarray, np.ndarray]:
     with Image.open(path) as source:
         image = source.convert("RGB")
         width, height = image.size
-        left = int(width * 0.015)
-        right = max(left + 1, int(width * 0.985))
-        top = int(height * 0.055)
-        bottom = max(top + 1, int(height * 0.98))
-        image = image.crop((left, top, right, bottom))
-        image.thumbnail((360, 300), Image.Resampling.LANCZOS)
+        if crop_page_edges:
+            left = int(width * 0.015)
+            right = max(left + 1, int(width * 0.985))
+            top = int(height * 0.055)
+            bottom = max(top + 1, int(height * 0.98))
+            image = image.crop((left, top, right, bottom))
+        image.thumbnail((420, 360), Image.Resampling.LANCZOS)
         rgb = np.asarray(image, dtype=np.float64) / 255.0
 
     h, w, _ = rgb.shape
@@ -155,13 +161,20 @@ def _prepare_pixels(path: Path, max_pixels: int = 30000) -> tuple[np.ndarray, np
     L = lab[:, 0]
     chroma = np.linalg.norm(lab[:, 1:3], axis=1)
 
-    # Remove only near-empty extremes. Ordinary neutrals remain eligible and
-    # are handled transparently by the score's neutral penalty.
+    # Remove only empty extremes, then strongly reduce page-chrome neutrals.
+    # Black/white backgrounds and gray interface scaffolding are common on
+    # commercial sites but are weak evidence of an emerging color trend. They
+    # remain measurable; chromatic campaign imagery simply receives more weight.
     keep = ~(((L > 0.975) | (L < 0.045)) & (chroma < 0.018))
     points = lab[keep]
     center_weights = center.reshape(-1)[keep]
-    chroma_weight = 0.42 + 0.58 * np.minimum(chroma[keep] / 0.16, 1.0)
-    weights = center_weights * chroma_weight
+    chroma_ratio = np.minimum(chroma[keep] / 0.15, 1.0)
+    chroma_weight = 0.16 + 0.84 * np.power(chroma_ratio, 0.85)
+    extreme_neutral = (chroma[keep] < 0.025) & (
+        (L[keep] > 0.90) | (L[keep] < 0.16)
+    )
+    neutral_factor = np.where(extreme_neutral, 0.30, 1.0)
+    weights = center_weights * chroma_weight * neutral_factor
 
     if len(points) > max_pixels:
         digest = hashlib.sha256(path.read_bytes()).digest()
@@ -215,20 +228,21 @@ def merge_swatches(swatches: list[Swatch], distance_threshold: float) -> list[Sw
 def extract_palette(
     paths: list[Path],
     *,
-    clusters_per_frame: int = 8,
-    max_swatches: int = 6,
+    clusters_per_frame: int = 10,
+    max_swatches: int = 7,
     merge_distance: float = 0.045,
+    region_mode: bool = False,
 ) -> list[Swatch]:
     all_swatches: list[Swatch] = []
     for path in paths:
-        points, weights = _prepare_pixels(path)
+        points, weights = _prepare_pixels(path, crop_page_edges=not region_mode)
         seed = int.from_bytes(hashlib.sha256(path.read_bytes()).digest()[:8], "big")
         centers, labels = _weighted_kmeans(points, weights, clusters_per_frame, seed=seed)
         frame_total = float(weights.sum()) or 1.0
         for index, center in enumerate(centers):
             mask = labels == index
             share = float(weights[mask].sum()) / frame_total if np.any(mask) else 0.0
-            if share < 0.018:
+            if share < 0.012:
                 continue
             lab = tuple(float(v) for v in center)
             all_swatches.append(
@@ -245,4 +259,40 @@ def extract_palette(
     total = sum(s.share for s in selected) or 1.0
     for swatch in selected:
         swatch.share = swatch.share / total
+    return selected
+
+
+def aggregate_region_palettes(
+    region_palettes: list[tuple[list[Swatch], float]],
+    *,
+    merge_distance: float = 0.045,
+    max_swatches: int = 7,
+) -> list[Swatch]:
+    """Combine region palettes into one normalized company palette.
+
+    Each region receives a confidence-weighted slice of one total company vote.
+    A page with three detected creative regions therefore cannot exert three times
+    the influence of a page with one region.
+    """
+    if not region_palettes:
+        return []
+    confidence_total = sum(max(float(confidence), 0.01) for _, confidence in region_palettes)
+    weighted: list[Swatch] = []
+    for palette, confidence in region_palettes:
+        local_total = sum(max(swatch.share, 0.0) for swatch in palette) or 1.0
+        region_weight = max(float(confidence), 0.01) / confidence_total
+        for swatch in palette:
+            weighted.append(
+                Swatch(
+                    hex=swatch.hex,
+                    oklab=swatch.oklab,
+                    oklch=swatch.oklch,
+                    share=(max(swatch.share, 0.0) / local_total) * region_weight,
+                )
+            )
+    merged = merge_swatches(weighted, merge_distance)
+    selected = merged[:max_swatches]
+    total = sum(item.share for item in selected) or 1.0
+    for item in selected:
+        item.share /= total
     return selected

@@ -93,9 +93,15 @@ def run_command(
         reuse_capture=reuse_capture,
     )
     click.echo(json.dumps(result.to_dict(), indent=2))
-    if result.status != "ready":
-        raise click.ClickException(
-            "The run completed, but publication was blocked by the data-quality gate."
+    if result.status == "review_only":
+        click.echo(
+            "CALIBRATION: Result created for internal review. It is not eligible for public posting.",
+            err=True,
+        )
+    elif result.status == "blocked":
+        click.echo(
+            "BLOCKED: No public result was created. Review the quality-gate reasons and private evidence.",
+            err=True,
         )
 
 

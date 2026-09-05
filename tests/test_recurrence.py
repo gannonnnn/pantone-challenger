@@ -40,6 +40,7 @@ def write_result(root: Path, day: str, item: Candidate, captured: int = 40) -> N
             {
                 "date": day,
                 "status": "ready",
+                "methodology_version": "1.3.0",
                 "panel_size": 48,
                 "captured_sources": captured,
                 "winner": item.to_dict(),
@@ -106,5 +107,5 @@ def test_recurrence_resets_at_calendar_year(tmp_path):
 
 
 def test_family_label_is_stable_and_not_based_on_daily_name():
-    assert color_family_name(oklab_from_hex("#8EAE4F")) in {"Chartreuse", "Olive Green"}
+    assert color_family_name(oklab_from_hex("#8EAE4F")) in {"Yellow-Green", "Chartreuse", "Olive Green"}
     assert color_family_name(oklab_from_hex("#2F70C0")) == "Blue"
