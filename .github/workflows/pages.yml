@@ -1,13 +1,12 @@
-name: Deploy public archive
+name: Deploy historical color archive
 
 on:
   push:
-    branches: ["main"]
+    branches: [main]
     paths:
       - "archive/**"
-      - "site/**"
       - "challenger/site.py"
-      - "config/sources.yml"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 permissions:
@@ -21,23 +20,21 @@ concurrency:
 
 jobs:
   build:
-    if: ${{ vars.ENABLE_PAGES == 'true' }}
+    if: vars.ENABLE_PAGES == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-python@v7
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
       - run: python -m pip install -e .
-      - run: challenger build-site
-      - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
+      - run: challenger build-site --archive archive --destination site-build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
-          path: site
-
+          path: site-build
   deploy:
-    if: ${{ vars.ENABLE_PAGES == 'true' && needs.build.result == 'success' }}
+    if: vars.ENABLE_PAGES == 'true'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

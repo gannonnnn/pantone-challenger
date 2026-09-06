@@ -3,10 +3,10 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .ruff_cache/
-.DS_Store
+.coverage
 .env
 .work/
-dist/
-build/
-*.egg-info/
-archive/*/published.json
+output/
+site-build/
+.DS_Store
+*.log

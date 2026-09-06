@@ -1,881 +1,413 @@
 from __future__ import annotations
 
-from datetime import date
+from collections import Counter
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
-from .colors import contrast_text_color
-from .models import Candidate, CandidateEvidence, DailyResult
-from .recurrence import human_sector_list
+from challenger.color import contrast_ratio, readable_text_color
+from challenger.image_quality import trim_and_fit_logo
+from challenger.models import PublicationState
 
 
-FEED_SIZE = (1080, 1350)
-STORY_SIZE = (1080, 1920)
-OFF_WHITE = "#F5F1E8"
-PAPER = "#FBF9F4"
-INK = "#171717"
-MUTED = "#6D6A64"
-LINE = "#D9D2C5"
-WARNING = "#C44735"
+BG = "#F6F1E9"
+INK = "#161616"
+MUTED = "#6B655E"
+CARD = "#FFFDF9"
+BORDER = "#D8D0C5"
+ACCENT = "#C9FF47"
 
 
-def _font_path(bold: bool = False) -> str | None:
-    candidates = (
-        [
-            "/System/Library/Fonts/Supplemental/Arial Bold.ttf",
-            "/System/Library/Fonts/Supplemental/Helvetica.ttc",
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf",
-            "/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf",
-        ]
-        if bold
-        else [
-            "/System/Library/Fonts/Supplemental/Arial.ttf",
-            "/System/Library/Fonts/Supplemental/Helvetica.ttc",
-            "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
-            "/usr/share/fonts/truetype/liberation2/LiberationSans-Regular.ttf",
-        ]
-    )
-    for candidate in candidates:
-        if Path(candidate).exists():
-            return candidate
-    return None
+def render_daily(result, output_dir: str | Path, source_map: dict, settings: dict) -> list[Path]:
+    out = Path(output_dir)
+    out.mkdir(parents=True, exist_ok=True)
+    files = []
+    if result.state == PublicationState.BASELINE_ONLY:
+        files.append(_render_baseline(result, out / "baseline-summary.png"))
+        _write_text_assets(result, out)
+        return files
+    if not result.challenger:
+        files.append(_render_review(result, out / "review-summary.png"))
+        _write_text_assets(result, out)
+        return files
+    files.append(_render_feed(result, out / "feed-post.png"))
+    files.append(_render_color_story(result, out / "story-01-color.png"))
+    files.append(_render_evidence(result, out / "story-02-evidence.png", source_map))
+    files.append(_render_why(result, out / "story-03-why-it-won.png"))
+    files.append(_render_runners(result, out / "story-04-runners-up.png"))
+    files.append(_render_signal_map(result, out / "story-05-signal-map.png"))
+    files.append(_render_context(result, out / "story-06-context.png"))
+    _write_text_assets(result, out)
+    return files
 
 
-def _font(size: int, bold: bool = False) -> ImageFont.FreeTypeFont | ImageFont.ImageFont:
-    path = _font_path(bold=bold)
-    if path:
-        return ImageFont.truetype(path, size=size)
+def _canvas(size=(1080, 1350)):
+    return Image.new("RGB", size, BG)
+
+
+def _font(size: int, bold: bool = False):
+    options = [
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf" if bold else "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+        "/System/Library/Fonts/Supplemental/Arial Bold.ttf" if bold else "/System/Library/Fonts/Supplemental/Arial.ttf",
+    ]
+    for option in options:
+        if Path(option).exists():
+            return ImageFont.truetype(option, size)
     return ImageFont.load_default()
 
 
-def _fit_font(
-    draw: ImageDraw.ImageDraw,
-    text: str,
-    max_width: int,
-    start: int,
-    minimum: int,
-    *,
-    bold: bool = True,
-) -> ImageFont.ImageFont:
-    size = start
-    while size > minimum:
-        font = _font(size, bold=bold)
-        if draw.textbbox((0, 0), text, font=font)[2] <= max_width:
-            return font
-        size -= 2
-    return _font(minimum, bold=bold)
+def _text(draw, xy, text, size, *, bold=False, fill=INK, anchor=None):
+    draw.text(xy, text, font=_font(size, bold), fill=fill, anchor=anchor)
 
 
-def _draw_wrapped(
-    draw: ImageDraw.ImageDraw,
-    text: str,
-    xy: tuple[int, int],
-    *,
-    max_width: int,
-    font: ImageFont.ImageFont,
-    fill: str,
-    spacing: int = 12,
-    max_lines: int | None = None,
-) -> int:
+def _wrap(draw, text: str, font, width: int, max_lines: int = 3) -> list[str]:
     words = text.split()
-    lines: list[str] = []
-    line = ""
+    lines = []
+    current = ""
     for word in words:
-        proposal = f"{line} {word}".strip()
-        width = draw.textbbox((0, 0), proposal, font=font)[2]
-        if line and width > max_width:
-            lines.append(line)
-            line = word
+        trial = f"{current} {word}".strip()
+        if draw.textlength(trial, font=font) <= width:
+            current = trial
         else:
-            line = proposal
-    if line:
-        lines.append(line)
-    if max_lines is not None:
-        lines = lines[:max_lines]
-
-    x, y = xy
-    bbox = draw.textbbox((0, 0), "Ag", font=font)
-    line_height = bbox[3] - bbox[1] + spacing
-    for item in lines:
-        draw.text((x, y), item, font=font, fill=fill)
-        y += line_height
-    return y
-
-
-def _human_date(value: str) -> str:
-    parsed = date.fromisoformat(value)
-    try:
-        return parsed.strftime("%B %-d, %Y")
-    except ValueError:
-        return parsed.strftime("%B %d, %Y").replace(" 0", " ")
-
-
-def _ordinal(value: int) -> str:
-    if 10 <= value % 100 <= 20:
-        suffix = "th"
-    else:
-        suffix = {1: "st", 2: "nd", 3: "rd"}.get(value % 10, "th")
-    return f"{value}{suffix}"
-
-
-def _draw_brand(draw: ImageDraw.ImageDraw, y: int, color: str) -> None:
-    draw.text((74, y), "PANTONE CHALLENGER", font=_font(29, bold=True), fill=color)
-    draw.text((74, y + 43), "THE COMMERCIAL COLOR INDEX", font=_font(18), fill=color)
-
-
-def _draw_calibration_banner(draw: ImageDraw.ImageDraw, *, width: int, y: int = 0) -> None:
-    draw.rectangle((0, y, width, y + 54), fill=WARNING)
-    draw.text(
-        (width // 2, y + 27),
-        "INTERNAL CALIBRATION — NOT FOR POSTING",
-        font=_font(18, bold=True),
-        fill="#FFFFFF",
-        anchor="mm",
-    )
-
-
-def _recurrence_headline(result: DailyResult) -> str:
-    if result.status == "review_only":
-        return f"INTERNAL CALIBRATION · DAY {result.calibration_day}"
-    recurrence = result.recurrence
-    if not recurrence:
-        return "FIRST APPROVED WIN"
-    unit = "DAY" if recurrence.winning_days == 1 else "DAYS"
-    return f"{recurrence.winning_days} {unit} AS THE TOP COMMERCIAL COLOR IN {recurrence.year}"
-
-
-def _recurrence_detail(result: DailyResult) -> str:
-    if result.status == "review_only":
-        return "NOT ADDED TO THE PUBLIC ARCHIVE OR YEAR-TO-DATE COUNTER"
-    recurrence = result.recurrence
-    if not recurrence:
-        return "YEAR-TO-DATE HISTORY BEGINS WITH THIS APPROVED RESULT"
-    return (
-        f"{recurrence.family_name.upper()} · "
-        f"{recurrence.unique_company_count} / {recurrence.panel_company_count} COMPANIES · "
-        f"{recurrence.sector_count} SECTORS"
-    )
-
-
-def _recurrence_sentence(result: DailyResult) -> str:
-    if result.status == "review_only":
-        return (
-            f"This is internal calibration day {result.calibration_day}. It does not count "
-            "toward recurrence or the year-end summary until the method exits calibration."
-        )
-    recurrence = result.recurrence
-    if not recurrence:
-        return "This approved result begins the year-to-date color history."
-    sectors = human_sector_list(recurrence.sectors, limit=4)
-    sentence = (
-        f"This is the {_ordinal(recurrence.winning_days)} day in {recurrence.year} that "
-        f"{recurrence.family_name} ranked as the top color in the monitored commercial panel. "
-        f"Across those wins, it appeared across {sectors}, with "
-        f"{recurrence.unique_company_count} unique companies represented in the "
-        f"{recurrence.panel_company_count}-company panel."
-    )
-    if recurrence.current_streak >= 2:
-        sentence += f" It is also a {recurrence.current_streak}-day consecutive streak."
-    return sentence
-
-
-def _coverage_items(result: DailyResult) -> list[tuple[str, str]]:
-    assert result.winner
-    return [
-        (str(result.panel_size), "COMPANY PAGES\nMONITORED"),
-        (str(result.captured_sources), "COMPANY PAGES\nWITH EVIDENCE"),
-        (str(result.winner.source_count), "COMPANIES BEHIND\nWINNER"),
-        (str(result.winner.sector_count), "SECTORS BEHIND\nWINNER"),
-    ]
-
-
-def _draw_stat_row(
-    draw: ImageDraw.ImageDraw,
-    items: list[tuple[str, str]],
-    *,
-    y: int,
-    color: str,
-    left: int = 74,
-    right: int = 1006,
-) -> None:
-    width = (right - left) / len(items)
-    for index, (value, label) in enumerate(items):
-        x = int(left + index * width)
-        if index:
-            draw.line((x - 20, y + 2, x - 20, y + 112), fill=color, width=1)
-        draw.text((x, y), value, font=_font(40, bold=True), fill=color)
-        draw.text((x, y + 57), label, font=_font(14, bold=True), fill=color, spacing=3)
-
-
-def _candidate_display_name(candidate: Candidate, fallback: str) -> str:
-    if candidate.creative_name and candidate.family_label:
-        return f"{candidate.creative_name} {candidate.family_label}"
-    return fallback
-
-
-def _draw_curated_mark(
-    image: Image.Image,
-    box: tuple[int, int, int, int],
-    mark_path: Path | None,
-) -> bool:
-    if not mark_path or not mark_path.exists():
-        return False
-    try:
-        with Image.open(mark_path) as opened:
-            mark = opened.convert("RGBA")
-    except OSError:
-        return False
-    alpha = mark.getchannel("A")
-    bbox = alpha.getbbox()
-    if not bbox:
-        mark.close()
-        return False
-    mark = mark.crop(bbox)
-    left, top, right, bottom = box
-    available_width = right - left
-    available_height = bottom - top
-    scale = min(available_width / mark.width, available_height / mark.height, 2.0)
-    if scale <= 0:
-        mark.close()
-        return False
-    mark = mark.resize(
-        (max(1, round(mark.width * scale)), max(1, round(mark.height * scale))),
-        Image.Resampling.LANCZOS,
-    )
-    x = left + (available_width - mark.width) // 2
-    y = top + (available_height - mark.height) // 2
-    image.paste(mark, (x, y), mark)
-    mark.close()
-    return True
-
-
-def render_feed(result: DailyResult, output: Path) -> None:
-    assert result.winner and result.winner_name
-    winner = result.winner
-    image = Image.new("RGB", FEED_SIZE, OFF_WHITE)
-    draw = ImageDraw.Draw(image)
-    if result.status == "review_only":
-        _draw_calibration_banner(draw, width=FEED_SIZE[0])
-    _draw_brand(draw, 78 if result.status == "review_only" else 62, INK)
-
-    draw.text((74, 196), "YESTERDAY’S CHALLENGER", font=_font(24, bold=True), fill=INK)
-    draw.text(
-        (1006, 198),
-        _human_date(result.date).upper(),
-        font=_font(17, bold=True),
-        fill=MUTED,
-        anchor="ra",
-    )
-
-    swatch_box = (70, 250, 1010, 915)
-    draw.rounded_rectangle(swatch_box, radius=44, fill=winner.hex, outline=LINE, width=3)
-    foreground = contrast_text_color(winner.hex)
-    inverse = PAPER if foreground == "#111111" else INK
-    inverse_text = contrast_text_color(inverse)
-    draw.text((112, 300), "THE COLOR", font=_font(19, bold=True), fill=foreground)
-    name_font = _fit_font(draw, result.winner_name.upper(), 840, 76, 42, bold=True)
-    y = _draw_wrapped(
-        draw,
-        result.winner_name.upper(),
-        (108, 382),
-        max_width=840,
-        font=name_font,
-        fill=foreground,
-        spacing=5,
-        max_lines=3,
-    )
-    family = winner.family_label.upper() if winner.family_label else "COLOR FAMILY"
-    draw.text((112, min(y + 22, 672)), family, font=_font(22, bold=True), fill=foreground)
-    draw.text((112, min(y + 64, 714)), winner.hex, font=_font(34), fill=foreground)
-
-    recurrence_box = (108, 740, 972, 876)
-    draw.rounded_rectangle(recurrence_box, radius=28, fill=inverse)
-    headline = _recurrence_headline(result)
-    draw.text(
-        (138, 770),
-        headline,
-        font=_fit_font(draw, headline, 800, 24, 17, bold=True),
-        fill=inverse_text,
-    )
-    detail = _recurrence_detail(result)
-    draw.text(
-        (138, 821),
-        detail,
-        font=_fit_font(draw, detail, 800, 18, 12, bold=True),
-        fill=inverse_text,
-    )
-
-    draw.text((74, 955), "TRACEABLE EVIDENCE", font=_font(18, bold=True), fill=MUTED)
-    draw.line((74, 998, 1006, 998), fill=LINE, width=2)
-    _draw_stat_row(draw, _coverage_items(result), y=1025, color=INK)
-    draw.text(
-        (74, 1242),
-        f"CONFIDENCE: {winner.confidence.upper()} · "
-        f"{winner.source_count} OF {result.captured_sources} EVIDENCE-BEARING COMPANY PAGES MATCHED",
-        font=_font(15, bold=True),
-        fill=MUTED,
-    )
-    image.save(output, quality=95)
-
-
-def render_story_color(result: DailyResult, output: Path) -> None:
-    assert result.winner and result.winner_name
-    winner = result.winner
-    foreground = contrast_text_color(winner.hex)
-    inverse = PAPER if foreground == "#111111" else INK
-    panel_text = contrast_text_color(inverse)
-    image = Image.new("RGB", STORY_SIZE, winner.hex)
-    draw = ImageDraw.Draw(image)
-    if result.status == "review_only":
-        _draw_calibration_banner(draw, width=STORY_SIZE[0])
-    _draw_brand(draw, 92 if result.status == "review_only" else 82, foreground)
-    draw.text(
-        (74, 370),
-        "YESTERDAY’S\nCHALLENGER",
-        font=_font(38, bold=True),
-        fill=foreground,
-        spacing=10,
-    )
-    name_font = _fit_font(draw, result.winner_name.upper(), 920, 96, 52, bold=True)
-    y = _draw_wrapped(
-        draw,
-        result.winner_name.upper(),
-        (74, 625),
-        max_width=920,
-        font=name_font,
-        fill=foreground,
-        spacing=8,
-        max_lines=4,
-    )
-    draw.text((74, y + 34), winner.family_label.upper(), font=_font(25, bold=True), fill=foreground)
-    draw.text((74, y + 82), winner.hex, font=_font(40), fill=foreground)
-
-    recurrence_box = (54, 1215, 1026, 1480)
-    draw.rounded_rectangle(recurrence_box, radius=38, fill=inverse)
-    draw.text((92, 1262), "HISTORY STATUS", font=_font(18, bold=True), fill=panel_text)
-    headline = _recurrence_headline(result)
-    draw.text(
-        (92, 1310),
-        headline,
-        font=_fit_font(draw, headline, 900, 35, 23, bold=True),
-        fill=panel_text,
-    )
-    detail = _recurrence_detail(result)
-    draw.text(
-        (92, 1380),
-        detail,
-        font=_fit_font(draw, detail, 900, 20, 14, bold=True),
-        fill=panel_text,
-    )
-
-    panel = (54, 1510, 1026, 1845)
-    draw.rounded_rectangle(panel, radius=38, fill=inverse)
-    draw.text((92, 1558), "WHAT WAS MEASURED", font=_font(19, bold=True), fill=panel_text)
-    _draw_stat_row(draw, _coverage_items(result), y=1632, color=panel_text, left=92, right=990)
-    draw.text((74, 1872), _human_date(result.date).upper(), font=_font(18, bold=True), fill=foreground)
-    image.save(output, quality=95)
-
-
-def _draw_evidence_card(
-    image: Image.Image,
-    draw: ImageDraw.ImageDraw,
-    evidence: CandidateEvidence,
-    *,
-    box: tuple[int, int, int, int],
-    mark_path: Path | None,
-) -> None:
-    left, top, right, bottom = box
-    draw.rounded_rectangle(box, radius=25, fill=PAPER, outline=LINE, width=2)
-    swatch_box = (left + 20, top + 24, left + 126, top + 130)
-    draw.rounded_rectangle(swatch_box, radius=22, fill=evidence.local_hex, outline="#BDB5A8", width=3)
-    draw.text(
-        (left + 73, top + 144),
-        evidence.local_hex,
-        font=_font(13, bold=True),
-        fill=MUTED,
-        anchor="ma",
-    )
-
-    name_y = _draw_wrapped(
-        draw,
-        evidence.source_name,
-        (left + 148, top + 25),
-        max_width=245,
-        font=_fit_font(draw, evidence.source_name, 245, 27, 19, bold=True),
-        fill=INK,
-        spacing=2,
-        max_lines=2,
-    )
-    draw.text(
-        (left + 148, max(name_y + 7, top + 91)),
-        evidence.sector.replace("_", " ").upper(),
-        font=_font(14, bold=True),
-        fill=MUTED,
-    )
-    _draw_curated_mark(image, (right - 75, top + 22, right - 20, top + 72), mark_path)
-    draw.text(
-        (left + 148, top + 137),
-        f"{evidence.local_share * 100:.1f}% MATCHED COLOR SHARE",
-        font=_font(13, bold=True),
-        fill=INK,
-    )
-    draw.text(
-        (left + 148, top + 166),
-        f"REGION CONFIDENCE {evidence.region_confidence:.0%}",
-        font=_font(12, bold=True),
-        fill=MUTED,
-    )
-
-
-def render_story_evidence(result: DailyResult, output: Path) -> None:
-    assert result.winner and result.winner_name
-    winner = result.winner
-    image = Image.new("RGB", STORY_SIZE, OFF_WHITE)
-    draw = ImageDraw.Draw(image)
-    if result.status == "review_only":
-        _draw_calibration_banner(draw, width=STORY_SIZE[0])
-
-    header_top = 54 if result.status == "review_only" else 0
-    draw.rectangle((0, header_top, STORY_SIZE[0], header_top + 270), fill=winner.hex)
-    foreground = contrast_text_color(winner.hex)
-    _draw_brand(draw, header_top + 46, foreground)
-    draw.text((74, header_top + 173), result.winner_name.upper(), font=_font(29, bold=True), fill=foreground)
-    draw.text((1006, header_top + 182), winner.hex, font=_font(23, bold=True), fill=foreground, anchor="ra")
-
-    title_y = header_top + 320
-    draw.text((74, title_y), "WHERE THE COLOR MATCH APPEARED", font=_font(45, bold=True), fill=INK)
-    _draw_wrapped(
-        draw,
-        "Each card shows the local color measured inside that company’s sampled marketing creative. A logo is attribution only and is shown only when manually approved.",
-        (74, title_y + 64),
-        max_width=930,
-        font=_font(18),
-        fill=MUTED,
-        spacing=4,
-        max_lines=3,
-    )
-
-    visible = winner.evidence[:8]
-    card_width = 448
-    card_height = 210
-    x_positions = (74, 558)
-    top = title_y + 175
-    row_gap = 20
-    for index, evidence in enumerate(visible):
-        row = index // 2
-        column = index % 2
-        left = x_positions[column]
-        y = top + row * (card_height + row_gap)
-        logo_relative = result.source_logos.get(evidence.source_id, "")
-        logo_path = output.parent / logo_relative if logo_relative else None
-        _draw_evidence_card(
-            image,
-            draw,
-            evidence,
-            box=(left, y, left + card_width, y + card_height),
-            mark_path=logo_path,
-        )
-
-    footer_top = 1518
-    draw.rounded_rectangle((74, footer_top, 1006, 1810), radius=30, fill=INK)
-    _draw_stat_row(draw, _coverage_items(result), y=1565, color=OFF_WHITE, left=112, right=968)
-    draw.text(
-        (112, 1735),
-        f"SHOWING {len(visible)} OF {winner.source_count} TRACEABLE COMPANY MATCHES",
-        font=_font(16, bold=True),
-        fill="#C8C4BC",
-    )
-    draw.text(
-        (74, 1855),
-        "Full source-region screenshots stay in the private review artifact.",
-        font=_font(15),
-        fill=MUTED,
-    )
-    image.save(output, quality=95)
-
-
-def render_story_why(result: DailyResult, output: Path) -> None:
-    assert result.winner and result.winner_name
-    winner = result.winner
-    image = Image.new("RGB", STORY_SIZE, "#111111")
-    draw = ImageDraw.Draw(image)
-    if result.status == "review_only":
-        _draw_calibration_banner(draw, width=STORY_SIZE[0])
-    _draw_brand(draw, 92 if result.status == "review_only" else 82, OFF_WHITE)
-
-    draw.rounded_rectangle((74, 245, 254, 425), radius=34, fill=winner.hex, outline="#565656", width=2)
-    draw.text((294, 258), "WHY IT SURFACED", font=_font(50, bold=True), fill=OFF_WHITE)
-    draw.text((298, 340), result.winner_name.upper(), font=_font(21, bold=True), fill=winner.hex)
-    draw.text((298, 378), f"{winner.family_label.upper()} · {winner.hex}", font=_font(18), fill="#B7B7B7")
-
-    rows = [
-        ("PANEL COVERAGE", f"{result.captured_sources} of {result.panel_size} company pages produced eligible creative evidence"),
-        ("INDEPENDENT SUPPORT", f"{winner.source_count} companies across {winner.sector_count} sectors"),
-        ("TRACEABILITY", f"{winner.evidence_region_count} source-linked creative regions"),
-        ("EVIDENCE QUALITY", f"{winner.mean_evidence_confidence:.0%} mean region confidence"),
-        ("CONCENTRATION", f"Top company {winner.top_source_weight:.0%} · top sector {winner.top_sector_weight:.0%}"),
-        ("RANKING MARGIN", f"{winner.score_margin_to_next:.1f} points over the next qualified color"),
-    ]
-    if result.baseline_days >= 7:
-        ratio = (winner.prevalence + 0.02) / (winner.baseline_prevalence + 0.02)
-        rows.append(("MOMENTUM", f"{ratio:.2f}× its trailing baseline"))
-    else:
-        rows.append(("BASELINE", f"Internal calibration day {result.calibration_day}"))
-
-    top = 480
-    row_height = 155
-    for index, (label, value) in enumerate(rows):
-        y = top + index * row_height
-        draw.text((74, y), label, font=_font(17, bold=True), fill="#A7A7A7")
-        draw.text(
-            (74, y + 40),
-            value,
-            font=_fit_font(draw, value, 900, 31, 22, bold=True),
-            fill=OFF_WHITE,
-        )
-        draw.line((74, y + 112, 1006, y + 112), fill="#414141", width=2)
-
-    draw.text(
-        (74, 1620),
-        f"CHALLENGER SCORE {winner.score:.1f} · CONFIDENCE {winner.confidence.upper()}",
-        font=_font(27, bold=True),
-        fill=winner.hex,
-    )
-    _draw_wrapped(
-        draw,
-        "The result can be rejected for weak or incorrect evidence. The reviewer cannot replace it with a prettier color.",
-        (74, 1690),
-        max_width=900,
-        font=_font(21),
-        fill=OFF_WHITE,
-        spacing=9,
-    )
-    image.save(output, quality=95)
-
-
-def _runner_name(result: DailyResult, index: int, candidate: Candidate) -> str:
-    if index < len(result.runner_up_names):
-        return result.runner_up_names[index]
-    return _candidate_display_name(candidate, candidate.hex)
-
-
-def render_story_runners(result: DailyResult, output: Path) -> None:
-    image = Image.new("RGB", STORY_SIZE, OFF_WHITE)
-    draw = ImageDraw.Draw(image)
-    if result.status == "review_only":
-        _draw_calibration_banner(draw, width=STORY_SIZE[0])
-    _draw_brand(draw, 92 if result.status == "review_only" else 82, INK)
-    draw.text((74, 245), "RUNNERS-UP", font=_font(60, bold=True), fill=INK)
-    draw.text(
-        (74, 325),
-        "Only perceptually distinct colors with traceable cross-company evidence are shown.",
-        font=_font(20),
-        fill=MUTED,
-    )
-
-    candidates = result.runners_up[:3]
-    top = 430
-    height = 390
-    gap = 45
-    for index, candidate in enumerate(candidates):
-        y = top + index * (height + gap)
-        draw.rounded_rectangle((74, y, 1006, y + height), radius=34, fill=PAPER, outline=LINE, width=2)
-        draw.rounded_rectangle(
-            (96, y + 22, 382, y + height - 22),
-            radius=28,
-            fill=candidate.hex,
-            outline="#AFA79A",
-            width=4,
-        )
-        swatch_text = contrast_text_color(candidate.hex)
-        draw.text((124, y + 55), f"#{index + 2}", font=_font(25, bold=True), fill=swatch_text)
-        draw.text((124, y + 292), candidate.hex, font=_font(29, bold=True), fill=swatch_text)
-
-        name = _runner_name(result, index, candidate)
-        name_y = _draw_wrapped(
-            draw,
-            name.upper(),
-            (424, y + 48),
-            max_width=530,
-            font=_fit_font(draw, name.upper(), 560, 40, 26, bold=True),
-            fill=INK,
-            spacing=4,
-            max_lines=3,
-        )
-        draw.text(
-            (424, max(name_y + 16, y + 185)),
-            candidate.family_label.upper(),
-            font=_font(18, bold=True),
-            fill=MUTED,
-        )
-        draw.text(
-            (424, y + 238),
-            f"{candidate.source_count} COMPANIES · {candidate.sector_count} SECTORS",
-            font=_font(18, bold=True),
-            fill=MUTED,
-        )
-        draw.text(
-            (424, y + 298),
-            f"SCORE {candidate.score:.1f} · CONFIDENCE {candidate.confidence.upper()}",
-            font=_font(19, bold=True),
-            fill=INK,
-        )
-
-    if not candidates:
-        _draw_wrapped(
-            draw,
-            "No other color met the minimum evidence and distinctness requirements today.",
-            (74, 540),
-            max_width=900,
-            font=_font(35, bold=True),
-            fill=INK,
-            spacing=10,
-        )
-    elif len(candidates) < 3:
-        plural = "s" if len(candidates) != 1 else ""
-        draw.text(
-            (74, top + len(candidates) * (height + gap) + 20),
-            f"Only {len(candidates)} qualified runner-up color{plural} today.",
-            font=_font(22, bold=True),
-            fill=MUTED,
-        )
-
-    draw.text(
-        (74, 1788),
-        f"PANEL: {result.panel_size} MONITORED · {result.captured_sources} WITH EVIDENCE · "
-        f"{result.captured_sectors} SECTORS",
-        font=_font(17, bold=True),
-        fill=MUTED,
-    )
-    image.save(output, quality=95)
-
-
-def build_caption(result: DailyResult) -> str:
-    assert result.winner and result.winner_name
-    winner = result.winner
-    evidence_names = ", ".join(item.source_name for item in winner.evidence[:8])
-    if winner.source_count > 8:
-        evidence_names += f", and {winner.source_count - 8} more"
-    runner_lines = [
-        f"#{index + 2} {_runner_name(result, index, candidate)} ({candidate.hex}) — "
-        f"{candidate.source_count} companies / {candidate.sector_count} sectors"
-        for index, candidate in enumerate(result.runners_up[:3])
-    ]
-    runners = "\n".join(runner_lines) or "No additional color met the public evidence threshold."
-    prefix = "INTERNAL CALIBRATION — DO NOT POST\n\n" if result.status == "review_only" else ""
-    return (
-        f"{prefix}Yesterday’s Challenger was {result.winner_name} ({winner.hex}).\n\n"
-        f"COLOR FAMILY\n{winner.family_label}\n\n"
-        f"HISTORY\n{_recurrence_sentence(result)}\n\n"
-        f"PANEL COVERAGE\n{result.panel_size} company pages monitored · "
-        f"{result.captured_sources} produced eligible creative evidence · "
-        f"{max(result.panel_size - result.captured_sources, 0)} unavailable or unusable · "
-        f"{result.captured_sectors} sectors\n\n"
-        f"TRACEABLE SUPPORT\n{winner.source_count} companies across {winner.sector_count} sectors. "
-        f"Evidence included {evidence_names}.\n\n"
-        f"RUNNERS-UP\n{runners}\n\n"
-        "The algorithm selects the color. A reviewer can reject weak evidence but cannot replace the winner for aesthetics.\n\n"
-        "Pantone Challenger is independent and is not affiliated with or endorsed by Pantone LLC."
-    )
-
-
-def build_review_summary(result: DailyResult) -> str:
-    assert result.winner and result.winner_name
-    winner = result.winner
-    evidence_rows = [
-        "| Company | Sector | Local swatch | Distance | Region confidence | Matched share |",
-        "|---|---|---:|---:|---:|---:|",
-    ]
-    for item in winner.evidence:
-        evidence_rows.append(
-            f"| {item.source_name} | {item.sector.replace('_', ' ')} | `{item.local_hex}` | "
-            f"{item.distance_to_candidate:.3f} | {item.region_confidence:.0%} | "
-            f"{item.local_share:.1%} |"
-        )
-    runner_rows = [
-        f"- **#{index + 2} {_runner_name(result, index, candidate)}** `{candidate.hex}` — "
-        f"{candidate.source_count} companies, {candidate.sector_count} sectors, "
-        f"score {candidate.score:.1f}"
-        for index, candidate in enumerate(result.runners_up[:3])
-    ] or ["- No additional candidate met the runner-up requirements."]
-    warnings = [f"- {warning}" for warning in result.quality_gate.warnings] or ["- None"]
-    title = "Calibration Review" if result.status == "review_only" else "Yesterday’s Challenger"
-    state_note = (
-        "> **INTERNAL CALIBRATION — DO NOT POST.**"
-        if result.status == "review_only"
-        else "> Ready for human review; merging approves the measured result."
-    )
-    return "\n".join(
-        [
-            f"# {title} — {result.date}",
-            "",
-            state_note,
-            "",
-            "![Winner card](feed-post.png)",
-            "",
-            "## Publication state",
-            "",
-            f"- **State:** `{result.status}`",
-            f"- **Confidence:** {winner.confidence}",
-            f"- **Methodology / registry:** {result.methodology_version} / {result.registry_version}",
-            "",
-            "## Coverage",
-            "",
-            "| Monitored | With eligible evidence | Unavailable/unusable | Sectors | Winner support |",
-            "|---:|---:|---:|---:|---:|",
-            f"| {result.panel_size} | {result.captured_sources} | "
-            f"{max(result.panel_size - result.captured_sources, 0)} | {result.captured_sectors} | "
-            f"{winner.source_count} companies / {winner.sector_count} sectors |",
-            "",
-            "## Quality warnings",
-            "",
-            *warnings,
-            "",
-            f"## Winner: {result.winner_name} `{winner.hex}`",
-            "",
-            f"- **Color family:** {winner.family_label}",
-            f"- **Score / margin:** {winner.score:.1f} / {winner.score_margin_to_next:.1f}",
-            f"- **Top company / sector weight:** {winner.top_source_weight:.1%} / {winner.top_sector_weight:.1%}",
-            f"- **Mean region confidence / color distance:** {winner.mean_evidence_confidence:.1%} / {winner.mean_evidence_distance:.3f}",
-            "",
-            "## Traceable source evidence",
-            "",
-            *evidence_rows,
-            "",
-            "![Local source swatches](story-02-evidence.png)",
-            "",
-            "## Runners-up",
-            "",
-            *runner_rows,
-            "",
-            "![Runner-up colors](story-04-runners-up.png)",
-            "",
-            "## Private review artifact",
-            "",
-            "The workflow artifact contains an evidence contact sheet with the sampled creative regions. It is not part of the public social package.",
-        ]
-    )
-
-
-def _write_alt_text(result: DailyResult, output_dir: Path) -> list[Path]:
-    assert result.winner and result.winner_name
-    winner = result.winner
-    files = {
-        "feed-alt-text.txt": (
-            f"A large {winner.family_label.lower()} color field labeled {result.winner_name}, "
-            f"{winner.hex}. Pantone Challenger monitored {result.panel_size} company pages; "
-            f"{result.captured_sources} produced eligible evidence, and {winner.source_count} "
-            f"companies across {winner.sector_count} sectors supported the result."
-        ),
-        "story-01-alt-text.txt": (
-            f"Full-screen color reveal for {result.winner_name}, {winner.hex}, with the "
-            f"publication state {result.status}."
-        ),
-        "story-02-alt-text.txt": (
-            "Evidence cards showing the local swatches measured in sampled marketing creative "
-            f"from {winner.source_count} companies behind the winning color."
-        ),
-        "story-03-alt-text.txt": (
-            f"Evidence summary for {result.winner_name}: {winner.source_count} companies, "
-            f"{winner.sector_count} sectors, {winner.evidence_region_count} traceable regions, "
-            f"and {winner.confidence.lower()} confidence."
-        ),
-        "story-04-alt-text.txt": (
-            "Runner-up color swatches with their hexadecimal values, company counts, sector "
-            "counts, and scores."
-        ),
-    }
-    outputs: list[Path] = []
-    for name, text in files.items():
-        path = output_dir / name
-        path.write_text(text, encoding="utf-8")
-        outputs.append(path)
-    return outputs
-
-
-def render_evidence_contact_sheet(result: DailyResult, output: Path) -> None:
-    if not result.winner:
+            if current:
+                lines.append(current)
+            current = word
+            if len(lines) >= max_lines - 1:
+                break
+    if current and len(lines) < max_lines:
+        lines.append(current)
+    if len(" ".join(lines).split()) < len(words):
+        lines[-1] = lines[-1].rstrip(".") + "…"
+    return lines
+
+
+def _header(draw, date: str, subtitle: str = "THE OPEN CULTURAL COLOR INDEX"):
+    _text(draw, (70, 52), "PANTONE CHALLENGER", 30, bold=True)
+    _text(draw, (70, 91), subtitle, 15)
+    _text(draw, (1010, 70), date.upper(), 17, bold=True, fill=MUTED, anchor="ra")
+
+
+def _status_banner(draw, state, width=940):
+    if state == PublicationState.READY:
         return
-    evidence = result.winner.evidence[:12]
-    width = 1600
-    card_height = 310
-    height = 150 + max(len(evidence), 1) * card_height
-    image = Image.new("RGB", (width, height), "#E9E5DD")
+    label = "INTERNAL CALIBRATION — DO NOT POST" if state == PublicationState.REVIEW_ONLY else state.value.upper().replace("_", " ")
+    draw.rounded_rectangle((70, 118, 70 + width, 164), radius=12, fill="#FFF1B8")
+    _text(draw, (90, 141), label, 17, bold=True, anchor="lm")
+
+
+def _render_feed(result, path: Path) -> Path:
+    image = _canvas()
     draw = ImageDraw.Draw(image)
-    draw.rectangle((0, 0, width, 70), fill=WARNING)
-    draw.text(
-        (width // 2, 35),
-        "PRIVATE REVIEW EVIDENCE — DO NOT POST OR REPUBLISH",
-        font=_font(25, bold=True),
-        fill="#FFFFFF",
-        anchor="mm",
-    )
-    draw.text(
-        (50, 95),
-        f"{result.date} · {result.winner_name} · {result.winner.hex}",
-        font=_font(26, bold=True),
-        fill=INK,
-    )
-    for index, item in enumerate(evidence):
-        top = 145 + index * card_height
-        draw.rounded_rectangle(
-            (40, top, width - 40, top + 280),
-            radius=24,
-            fill=PAPER,
-            outline=LINE,
-            width=2,
-        )
-        region_path = Path(item.region_path)
-        if region_path.exists():
-            try:
-                with Image.open(region_path) as opened:
-                    region = opened.convert("RGB")
-                region.thumbnail((620, 230), Image.Resampling.LANCZOS)
-                image.paste(region, (65, top + 25))
-                region.close()
-            except OSError:
-                pass
-        draw.rounded_rectangle(
-            (720, top + 30, 840, top + 150),
-            radius=20,
-            fill=item.local_hex,
-            outline="#AAA296",
-            width=3,
-        )
-        draw.text((720, top + 172), item.local_hex, font=_font(19, bold=True), fill=INK)
-        draw.text((880, top + 32), item.source_name, font=_font(30, bold=True), fill=INK)
-        draw.text(
-            (880, top + 78),
-            item.sector.replace("_", " ").upper(),
-            font=_font(18, bold=True),
-            fill=MUTED,
-        )
-        draw.text((880, top + 125), f"Distance to winner: {item.distance_to_candidate:.3f}", font=_font(18), fill=INK)
-        draw.text((880, top + 162), f"Region confidence: {item.region_confidence:.0%}", font=_font(18), fill=INK)
-        draw.text((880, top + 199), f"Matched share: {item.local_share:.1%}", font=_font(18), fill=INK)
-        draw.text((880, top + 236), item.source_url[:70], font=_font(14), fill=MUTED)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    image.save(output, quality=92)
-
-
-def render_daily(result: DailyResult, output_dir: Path) -> list[Path]:
-    if result.status == "blocked" or not result.winner:
-        return []
-    output_dir.mkdir(parents=True, exist_ok=True)
-    outputs = [
-        output_dir / "feed-post.png",
-        output_dir / "story-01-color.png",
-        output_dir / "story-02-evidence.png",
-        output_dir / "story-03-why-it-won.png",
-        output_dir / "story-04-runners-up.png",
+    _header(draw, result.date)
+    _status_banner(draw, result.state)
+    title_y = 205 if result.state != PublicationState.READY else 170
+    label = "YESTERDAY’S CO-CHALLENGERS" if len(result.challenger) > 1 else "YESTERDAY’S CHALLENGER"
+    _text(draw, (70, title_y), label, 27, bold=True)
+    x1, y1, x2, y2 = 70, title_y + 55, 1010, 890
+    colors = [c.hex for c in result.challenger]
+    if len(colors) == 1:
+        draw.rounded_rectangle((x1, y1, x2, y2), radius=42, fill=colors[0], outline=_swatch_border(colors[0]), width=3)
+    else:
+        mask = Image.new("L", image.size, 0)
+        md = ImageDraw.Draw(mask)
+        md.rounded_rectangle((x1, y1, x2, y2), radius=42, fill=255)
+        split = (x2 - x1) // len(colors)
+        field = Image.new("RGB", image.size, BG)
+        fd = ImageDraw.Draw(field)
+        for i, color in enumerate(colors):
+            xa = x1 + i * split
+            xb = x2 if i == len(colors) - 1 else x1 + (i + 1) * split
+            fd.rectangle((xa, y1, xb, y2), fill=color)
+        image.paste(field, mask=mask)
+        draw = ImageDraw.Draw(image)
+        draw.rounded_rectangle((x1, y1, x2, y2), radius=42, outline=BORDER, width=3)
+    if len(result.challenger) == 1:
+        c = result.challenger[0]
+        text_color = readable_text_color(c.hex)
+        _text(draw, (115, y1 + 65), c.family_label.upper(), 21, bold=True, fill=text_color)
+        name_font = _font(48, True)
+        lines = _wrap(draw, c.creative_name, name_font, 790, 3)
+        for i, line in enumerate(lines):
+            draw.text((115, y1 + 125 + i * 60), line, font=name_font, fill=text_color)
+        _text(draw, (115, y1 + 125 + len(lines) * 68), c.hex, 34, fill=text_color)
+        _text(draw, (115, y2 - 125), f"{c.trend_state.value.upper()} · EMERGENCE {c.emergence_score:.1f}", 20, bold=True, fill=text_color)
+        _text(draw, (115, y2 - 82), "OBSERVED SOURCE COLOR · PIXEL VERIFIED", 15, bold=True, fill=text_color)
+    else:
+        for i, c in enumerate(result.challenger):
+            center = x1 + (i + 0.5) * (x2 - x1) / len(result.challenger)
+            text_color = readable_text_color(c.hex)
+            _text(draw, (center, y1 + 120), c.family_label.upper(), 25, bold=True, fill=text_color, anchor="ma")
+            _text(draw, (center, y1 + 175), c.hex, 25, fill=text_color, anchor="ma")
+            _text(draw, (center, y2 - 105), f"{c.trend_state.value.upper()} {c.emergence_score:.1f}", 18, bold=True, fill=text_color, anchor="ma")
+    y = 945
+    _text(draw, (70, y), "TODAY’S SIGNAL COVERAGE", 18, bold=True, fill=MUTED)
+    draw.line((70, y + 38, 1010, y + 38), fill=BORDER, width=2)
+    metrics = [
+        (result.sources_with_eligible_evidence, "SOURCES WITH\nEVIDENCE"),
+        (result.domains_covered, "CULTURAL\nDOMAINS"),
+        (result.sectors_covered, "INDUSTRY\nSECTORS"),
+        (result.stages_covered, "SIGNAL\nSTAGES"),
+        (result.discovery_sources, "DISCOVERY\nSOURCES"),
     ]
-    render_feed(result, outputs[0])
-    render_story_color(result, outputs[1])
-    render_story_evidence(result, outputs[2])
-    render_story_why(result, outputs[3])
-    render_story_runners(result, outputs[4])
-    (output_dir / "caption.txt").write_text(build_caption(result), encoding="utf-8")
-    (output_dir / "review-summary.md").write_text(build_review_summary(result), encoding="utf-8")
-    outputs.extend(_write_alt_text(result, output_dir))
-    return outputs
+    for i, (value, label) in enumerate(metrics):
+        x = 70 + i * 188
+        _text(draw, (x, y + 70), str(value), 44, bold=True)
+        for j, line in enumerate(label.split("\n")):
+            _text(draw, (x, y + 123 + j * 20), line, 15, bold=True, fill=MUTED)
+        if i < len(metrics) - 1:
+            draw.line((x + 160, y + 65, x + 160, y + 175), fill=BORDER, width=2)
+    _text(draw, (70, 1265), f"PALETTE REGIME: {result.palette_regime.dominant_regime.upper()}", 17, bold=True, fill=MUTED)
+    image.save(path)
+    return path
+
+
+def _render_color_story(result, path: Path) -> Path:
+    image = _canvas((1080, 1920))
+    draw = ImageDraw.Draw(image)
+    c = result.challenger[0]
+    image.paste(c.hex, (0, 0, 1080, 1920))
+    text_color = readable_text_color(c.hex)
+    _text(draw, (70, 75), "PANTONE CHALLENGER", 30, bold=True, fill=text_color)
+    _text(draw, (70, 120), "THE OPEN CULTURAL COLOR INDEX", 16, fill=text_color)
+    if result.state != PublicationState.READY:
+        _text(draw, (70, 200), "INTERNAL CALIBRATION — DO NOT POST", 19, bold=True, fill=text_color)
+    _text(draw, (70, 500), "YESTERDAY’S CHALLENGER", 27, bold=True, fill=text_color)
+    font = _font(60, True)
+    lines = _wrap(draw, c.creative_name, font, 880, 3)
+    for i, line in enumerate(lines):
+        draw.text((70, 575 + i * 75), line, font=font, fill=text_color)
+    _text(draw, (70, 830), c.hex, 42, fill=text_color)
+    _text(draw, (70, 930), f"{c.source_count} SOURCES · {c.domain_count} DOMAINS · {c.sector_count} SECTORS · {c.stage_count} STAGES", 22, bold=True, fill=text_color)
+    _text(draw, (70, 1010), f"TREND STATE: {c.trend_state.value.upper()}", 22, bold=True, fill=text_color)
+    _text(draw, (70, 1780), result.date.upper(), 22, bold=True, fill=text_color)
+    image.save(path)
+    return path
+
+
+def _render_evidence(result, path: Path, source_map: dict) -> Path:
+    image = _canvas((1080, 1920))
+    draw = ImageDraw.Draw(image)
+    _header(draw, result.date)
+    _text(draw, (70, 160), "WHERE THE SIGNAL APPEARED", 48, bold=True)
+    _text(draw, (70, 225), "Each card shows a local color sampled from traceable creative—not a logo color.", 18, fill=MUTED)
+    evidence = result.challenger[0].evidence[:8]
+    card_w, card_h = 445, 315
+    for i, item in enumerate(evidence):
+        row, col = divmod(i, 2)
+        x, y = 70 + col * 485, 300 + row * 355
+        draw.rounded_rectangle((x, y, x + card_w, y + card_h), radius=28, fill=CARD, outline=BORDER, width=2)
+        draw.rounded_rectangle((x + 25, y + 25, x + 125, y + 125), radius=20, fill=item.local_hex, outline=_swatch_border(item.local_hex), width=3)
+        spec = source_map.get(item.source_id.split(":", 1)[0])
+        logo_shown = False
+        if spec and spec.brand_mark_status == "approved" and spec.brand_mark_path:
+            logo_path = Path(spec.brand_mark_path)
+            if not logo_path.is_absolute():
+                logo_path = Path.cwd() / logo_path
+            if logo_path.exists():
+                fitted = trim_and_fit_logo(logo_path, (220, 72))
+                if fitted is not None:
+                    image.alpha_composite(fitted, (x + 190, y + 28)) if image.mode == "RGBA" else image.paste(fitted, (x + 190, y + 28), fitted)
+                    logo_shown = True
+        if not logo_shown:
+            name_font = _font(25, True)
+            for j, line in enumerate(_wrap(draw, item.source_name, name_font, 265, 2)):
+                draw.text((x + 150, y + 32 + j * 30), line, font=name_font, fill=INK)
+        _text(draw, (x + 25, y + 148), f"{item.domain.replace('_', ' ').upper()} · {item.sector.upper()} · {item.signal_stage.upper()}", 15, bold=True, fill=MUTED)
+        _text(draw, (x + 25, y + 188), f"LOCAL MATCH {item.local_hex}", 17, bold=True)
+        _text(draw, (x + 25, y + 220), f"AREA {item.local_share:.0%} · CONTIGUOUS {item.largest_component_share:.0%}", 14, bold=True, fill=MUTED)
+        verified = "SOURCE PIXEL VERIFIED" if item.observed_pixel else "COLOR VERIFICATION FAILED"
+        _text(draw, (x + 25, y + 250), verified, 14, bold=True, fill="#3E6B45" if item.observed_pixel else "#A2342B")
+        _text(draw, (x + 25, y + 280), "LOGO/NAME = ATTRIBUTION ONLY", 12, bold=True, fill="#8A6550")
+    _text(draw, (70, 1760), f"{result.sources_with_eligible_evidence} OF {result.panel_declared} ACTIVE SOURCES PRODUCED ELIGIBLE CREATIVE", 16, bold=True, fill=MUTED)
+    _text(draw, (70, 1810), "Full source regions remain private unless their rights mode permits republication.", 15, fill=MUTED)
+    image.save(path)
+    return path
+
+
+def _render_why(result, path: Path) -> Path:
+    image = _canvas((1080, 1920))
+    draw = ImageDraw.Draw(image)
+    _header(draw, result.date)
+    _text(draw, (70, 175), "WHY IT ROSE", 54, bold=True)
+    c = result.challenger[0]
+    rows = [
+        ("EMERGENCE SCORE", f"{c.emergence_score:.1f}"),
+        ("INDEPENDENT SOURCES", str(c.source_count)),
+        ("CULTURAL DOMAINS", str(c.domain_count)),
+        ("SIGNAL STAGES", str(c.stage_count)),
+        ("NEWNESS", f"{c.novelty:.0%}"),
+        ("ADOPTION VELOCITY", f"{c.adoption_velocity:.0%}"),
+        ("SMALL + LARGE DIVERSITY", f"{c.small_large_diversity:.0%}"),
+        ("TOP DOMAIN CONCENTRATION", f"{c.top_domain_weight:.0%}"),
+        ("DISPLAY HEX OBSERVED", "YES" if c.color_integrity.get("display_hex_is_observed") else "NO"),
+        ("COLOR CLUSTER DIAMETER", f"{float(c.color_integrity.get('cluster_diameter', 0.0)):.3f}"),
+    ]
+    y = 285
+    for label, value in rows:
+        draw.rounded_rectangle((70, y, 1010, y + 112), radius=22, fill=CARD, outline=BORDER, width=2)
+        _text(draw, (105, y + 56), label, 17, bold=True, fill=MUTED, anchor="lm")
+        _text(draw, (955, y + 56), value, 34, bold=True, anchor="rm")
+        y += 128
+    _text(draw, (70, 1605), "THE SYSTEM SEPARATES:", 18, bold=True, fill=MUTED)
+    _text(draw, (70, 1650), f"UNDERCURRENT  {result.undercurrent.family_label if result.undercurrent else '—'}", 22, bold=True)
+    _text(draw, (70, 1695), f"MAINSTREAM  {result.mainstream_leader.family_label if result.mainstream_leader else '—'}", 22, bold=True)
+    _text(draw, (70, 1740), f"PALETTE REGIME  {result.palette_regime.dominant_regime.upper()}", 22, bold=True)
+    _text(draw, (70, 1825), f"BASELINE: {result.baseline_days} PRIOR VALID DAYS", 16, bold=True, fill=MUTED)
+    image.save(path)
+    return path
+
+
+def _render_runners(result, path: Path) -> Path:
+    image = _canvas((1080, 1920))
+    draw = ImageDraw.Draw(image)
+    _header(draw, result.date)
+    _text(draw, (70, 175), "RUNNERS-UP", 54, bold=True)
+    _text(draw, (70, 245), "Only distinct, independently supported color clusters are shown.", 18, fill=MUTED)
+    y = 335
+    for rank, c in enumerate(result.runner_ups[:3], start=2):
+        draw.rounded_rectangle((70, y, 1010, y + 390), radius=28, fill=CARD, outline=BORDER, width=2)
+        swatch_box = (95, y + 25, 395, y + 365)
+        draw.rounded_rectangle(swatch_box, radius=24, fill=c.hex, outline=_swatch_border(c.hex), width=4)
+        tc = readable_text_color(c.hex)
+        _text(draw, (125, y + 65), f"#{rank}", 26, bold=True, fill=tc)
+        _text(draw, (125, y + 320), c.hex, 24, bold=True, fill=tc)
+        font = _font(31, True)
+        for i, line in enumerate(_wrap(draw, c.creative_name, font, 520, 3)):
+            draw.text((440, y + 55 + i * 40), line, font=font, fill=INK)
+        _text(draw, (440, y + 195), f"{c.source_count} SOURCES · {c.domain_count} DOMAINS · {c.stage_count} STAGES", 17, bold=True, fill=MUTED)
+        _text(draw, (440, y + 245), f"EMERGENCE {c.emergence_score:.1f}", 20, bold=True)
+        _text(draw, (440, y + 292), f"TREND {c.trend_state.value.upper()}", 18, bold=True, fill=MUTED)
+        y += 440
+    if not result.runner_ups:
+        _text(draw, (70, 400), "No distinct runner-up passed today’s evidence gates.", 28, bold=True)
+    _text(draw, (70, 1810), f"PANEL: {result.panel_declared} ACTIVE · {result.sources_with_eligible_evidence} WITH EVIDENCE · {result.domains_covered} DOMAINS", 15, bold=True, fill=MUTED)
+    image.save(path)
+    return path
+
+
+def _render_signal_map(result, path: Path) -> Path:
+    image = _canvas((1080, 1920))
+    draw = ImageDraw.Draw(image)
+    _header(draw, result.date)
+    _text(draw, (70, 170), "HOW THE SIGNAL MOVED", 50, bold=True)
+    evidence = result.challenger[0].evidence
+    groups = [
+        ("CULTURAL DOMAINS", Counter(e.domain for e in evidence)),
+        ("INDUSTRY SECTORS", Counter(e.sector for e in evidence)),
+        ("SIGNAL STAGES", Counter(e.signal_stage for e in evidence)),
+        ("SOURCE SCALE", Counter(e.scale_class for e in evidence)),
+        ("PANEL TYPE", Counter(e.panel_type for e in evidence)),
+    ]
+    y = 290
+    for title, counts in groups:
+        _text(draw, (70, y), title, 21, bold=True, fill=MUTED)
+        y += 55
+        total = max(1, sum(counts.values()))
+        for label, count in counts.most_common(6):
+            _text(draw, (70, y + 20), label.replace("_", " ").upper(), 18, bold=True)
+            draw.rounded_rectangle((390, y, 930, y + 44), radius=20, fill="#E7E0D6")
+            draw.rounded_rectangle((390, y, 390 + int(540 * count / total), y + 44), radius=20, fill=ACCENT)
+            _text(draw, (965, y + 22), str(count), 18, bold=True, anchor="mm")
+            y += 65
+        y += 55
+    image.save(path)
+    return path
+
+
+def _render_context(result, path: Path) -> Path:
+    image = _canvas((1080, 1920))
+    draw = ImageDraw.Draw(image)
+    _header(draw, result.date)
+    _text(draw, (70, 170), "THE WIDER COLOR FIELD", 50, bold=True)
+    items = []
+    if result.undercurrent:
+        items.append(("UNDERCURRENT", result.undercurrent, "Early or independent signals"))
+    if result.mainstream_leader:
+        items.append(("MAINSTREAM LEADER", result.mainstream_leader, "Broad current usage, not necessarily new"))
+    if result.usage_leader and all(result.usage_leader.hex != c.hex for _, c, _ in items):
+        items.append(("RAW USAGE LEADER", result.usage_leader, "Most broadly visible in the sample"))
+    y = 300
+    for label, c, description in items[:3]:
+        draw.rounded_rectangle((70, y, 1010, y + 400), radius=30, fill=CARD, outline=BORDER, width=2)
+        draw.rounded_rectangle((95, y + 35, 350, y + 365), radius=24, fill=c.hex, outline=_swatch_border(c.hex), width=4)
+        tc = readable_text_color(c.hex)
+        _text(draw, (125, y + 75), c.family_label.upper(), 22, bold=True, fill=tc)
+        _text(draw, (125, y + 320), c.hex, 22, bold=True, fill=tc)
+        _text(draw, (395, y + 55), label, 18, bold=True, fill=MUTED)
+        font = _font(31, True)
+        for i, line in enumerate(_wrap(draw, c.creative_name, font, 540, 3)):
+            draw.text((395, y + 100 + i * 42), line, font=font, fill=INK)
+        _text(draw, (395, y + 245), description, 17, fill=MUTED)
+        _text(draw, (395, y + 300), f"{c.source_count} SOURCES · {c.domain_count} DOMAINS", 18, bold=True)
+        y += 450
+    if result.palette_pair:
+        colors = result.palette_pair["colors"]
+        _text(draw, (70, 1680), "EMERGING PALETTE PAIR", 18, bold=True, fill=MUTED)
+        for i, color in enumerate(colors[:2]):
+            draw.rounded_rectangle((70 + i * 330, 1730, 350 + i * 330, 1840), radius=20, fill=color, outline=_swatch_border(color), width=3)
+            _text(draw, (210 + i * 330, 1785), color, 20, bold=True, fill=readable_text_color(color), anchor="mm")
+    image.save(path)
+    return path
+
+
+def _render_baseline(result, path: Path) -> Path:
+    image = _canvas()
+    draw = ImageDraw.Draw(image)
+    _header(draw, result.date)
+    _text(draw, (70, 220), "BASELINE DAY", 64, bold=True)
+    _text(draw, (70, 310), "NO CONVERGED CHALLENGER", 34, bold=True)
+    _text(draw, (70, 375), "The sample was useful, but no color passed the emergence gates.", 22, fill=MUTED)
+    draw.rounded_rectangle((70, 500, 1010, 1000), radius=36, fill=CARD, outline=BORDER, width=2)
+    _text(draw, (110, 585), f"{result.sources_with_eligible_evidence} / {result.panel_declared}", 76, bold=True)
+    _text(draw, (110, 685), "ACTIVE SOURCES WITH ELIGIBLE CREATIVE", 22, bold=True, fill=MUTED)
+    _text(draw, (110, 795), f"{result.domains_covered} DOMAINS · {result.stages_covered} SIGNAL STAGES", 30, bold=True)
+    _text(draw, (110, 875), f"PALETTE REGIME: {result.palette_regime.dominant_regime.upper()}", 24, bold=True)
+    _text(draw, (70, 1200), "This day can be merged to improve the historical baseline, but it produces no social post.", 18, fill=MUTED)
+    image.save(path)
+    return path
+
+
+def _render_review(result, path: Path) -> Path:
+    image = _canvas()
+    draw = ImageDraw.Draw(image)
+    _header(draw, result.date)
+    _text(draw, (70, 220), "INTERNAL REVIEW", 64, bold=True)
+    _text(draw, (70, 310), "NO PUBLIC COLOR PACKAGE", 34, bold=True)
+    y = 430
+    for reason in (result.blocking_reasons or result.review_reasons)[:6]:
+        draw.rounded_rectangle((70, y, 1010, y + 110), radius=22, fill=CARD, outline=BORDER, width=2)
+        font = _font(19)
+        for i, line in enumerate(_wrap(draw, reason, font, 850, 2)):
+            draw.text((100, y + 27 + i * 28), line, font=font, fill=INK)
+        y += 135
+    image.save(path)
+    return path
+
+
+def _write_text_assets(result, out: Path) -> None:
+    if result.challenger:
+        names = " + ".join(c.creative_name.title() for c in result.challenger)
+        colors = " + ".join(c.hex for c in result.challenger)
+        caption = (
+            f"Yesterday’s Challenger: {names} ({colors}). "
+            f"The signal appeared across {result.sources_with_eligible_evidence} eligible sources, "
+            f"{result.domains_covered} cultural domains, and {result.stages_covered} signal stages. "
+            f"Palette regime: {result.palette_regime.dominant_regime}. "
+            "Measured within Pantone Challenger’s declared Open Cultural Color Index—not the entire internet. "
+            "Independent project; not affiliated with Pantone."
+        )
+        alt = (
+            f"A Pantone Challenger graphic showing {names}, {colors}, as the strongest emerging cultural color "
+            f"signal for {result.date}. {result.sources_with_eligible_evidence} sources across "
+            f"{result.domains_covered} domains produced eligible evidence."
+        )
+    else:
+        caption = "No public Challenger was selected today. The observations were retained for calibration or diagnostic review."
+        alt = caption
+    (out / "caption.txt").write_text(caption + "\n", encoding="utf-8")
+    (out / "feed-alt-text.txt").write_text(alt + "\n", encoding="utf-8")
+    (out / "story-alt-text.txt").write_text(alt + "\n", encoding="utf-8")
+
+
+def _swatch_border(hex_value: str) -> str:
+    return "#B5ADA1" if contrast_ratio(hex_value, BG) < 1.45 else hex_value

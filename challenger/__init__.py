@@ -1,3 +1,3 @@
-"""Pantone Challenger: a reproducible daily commercial-color index."""
+"""Pantone Challenger: the Open Cultural Color Index."""
 
-__version__ = "1.3.0"
+__version__ = "1.5.1"

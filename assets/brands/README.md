@@ -1,15 +1,13 @@
-# Approved Brand Marks
+# Approved brand marks
 
-Pantone Challenger V1.3 uses **text-only company attribution by default**.
+This directory is intentionally empty in a fresh installation.
 
-Do not add favicons, screenshots, scraped header logos, or unofficial logo downloads here.
+Pantone Challenger never scrapes a favicon and presents it as a polished logo. A public mark may be used only when:
 
-A brand mark may be added only after it has been manually reviewed for source, rights posture, legibility, transparent padding, and presentation. After approval:
+1. it came from a first-party or otherwise authorized source;
+2. it is manually reviewed;
+3. it is a transparent PNG with adequate source resolution;
+4. the corresponding source registry entry sets `brand_mark_status: approved`;
+5. the registry points to the normalized output path.
 
-1. store the normalized image in this directory;
-2. declare its relative path in `config/sources.yml`;
-3. change that source's `brand_mark_status` from `text_only` to `approved`;
-4. run the complete validation suite;
-5. confirm the mark is attribution only and never treated as color evidence.
-
-Until those steps are complete, the evidence card must use the company name and its measured local color swatch without a logo.
+Use `python scripts/normalize_brand_mark.py INPUT.png OUTPUT.png` to create a contained, padded presentation asset. When no approved mark exists, the renderer uses the company or source name as text. This is the expected default, not an error.

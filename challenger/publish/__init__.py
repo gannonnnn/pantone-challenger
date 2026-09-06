@@ -1,1 +1,0 @@
-"""Credential-gated social publishers."""
