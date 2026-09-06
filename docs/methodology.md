@@ -1,137 +1,74 @@
-# Challenger Color Index Methodology — Version 1.3
+# Methodology: the Open Cultural Color Index
 
-## Research question
+Pantone Challenger asks a different question from an annual expert color selection:
 
-Pantone Challenger asks:
+> Which colors are beginning, spreading, converging, and becoming ordinary across culture now?
 
-> Which color was most unusually prominent across the usable marketing creative in the declared commercial panel for a given day?
+## A two-dimensional signal matrix
 
-It does not claim to measure every advertisement, social post, campaign, or website on the internet.
+Every source is classified by:
 
-## Panel and voting unit
+1. **Cultural domain** — art, fashion, marketplace, advertising, design and interiors, entertainment, technology, independent creation, audience intent, materials, public visual culture, or lifestyle.
+2. **Signal stage** — creation, distribution, or attention.
 
-The declared panel contains 48 official US-facing marketing pages across 12 sectors, four companies per sector. The source registry is versioned in `config/sources.yml`.
+It also records source scale, panel type, event type, geography, rights mode, platform, and authoritative industry sector.
 
-The voting unit is an **independent company**, not a pixel, image, tile, or webpage length. Each company’s daily contribution is normalized to one total vote before cross-company scoring.
+## Stable and rotating panels
 
-## Capture
+The **benchmark panel** is sampled consistently so day-over-day and source-level comparisons remain meaningful.
 
-Each page is rendered in Chromium at a fixed viewport and two configured scroll positions. The system does not log in, bypass access controls, solve CAPTCHAs, or evade blocking.
+The **discovery panel** rotates across small, independent, institutional, marketplace, and experimental sources. It exists to find signals the benchmark does not yet know about.
 
-Full-page frames are retained as private diagnostics. They are not themselves color evidence.
+Large sources provide confidence. Small sources provide discovery. Neither is allowed to become the whole index.
 
-## Eligible marketing-creative regions
+## What counts as evidence
 
-V1.3 searches visible page content for likely creative regions such as large `main`, `section`, `article`, `picture`, image, poster, and background-image areas.
+For a webpage, a color must come from an eligible creative region such as a campaign image, product collection, exhibition, poster, editorial artwork, or large visual section. Navigation, logos, favicons, cookie notices, verification pages, modal offers, blank space, and loading placeholders are rejected.
 
-The system excludes or rejects regions associated with:
+For official APIs and feeds, the image is tied to a specific object, listing, release, or publication event.
 
-- headers and navigation;
-- footers and legal interfaces;
-- cookie banners and modal overlays;
-- chat widgets and account controls;
-- logos, favicons, and small icons;
-- regions below the minimum size or confidence thresholds;
-- exact duplicate regions.
+Every source displayed behind a candidate retains a local swatch, creative-region identifier, perceptual distance, local share, confidence, URL, rights mode, and registry classification.
 
-A company can support a public candidate only when at least one eligible region exists.
+## Image integrity
 
-## Region-level color extraction
+- Transparent padding is trimmed before analysis.
+- Tiny favicons are not public brand marks.
+- Logos never cast color votes.
+- Public logos require a manually approved asset; otherwise the company or source name is rendered as text.
+- Logos use contain fitting, are never cropped, and are not enlarged by more than 2×.
+- Cross-source exact and near-duplicate imagery is reduced so a syndicated campaign does not become many independent votes.
+- Light swatches receive visible boundaries.
+- Automated tests verify that winner and runner-up swatch pixels match the declared HEX values.
+- Every daily run independently reopens the private evidence and verifies that all extracted and candidate HEX values occur in decoded source pixels. A mismatch is a hard software-integrity failure.
+- Cross-source display colors are observed medoids, not synthetic average centroids.
 
-Each eligible region is converted from sRGB into OKLab/OKLCH and reduced to perceptually prominent swatches. Visually similar swatches are merged within the company. Near-black, white, and gray remain measurable but are subject to strict display eligibility and neutral-trend gates.
+## Popularity versus emergence
 
-For every company-to-candidate match, the system retains:
+The system separately computes:
 
-- region identifier and private screenshot path;
-- local HEX and OKLab value;
-- distance to the cross-company candidate;
-- local matched-color share;
-- region confidence;
-- company name, sector, URL, and page title.
+- **Raw usage leader** — what is broadly visible today.
+- **Mainstream leader** — what is visible across benchmark and large sources.
+- **Undercurrent** — what is strongest among independent, grassroots, or discovery sources.
+- **Challenger** — what is emerging across unrelated domains and signal stages.
 
-This record is called `CandidateEvidence`.
+The public Challenger is selected by reproducible statistics, not an LLM. AI may help name and explain a measured result after selection.
 
-## Cross-company clustering
+## Historical comparison
 
-Company-normalized swatches are clustered by perceptual distance in OKLab. A company may count at most once for a candidate. Runner-ups must be perceptually distinct from the winner and from one another.
+Each source is compared with itself. A permanent brand blue is not novel merely because it appeared again. The engine measures new adoption, rising local use, panel lift, acceleration, cross-domain spread, cross-stage convergence, source-scale diversity, and evidence quality.
 
-## Persistent house colors
+Candidate states are New, Rising, Spreading, Surging, Stable, Identity, Cooling, or Calibration.
 
-The system reduces colors that are ordinary for a particular company using:
+## Ties and palette pairings
 
-1. optional declared house colors in the source registry; and
-2. a learned source-specific baseline from prior accepted V1.3 observations.
+A tie is allowed when qualified candidates have near-equal scores and overlapping uncertainty. A palette pairing is different: it means two colors repeatedly appear together inside the same creative work.
 
-Persistent colors are suppressed rather than deleted. They can still matter when their use materially exceeds the company’s own baseline.
+A tied color receives one appearance day and a fractional leaderboard day-share for annual aggregation.
 
-## Candidate score
+## Palette regimes
 
-The Challenger Score combines:
+A single HEX cannot describe a visual era. Daily and monthly reports also track neutral share, chroma, lightness, warm/cool balance, contrast, palette size, monochromatic share, muted/electric balance, and recurring color pairs.
 
-- independent company breadth;
-- cross-sector breadth;
-- source-normalized prevalence;
-- creative-region salience;
-- source-history momentum;
-- evidence-region confidence;
-- neutral penalties;
-- company and sector concentration penalties.
+## No forced winner
 
-The method is deterministic for the same inputs and configuration.
-
-## Publication states
-
-### Blocked
-
-The run fails the minimum evidence requirements. Diagnostics are retained, but the result must not be posted.
-
-### Review only
-
-The run has enough evidence to inspect but is still calibrating, has insufficient public-ready coverage, or is a close call. Assets are labeled `INTERNAL CALIBRATION — NOT FOR POSTING`. Review-only days can warm source baselines after merge, but they do not enter recurrence or annual history.
-
-### Ready
-
-The run passes stronger coverage, breadth, region-confidence, distance, concentration, score-margin, and baseline requirements. A human may approve it by merging its review pull request.
-
-## Default quality thresholds
-
-The defaults in `config/settings.yml` include:
-
-- internal review: at least 20 evidence-bearing company pages, seven sectors, and 40% panel coverage;
-- public readiness: at least 30 evidence-bearing company pages, nine sectors, and 60% panel coverage;
-- winner: at least six companies, four sectors, four traceable regions, sufficient region confidence, and bounded perceptual distance;
-- concentration: no company or sector may dominate beyond the configured limits;
-- close call: a small score margin remains review-only;
-- calibration: seven accepted prior observations are required before a result may become ready.
-
-The configuration file is the authoritative source for exact numeric thresholds.
-
-## Evidence presentation
-
-A logo is attribution only and never color evidence. V1.3 ships with every source set to `text_only`. Public evidence cards show the local matched swatch, company name, authoritative sector, and local share. A brand mark may appear only after a human adds an approved asset and updates the registry.
-
-Raw region screenshots and contact sheets remain private review artifacts.
-
-## Naming
-
-Each candidate has:
-
-- a deterministic color-family label based on its measured OKLCH values; and
-- an optional playful creative nickname.
-
-The nickname cannot determine the family. Near-neutral values receive neutral family labels rather than unstable hue names.
-
-## Recurrence and annual summary
-
-Only `ready` results merged into `main` contribute to recurrence and the January Year in Color report. Review-only, blocked, duplicate-date, and reverted results do not count.
-
-Similar colors can belong to the same annual family without requiring identical HEX values. The recurrence method uses conservative complete-link perceptual matching to prevent gradual hue drift.
-
-## Limitations
-
-- The panel is declared, finite, US-facing, and not globally representative.
-- Official webpages are only one part of commercial visual culture.
-- Websites change structure and may block automated browsers.
-- Region detection can still miss creative or admit ambiguous content.
-- Early source baselines are weak; this is why V1.3 begins with manual calibration.
-- A measured association does not imply that a company coordinated with any other company or endorsed the project.
+Valid outcomes are Ready, Review Only, Baseline Only, and Blocked. A day with no trustworthy emerging color can still improve the baseline without creating a social post.

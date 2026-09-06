@@ -1,0 +1,52 @@
+name: Submit a cultural color signal
+description: Suggest a public artwork, campaign, collection, listing, material, or visual project for moderator review.
+title: "[Signal] "
+labels: ["signal-submission", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Submissions do not enter the index automatically. A moderator verifies provenance, event date, rights mode, and source classification first.
+  - type: input
+    id: source_url
+    attributes:
+      label: Public source URL
+      description: Link to the original creator, institution, marketplace listing, or campaign page.
+    validations:
+      required: true
+  - type: input
+    id: published_at
+    attributes:
+      label: Creation, exhibition, publication, or listing date
+      placeholder: YYYY-MM-DD
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: Signal stage
+      options:
+        - Creation — someone made or released it
+        - Distribution — someone placed it before an audience
+        - Attention — people are responding to it
+    validations:
+      required: true
+  - type: dropdown
+    id: scale
+    attributes:
+      label: Source scale
+      options:
+        - Grassroots
+        - Independent
+        - Mid-size
+        - Large commercial
+        - Institutional
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Why is this a useful color signal?
+      description: Explain what is new and whether the page contains original creative.
+    validations:
+      required: true

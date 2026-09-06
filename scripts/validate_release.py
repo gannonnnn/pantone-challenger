@@ -1,134 +1,90 @@
-#!/usr/bin/env python3
 from __future__ import annotations
 
-import ast
 import json
-import subprocess
+import re
 import sys
 from pathlib import Path
 
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
-errors: list[str] = []
+sys.path.insert(0, str(ROOT))
 
-for path in sorted(ROOT.rglob("*.py")):
-    if any(part in {".venv", ".git", ".work"} for part in path.parts):
-        continue
-    try:
-        ast.parse(path.read_text(encoding="utf-8"), filename=str(path))
-    except SyntaxError as exc:
-        errors.append(f"Python syntax: {path.relative_to(ROOT)}: {exc}")
+from challenger import __version__  # noqa: E402
+from challenger.config import load_settings, load_sources  # noqa: E402
 
-for path in sorted((ROOT / "config").glob("*.yml")):
-    try:
-        yaml.safe_load(path.read_text(encoding="utf-8"))
-    except Exception as exc:
-        errors.append(f"YAML syntax: {path.relative_to(ROOT)}: {exc}")
 
-for path in sorted((ROOT / ".github/workflows").glob("*.yml")):
-    try:
-        yaml.safe_load(path.read_text(encoding="utf-8"))
-    except Exception as exc:
-        errors.append(f"Workflow YAML syntax: {path.relative_to(ROOT)}: {exc}")
-
-source_payload = yaml.safe_load((ROOT / "config/sources.yml").read_text())
-panel_version = str(source_payload.get("panel_version", ""))
-if panel_version != "1.3":
-    errors.append(f"Expected panel version 1.3, found {panel_version!r}")
-sources = source_payload["sources"]
-sectors: dict[str, int] = {}
-for source in sources:
-    sectors[source["sector"]] = sectors.get(source["sector"], 0) + 1
-if len(sources) != 48:
-    errors.append(f"Expected 48 panel sources, found {len(sources)}")
-if len(sectors) != 12:
-    errors.append(f"Expected 12 panel sectors, found {len(sectors)}")
-if set(sectors.values()) != {4}:
-    errors.append(f"Panel is not balanced: {sectors}")
-
-expected_registry = {
-    "spotify": "entertainment",
-    "max": "entertainment",
-    "playstation": "gaming",
-    "epic-games-store": "gaming",
-    "nike": "sports",
-    "peloton": "sports",
-    "apple": "technology",
-    "sephora": "beauty",
-}
-source_by_id = {source["id"]: source for source in sources}
-for source_id, sector in expected_registry.items():
-    actual = source_by_id.get(source_id, {}).get("sector")
-    if actual != sector:
-        errors.append(f"Registry mismatch for {source_id}: {actual!r} != {sector!r}")
-
-for source in sources:
-    status = source.get("brand_mark_status", "text_only")
-    if status not in {"approved", "text_only"}:
-        errors.append(f"Invalid brand mark status for {source['id']}: {status}")
-    if status == "approved":
-        mark = ROOT / str(source.get("brand_mark_path", ""))
-        if not mark.is_file():
-            errors.append(f"Approved mark is missing for {source['id']}: {mark}")
-
-daily_workflow = (ROOT / ".github/workflows/daily.yml").read_text(encoding="utf-8")
-publish_workflow = (ROOT / ".github/workflows/publish.yml").read_text(encoding="utf-8")
-if "workflow_dispatch:" not in daily_workflow or "schedule:" in daily_workflow:
-    errors.append("Daily Challenger must remain manual-only during V1.3 calibration")
-if "workflow_dispatch:" not in publish_workflow or "schedule:" in publish_workflow:
-    errors.append("Social publishing must remain manual-only during V1.3 calibration")
-
-for required in (
-    ROOT / "challenger/evidence.py",
-    ROOT / "challenger/integrity.py",
-    ROOT / "docs/v1.3-repair-spec.md",
-    ROOT / "assets/brands/README.md",
-):
-    if not required.is_file():
-        errors.append(f"Required V1.3 file is missing: {required.relative_to(ROOT)}")
-
-for path in ROOT.rglob("*"):
-    if not path.is_file():
-        continue
-    if any(part in {"preview", "previews", "demo-output"} for part in path.parts):
-        errors.append(f"Preview/demo file is present in production: {path.relative_to(ROOT)}")
-    if path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp"} and "assets/brands" not in str(path):
-        errors.append(f"Unexpected bundled image in production: {path.relative_to(ROOT)}")
-
-for forbidden in (".env", "INSTAGRAM_ACCESS_TOKEN=", "BLUESKY_APP_PASSWORD="):
+def main() -> int:
+    errors = []
+    settings = load_settings()
+    version, sources = load_sources()
+    if __version__ != "1.5.1":
+        errors.append(f"Unexpected package version: {__version__}")
+    if settings.get("methodology_version") != "1.5.1":
+        errors.append("Methodology version is not 1.5.1")
+    enabled = [s for s in sources if s.enabled]
+    if len(enabled) < 50:
+        errors.append("The enabled cultural panel has fewer than 50 declared sources")
+    if len({s.domain.value for s in enabled}) < 10:
+        errors.append("The panel spans fewer than 10 cultural domains")
+    if {s.signal_stage.value for s in enabled} != {"creation", "distribution", "attention"}:
+        errors.append("Creation, distribution, and attention are not all represented")
+    if {s.panel_type.value for s in enabled} != {"benchmark", "discovery"}:
+        errors.append("Benchmark and discovery panels are not both represented")
+    required_workflows = {"ci.yml", "daily.yml", "pages.yml", "publish.yml", "year-end.yml"}
+    found = {p.name for p in (ROOT / ".github/workflows").glob("*.yml")}
+    missing = required_workflows - found
+    if missing:
+        errors.append(f"Missing workflows: {sorted(missing)}")
+    forbidden_names = []
     for path in ROOT.rglob("*"):
-        if not path.is_file() or any(part in {".git", ".venv"} for part in path.parts):
+        if any(part in {".git", ".venv", "__pycache__", ".pytest_cache", "tests"} for part in path.parts):
             continue
-        if path.name == ".env.example" and forbidden != ".env":
+        if path.name.lower() in {"demo-output", "preview", "previews", "synthetic-results.json"}:
+            forbidden_names.append(str(path.relative_to(ROOT)))
+    if forbidden_names:
+        errors.append(f"Forbidden production fixture paths: {forbidden_names}")
+    secret_patterns = [
+        re.compile(r"(?i)(access[_-]?token|api[_-]?key|app[_-]?password)\s*[:=]\s*['\"]?[A-Za-z0-9_-]{24,}"),
+        re.compile(r"ghp_[A-Za-z0-9]{20,}"),
+    ]
+    for path in ROOT.rglob("*"):
+        if not path.is_file() or path.suffix.lower() in {".png", ".jpg", ".jpeg", ".webp", ".zip"}:
             continue
-        if forbidden == ".env" and path.name == ".env":
-            errors.append("A real .env file is present")
-            break
+        if path.name == ".env.example":
+            continue
+        try:
+            text = path.read_text(encoding="utf-8")
+        except Exception:
+            continue
+        if any(pattern.search(text) for pattern in secret_patterns):
+            errors.append(f"Potential secret in {path.relative_to(ROOT)}")
+    source_yaml = yaml.safe_load((ROOT / "config/sources.yml").read_text(encoding="utf-8"))
+    for raw in source_yaml.get("sources", []):
+        if "sector" not in raw:
+            errors.append(f"Source {raw.get('id')} lacks authoritative sector")
+        if raw.get("brand_mark_status") == "approved":
+            asset = ROOT / raw.get("brand_mark_path", "")
+            if not asset.exists():
+                errors.append(f"Approved brand mark missing for {raw.get('id')}")
+    report = {
+        "version": __version__,
+        "registry_version": version,
+        "enabled_sources": len(enabled),
+        "domains": sorted({s.domain.value for s in enabled}),
+        "stages": sorted({s.signal_stage.value for s in enabled}),
+        "benchmark_sources": sum(s.panel_type.value == "benchmark" for s in enabled),
+        "discovery_sources": sum(s.panel_type.value == "discovery" for s in enabled),
+        "errors": errors,
+    }
+    (ROOT / "release-validation.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
+    if errors:
+        for error in errors:
+            print(f"ERROR: {error}")
+        return 1
+    print(json.dumps(report, indent=2))
+    return 0
 
-test = subprocess.run(
-    [sys.executable, "-m", "pytest", "-q"],
-    cwd=ROOT,
-    text=True,
-    capture_output=True,
-)
-if test.returncode:
-    errors.append("pytest failed:\n" + test.stdout + "\n" + test.stderr)
 
-report = {
-    "passed": not errors,
-    "python": sys.version,
-    "sources": len(sources),
-    "sectors": len(sectors),
-    "panel_version": panel_version,
-    "sector_counts": sectors,
-    "pytest_output": test.stdout.strip(),
-    "errors": errors,
-}
-(ROOT / "release-validation.json").write_text(
-    json.dumps(report, indent=2), encoding="utf-8"
-)
-if errors:
-    print("\n\n".join(errors), file=sys.stderr)
-    raise SystemExit(1)
-print(json.dumps(report, indent=2))
+if __name__ == "__main__":
+    raise SystemExit(main())

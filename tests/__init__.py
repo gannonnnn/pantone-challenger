@@ -1,1 +1,1 @@
-"""Makes the test folder importable during GitHub Actions CI."""
+"""Pantone Challenger test package."""

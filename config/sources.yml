@@ -1,1156 +1,1225 @@
-panel_version: '1.3'
-description: A balanced panel of official US-facing commercial marketing pages with authoritative sector
-  metadata.
+registry_version: "2026.09-v1.5"
+
+# The registry is the sole authority for names, sectors, cultural lanes, stages,
+# scale classes, rights modes, and allowed hosts. Runtime classification cannot
+# silently overwrite these values.
 sources:
-- id: apple
-  name: Apple
-  sector: technology
-  url: https://www.apple.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: microsoft
-  name: Microsoft
-  sector: technology
-  url: https://www.microsoft.com/en-us/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: adobe
-  name: Adobe
-  sector: technology
-  url: https://www.adobe.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: samsung
-  name: Samsung
-  sector: technology
-  url: https://www.samsung.com/us/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: target
-  name: Target
-  sector: retail
-  url: https://www.target.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: walmart
-  name: Walmart
-  sector: retail
-  url: https://www.walmart.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: etsy
-  name: Etsy
-  sector: retail
-  url: https://www.etsy.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: best-buy
-  name: Best Buy
-  sector: retail
-  url: https://www.bestbuy.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: starbucks
-  name: Starbucks
-  sector: food_beverage
-  url: https://www.starbucks.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: coca-cola
-  name: Coca-Cola
-  sector: food_beverage
-  url: https://www.coca-cola.com/us/en
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: mcdonalds
-  name: McDonald's
-  sector: food_beverage
-  url: https://www.mcdonalds.com/us/en-us.html
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: chipotle
-  name: Chipotle
-  sector: food_beverage
-  url: https://www.chipotle.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: netflix
-  name: Netflix
-  sector: entertainment
-  url: https://www.netflix.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: disney-plus
-  name: Disney+
-  sector: entertainment
-  url: https://www.disneyplus.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: spotify
-  name: Spotify
-  sector: entertainment
-  url: https://www.spotify.com/us/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: max
-  name: Max
-  sector: entertainment
-  url: https://www.max.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: sephora
-  name: Sephora
-  sector: beauty
-  url: https://www.sephora.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: glossier
-  name: Glossier
-  sector: beauty
-  url: https://www.glossier.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: fenty-beauty
-  name: Fenty Beauty
-  sector: beauty
-  url: https://fentybeauty.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: ulta
-  name: Ulta Beauty
-  sector: beauty
-  url: https://www.ulta.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: airbnb
-  name: Airbnb
-  sector: travel
-  url: https://www.airbnb.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: marriott
-  name: Marriott
-  sector: travel
-  url: https://www.marriott.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: delta
-  name: Delta Air Lines
-  sector: travel
-  url: https://www.delta.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: visit-california
-  name: Visit California
-  sector: travel
-  url: https://www.visitcalifornia.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: capital-one
-  name: Capital One
-  sector: finance
-  url: https://www.capitalone.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: chase
-  name: Chase
-  sector: finance
-  url: https://www.chase.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: american-express
-  name: American Express
-  sector: finance
-  url: https://www.americanexpress.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: cash-app
-  name: Cash App
-  sector: finance
-  url: https://cash.app/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: tesla
-  name: Tesla
-  sector: automotive
-  url: https://www.tesla.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: ford
-  name: Ford
-  sector: automotive
-  url: https://www.ford.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: toyota
-  name: Toyota
-  sector: automotive
-  url: https://www.toyota.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: rivian
-  name: Rivian
-  sector: automotive
-  url: https://rivian.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: nike
-  name: Nike
-  sector: sports
-  url: https://www.nike.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: adidas
-  name: Adidas
-  sector: sports
-  url: https://www.adidas.com/us/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: nba
-  name: NBA
-  sector: sports
-  url: https://www.nba.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: peloton
-  name: Peloton
-  sector: sports
-  url: https://www.onepeloton.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: ikea
-  name: IKEA
-  sector: home
-  url: https://www.ikea.com/us/en/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: west-elm
-  name: West Elm
-  sector: home
-  url: https://www.westelm.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: crate-and-barrel
-  name: Crate & Barrel
-  sector: home
-  url: https://www.crateandbarrel.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: sherwin-williams
-  name: Sherwin-Williams
-  sector: home
-  url: https://www.sherwin-williams.com/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: zara
-  name: Zara
-  sector: fashion
-  url: https://www.zara.com/us/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: hm
-  name: H&M
-  sector: fashion
-  url: https://www2.hm.com/en_us/index.html
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: gucci
-  name: Gucci
-  sector: fashion
-  url: https://www.gucci.com/us/en/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: uniqlo
-  name: UNIQLO
-  sector: fashion
-  url: https://www.uniqlo.com/us/en/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: playstation
-  name: PlayStation
-  sector: gaming
-  url: https://www.playstation.com/en-us/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: xbox
-  name: Xbox
-  sector: gaming
-  url: https://www.xbox.com/en-US/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: nintendo
-  name: Nintendo
-  sector: gaming
-  url: https://www.nintendo.com/us/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
-- id: epic-games-store
-  name: Epic Games Store
-  sector: gaming
-  url: https://store.epicgames.com/en-US/
-  enabled: true
-  weight: 1.0
-  region: US
-  frames: 2
-  brand_mark_path: ''
-  brand_mark_status: text_only
-  brand_mark_fit: contain
-  include_selectors: []
-  exclude_selectors:
-  - header
-  - nav
-  - footer
-  - '[role="banner"]'
-  - '[role="navigation"]'
-  - '[role="contentinfo"]'
-  - '[aria-modal="true"]'
-  - '[class*="cookie" i]'
-  - '[id*="cookie" i]'
-  - '[class*="chat" i]'
-  known_house_colors: []
+  # ---------- STABLE BENCHMARK PANEL: TECHNOLOGY ----------
+  - id: apple
+    name: Apple
+    enabled: true
+    adapter: webpage
+    domain: technology
+    sector: consumer technology
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: brand_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.apple.com/
+    fallback_urls: [https://www.apple.com/newsroom/]
+    allowed_hosts: [apple.com]
+    platform: apple
+    known_house_colors: ["#FFFFFF", "#000000"]
+
+  - id: microsoft-surface
+    name: Microsoft Surface
+    enabled: true
+    adapter: webpage
+    domain: technology
+    sector: consumer technology
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.microsoft.com/en-us/surface
+    fallback_urls: [https://news.microsoft.com/source/]
+    allowed_hosts: [microsoft.com]
+    platform: microsoft
+
+  - id: samsung
+    name: Samsung
+    enabled: true
+    adapter: webpage
+    domain: technology
+    sector: consumer technology
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.samsung.com/us/
+    fallback_urls: [https://news.samsung.com/us/]
+    allowed_hosts: [samsung.com]
+    platform: samsung
+
+  - id: adobe
+    name: Adobe
+    enabled: true
+    adapter: webpage
+    domain: technology
+    sector: creative software
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.adobe.com/creativecloud.html
+    fallback_urls: [https://blog.adobe.com/]
+    allowed_hosts: [adobe.com]
+    platform: adobe
+
+  # ---------- FASHION ----------
+  - id: nike
+    name: Nike
+    enabled: true
+    adapter: webpage
+    domain: fashion
+    sector: sportswear
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: collection_release
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.nike.com/
+    fallback_urls: [https://about.nike.com/en/newsroom]
+    allowed_hosts: [nike.com]
+    platform: nike
+
+  - id: adidas
+    name: adidas
+    enabled: true
+    adapter: webpage
+    domain: fashion
+    sector: sportswear
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: collection_release
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.adidas.com/us/
+    fallback_urls: [https://news.adidas.com/]
+    allowed_hosts: [adidas.com]
+    platform: adidas
+
+  - id: zara
+    name: Zara
+    enabled: true
+    adapter: webpage
+    domain: fashion
+    sector: apparel
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: new_arrivals
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.zara.com/us/
+    allowed_hosts: [zara.com]
+    platform: zara
+
+  - id: uniqlo
+    name: UNIQLO
+    enabled: true
+    adapter: webpage
+    domain: fashion
+    sector: apparel
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: new_arrivals
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.uniqlo.com/us/en/
+    fallback_urls: [https://www.uniqlo.com/us/en/special-feature/contents]
+    allowed_hosts: [uniqlo.com]
+    platform: uniqlo
+
+  - id: lululemon
+    name: lululemon
+    enabled: true
+    adapter: webpage
+    domain: fashion
+    sector: athletic apparel
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: new_arrivals
+    geography: global
+    rights_mode: analyze_only
+    url: https://shop.lululemon.com/
+    allowed_hosts: [lululemon.com]
+    platform: lululemon
+
+  # ---------- DESIGN, INTERIORS, MATERIALS ----------
+  - id: ikea
+    name: IKEA
+    enabled: true
+    adapter: webpage
+    domain: design_interiors
+    sector: home furnishings
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_collection
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.ikea.com/us/en/new/
+    fallback_urls: [https://www.ikea.com/us/en/ideas/]
+    allowed_hosts: [ikea.com]
+    platform: ikea
+
+  - id: west-elm
+    name: West Elm
+    enabled: true
+    adapter: webpage
+    domain: design_interiors
+    sector: home furnishings
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_collection
+    geography: US
+    rights_mode: analyze_only
+    url: https://www.westelm.com/shop/new/
+    fallback_urls: [https://www.westelm.com/pages/ideas-and-advice/]
+    allowed_hosts: [westelm.com]
+    platform: west-elm
+
+  - id: herman-miller
+    name: Herman Miller
+    enabled: true
+    adapter: webpage
+    domain: design_interiors
+    sector: furniture design
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_collection
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.hermanmiller.com/products/new-products/
+    fallback_urls: [https://www.hermanmiller.com/stories/]
+    allowed_hosts: [hermanmiller.com]
+    platform: herman-miller
+
+  - id: benjamin-moore
+    name: Benjamin Moore
+    enabled: true
+    adapter: webpage
+    domain: materials_production
+    sector: architectural paint
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: material_release
+    geography: North America
+    rights_mode: analyze_only
+    url: https://www.benjaminmoore.com/en-us/color-overview
+    fallback_urls: [https://www.benjaminmoore.com/en-us/color-overview/color-palettes]
+    allowed_hosts: [benjaminmoore.com]
+    platform: benjamin-moore
+
+  # ---------- ENTERTAINMENT AND GAMES ----------
+  - id: spotify
+    name: Spotify
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: music streaming
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: editorial_promotion
+    geography: global
+    rights_mode: analyze_only
+    url: https://open.spotify.com/
+    fallback_urls: [https://newsroom.spotify.com/]
+    allowed_hosts: [spotify.com]
+    platform: spotify
+    known_house_colors: ["#1ED760", "#191414"]
+
+  - id: netflix
+    name: Netflix
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: streaming entertainment
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: title_promotion
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.netflix.com/browse/genre/839338
+    fallback_urls: [https://about.netflix.com/en/new-to-watch]
+    allowed_hosts: [netflix.com]
+    platform: netflix
+    known_house_colors: ["#E50914", "#000000"]
+
+  - id: max
+    name: Max
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: streaming entertainment
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: title_promotion
+    geography: US
+    rights_mode: analyze_only
+    url: https://www.max.com/
+    fallback_urls: [https://press.wbd.com/us/brands/max]
+    allowed_hosts: [max.com, wbd.com]
+    platform: max
+
+  - id: disney-plus
+    name: Disney+
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: streaming entertainment
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: title_promotion
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.disneyplus.com/
+    fallback_urls: [https://press.disneyplus.com/]
+    allowed_hosts: [disneyplus.com]
+    platform: disney-plus
+
+  - id: playstation
+    name: PlayStation
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: video games
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: game_promotion
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.playstation.com/en-us/
+    fallback_urls: [https://blog.playstation.com/]
+    allowed_hosts: [playstation.com]
+    platform: playstation
+    known_house_colors: ["#006FCD"]
+
+  - id: xbox
+    name: Xbox
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: video games
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: game_promotion
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.xbox.com/en-US/
+    fallback_urls: [https://news.xbox.com/en-us/]
+    allowed_hosts: [xbox.com]
+    platform: xbox
+    known_house_colors: ["#107C10"]
+
+  - id: nintendo
+    name: Nintendo
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: video games
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: game_promotion
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.nintendo.com/us/
+    fallback_urls: [https://www.nintendo.com/us/whatsnew/]
+    allowed_hosts: [nintendo.com]
+    platform: nintendo
+    known_house_colors: ["#E60012"]
+
+  - id: epic-games-store
+    name: Epic Games Store
+    enabled: true
+    adapter: webpage
+    domain: entertainment
+    sector: video games
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: game_promotion
+    geography: global
+    rights_mode: analyze_only
+    url: https://store.epicgames.com/en-US/
+    fallback_urls: [https://store.epicgames.com/en-US/news]
+    allowed_hosts: [epicgames.com]
+    platform: epic-games
+
+  # ---------- MARKETPLACES ----------
+  - id: etsy-web
+    name: Etsy Marketplace
+    enabled: true
+    adapter: webpage
+    domain: marketplace
+    sector: handmade marketplace
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: featured_listings
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.etsy.com/
+    fallback_urls: [https://www.etsy.com/market/trending_now]
+    allowed_hosts: [etsy.com]
+    platform: etsy
+
+  - id: ebay-web
+    name: eBay Marketplace
+    enabled: true
+    adapter: webpage
+    domain: marketplace
+    sector: resale marketplace
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: featured_listings
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.ebay.com/deals
+    fallback_urls: [https://www.ebay.com/]
+    allowed_hosts: [ebay.com]
+    platform: ebay
+
+  - id: depop
+    name: Depop
+    enabled: true
+    adapter: webpage
+    domain: marketplace
+    sector: fashion resale marketplace
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: featured_listings
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.depop.com/
+    allowed_hosts: [depop.com]
+    platform: depop
+
+  - id: chairish
+    name: Chairish
+    enabled: true
+    adapter: webpage
+    domain: marketplace
+    sector: vintage home marketplace
+    signal_stage: distribution
+    scale_class: mid_size
+    panel_type: benchmark
+    event_type: featured_listings
+    geography: US
+    rights_mode: analyze_only
+    url: https://www.chairish.com/collection/new-arrivals
+    fallback_urls: [https://www.chairish.com/blog/]
+    allowed_hosts: [chairish.com]
+    platform: chairish
+
+  # ---------- ADVERTISING AND BRAND SYSTEMS ----------
+  - id: wieden-kennedy
+    name: Wieden+Kennedy
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: advertising agency
+    signal_stage: creation
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: newly_published_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.wk.com/work/
+    allowed_hosts: [wk.com]
+    platform: wk
+
+  - id: droga5
+    name: Droga5
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: advertising agency
+    signal_stage: creation
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: newly_published_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://droga5.com/work/
+    allowed_hosts: [droga5.com]
+    platform: droga5
+
+  - id: pentagram
+    name: Pentagram
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: design consultancy
+    signal_stage: creation
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: newly_published_project
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.pentagram.com/work
+    allowed_hosts: [pentagram.com]
+    platform: pentagram
+
+  - id: ogilvy
+    name: Ogilvy
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: advertising agency
+    signal_stage: creation
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: newly_published_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.ogilvy.com/work
+    fallback_urls: [https://www.ogilvy.com/ideas]
+    allowed_hosts: [ogilvy.com]
+    platform: ogilvy
+
+  # ---------- FOOD, BEAUTY, LIFESTYLE ----------
+  - id: starbucks
+    name: Starbucks
+    enabled: true
+    adapter: webpage
+    domain: food_beauty_lifestyle
+    sector: food and beverage
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: seasonal_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.starbucks.com/menu/featured/
+    fallback_urls: [https://about.starbucks.com/stories/]
+    allowed_hosts: [starbucks.com]
+    platform: starbucks
+    known_house_colors: ["#00754A"]
+
+  - id: coca-cola
+    name: Coca-Cola
+    enabled: true
+    adapter: webpage
+    domain: food_beauty_lifestyle
+    sector: beverage
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: brand_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.coca-cola.com/us/en
+    fallback_urls: [https://www.coca-colacompany.com/media-center]
+    allowed_hosts: [coca-cola.com, coca-colacompany.com]
+    platform: coca-cola
+    known_house_colors: ["#F40009"]
+
+  - id: sephora
+    name: Sephora
+    enabled: true
+    adapter: webpage
+    domain: food_beauty_lifestyle
+    sector: beauty retail
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.sephora.com/beauty/new-beauty-products
+    fallback_urls: [https://www.sephora.com/]
+    allowed_hosts: [sephora.com]
+    platform: sephora
+
+  - id: glossier
+    name: Glossier
+    enabled: true
+    adapter: webpage
+    domain: food_beauty_lifestyle
+    sector: beauty
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.glossier.com/collections/new
+    fallback_urls: [https://www.glossier.com/]
+    allowed_hosts: [glossier.com]
+    platform: glossier
+
+  # ---------- OTHER LARGE-SCALE DISTRIBUTION ----------
+  - id: airbnb
+    name: Airbnb
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: travel marketplace
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: destination_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.airbnb.com/
+    fallback_urls: [https://news.airbnb.com/]
+    allowed_hosts: [airbnb.com]
+    platform: airbnb
+
+  - id: marriott
+    name: Marriott
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: hospitality
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: destination_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.marriott.com/default.mi
+    fallback_urls: [https://news.marriott.com/]
+    allowed_hosts: [marriott.com]
+    platform: marriott
+
+  - id: delta
+    name: Delta Air Lines
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: travel
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: brand_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.delta.com/
+    fallback_urls: [https://news.delta.com/]
+    allowed_hosts: [delta.com]
+    platform: delta
+
+  - id: chase
+    name: Chase
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: financial services
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_campaign
+    geography: US
+    rights_mode: analyze_only
+    url: https://www.chase.com/personal/credit-cards
+    fallback_urls: [https://www.chase.com/]
+    allowed_hosts: [chase.com]
+    platform: chase
+    known_house_colors: ["#117ACA", "#005EB8"]
+
+  - id: american-express
+    name: American Express
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: financial services
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: product_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.americanexpress.com/us/credit-cards/
+    fallback_urls: [https://www.americanexpress.com/en-us/newsroom/]
+    allowed_hosts: [americanexpress.com]
+    platform: american-express
+    known_house_colors: ["#006FCF"]
+
+  - id: ford
+    name: Ford
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: automotive
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: vehicle_campaign
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.ford.com/new-vehicles/
+    fallback_urls: [https://media.ford.com/content/fordmedia/fna/us/en.html]
+    allowed_hosts: [ford.com]
+    platform: ford
+
+  - id: rivian
+    name: Rivian
+    enabled: true
+    adapter: webpage
+    domain: advertising
+    sector: automotive
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: benchmark
+    event_type: vehicle_campaign
+    geography: US
+    rights_mode: analyze_only
+    url: https://rivian.com/
+    fallback_urls: [https://stories.rivian.com/]
+    allowed_hosts: [rivian.com]
+    platform: rivian
+
+  # ========================================================================
+  # ROTATING DISCOVERY PANEL — small and large signals remain identifiable.
+  # ========================================================================
+
+  - id: met-open-access
+    name: The Met Open Access
+    enabled: true
+    adapter: met_open_access
+    domain: art
+    sector: museum collection
+    signal_stage: attention
+    scale_class: institutional
+    panel_type: discovery
+    event_type: historically_resurfaced
+    geography: US
+    rights_mode: public_domain
+    api_url: https://collectionapi.metmuseum.org/public/collection/v1
+    platform: met-museum
+    query: contemporary color
+    max_items: 6
+
+  - id: artic-open-access
+    name: Art Institute of Chicago Open Access
+    enabled: true
+    adapter: artic_open_access
+    domain: art
+    sector: museum collection
+    signal_stage: attention
+    scale_class: institutional
+    panel_type: discovery
+    event_type: historically_resurfaced
+    geography: US
+    rights_mode: public_domain
+    api_url: https://api.artic.edu/api/v1
+    platform: artic
+    query: modern art
+    max_items: 6
+
+  - id: cleveland-open-access
+    name: Cleveland Museum of Art Open Access
+    enabled: true
+    adapter: cleveland_open_access
+    domain: art
+    sector: museum collection
+    signal_stage: attention
+    scale_class: institutional
+    panel_type: discovery
+    event_type: historically_resurfaced
+    geography: US
+    rights_mode: public_domain
+    api_url: https://openaccess-api.clevelandart.org/api
+    platform: cleveland-museum
+    query: modern
+    max_items: 6
+
+  - id: new-museum-exhibitions
+    name: New Museum Exhibitions
+    enabled: true
+    adapter: webpage
+    domain: art
+    sector: contemporary art institution
+    signal_stage: creation
+    scale_class: institutional
+    panel_type: discovery
+    event_type: newly_exhibited
+    geography: US
+    rights_mode: analyze_only
+    url: https://www.newmuseum.org/exhibitions
+    allowed_hosts: [newmuseum.org]
+    platform: new-museum
+
+  - id: whitney-exhibitions
+    name: Whitney Museum Exhibitions
+    enabled: true
+    adapter: webpage
+    domain: art
+    sector: contemporary art institution
+    signal_stage: creation
+    scale_class: institutional
+    panel_type: discovery
+    event_type: newly_exhibited
+    geography: US
+    rights_mode: analyze_only
+    url: https://whitney.org/exhibitions
+    allowed_hosts: [whitney.org]
+    platform: whitney
+
+  - id: moma-exhibitions
+    name: MoMA Exhibitions
+    enabled: true
+    adapter: webpage
+    domain: art
+    sector: modern art institution
+    signal_stage: creation
+    scale_class: institutional
+    panel_type: discovery
+    event_type: newly_exhibited
+    geography: US
+    rights_mode: analyze_only
+    url: https://www.moma.org/calendar/exhibitions
+    allowed_hosts: [moma.org]
+    platform: moma
+
+  - id: tate-exhibitions
+    name: Tate Exhibitions
+    enabled: true
+    adapter: webpage
+    domain: art
+    sector: art institution
+    signal_stage: creation
+    scale_class: institutional
+    panel_type: discovery
+    event_type: newly_exhibited
+    geography: UK
+    rights_mode: analyze_only
+    url: https://www.tate.org.uk/whats-on
+    allowed_hosts: [tate.org.uk]
+    platform: tate
+
+  - id: rca-graduate-show
+    name: Royal College of Art Graduate Show
+    enabled: true
+    adapter: webpage
+    domain: art
+    sector: art and design education
+    signal_stage: creation
+    scale_class: independent
+    panel_type: discovery
+    event_type: newly_created
+    geography: UK
+    rights_mode: analyze_only
+    url: https://www.rca.ac.uk/news-and-events/events/rca2026/
+    fallback_urls: [https://www.rca.ac.uk/news-and-events/]
+    allowed_hosts: [rca.ac.uk]
+    platform: rca
+
+  - id: risd-grad-show
+    name: RISD Graduate Exhibition
+    enabled: true
+    adapter: webpage
+    domain: art
+    sector: art and design education
+    signal_stage: creation
+    scale_class: independent
+    panel_type: discovery
+    event_type: newly_created
+    geography: US
+    rights_mode: analyze_only
+    url: https://www.risdgrad.show/
+    fallback_urls: [https://www.risd.edu/news/stories]
+    allowed_hosts: [risdgrad.show, risd.edu]
+    platform: risd
+
+  - id: musicbrainz-new-albums
+    name: New Album Covers
+    enabled: true
+    adapter: musicbrainz_cover_art
+    domain: entertainment
+    sector: music
+    signal_stage: creation
+    scale_class: independent
+    panel_type: discovery
+    event_type: newly_released
+    geography: global
+    rights_mode: analyze_only
+    api_url: https://musicbrainz.org/ws/2
+    platform: musicbrainz
+    max_items: 8
+    options:
+      lookback_days: 14
+
+  - id: itunes-new-music
+    name: Apple Music Search Sample
+    enabled: true
+    adapter: itunes_search
+    domain: entertainment
+    sector: music
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: discovery
+    event_type: recently_released
+    geography: US
+    rights_mode: analyze_only
+    api_url: https://itunes.apple.com/search
+    platform: apple-music
+    query: new music
+    max_items: 8
+    options:
+      media: music
+      entity: album
+      country: US
+
+  - id: itunes-new-films
+    name: Apple Film Artwork Sample
+    enabled: true
+    adapter: itunes_search
+    domain: entertainment
+    sector: film
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: discovery
+    event_type: recently_released
+    geography: US
+    rights_mode: analyze_only
+    api_url: https://itunes.apple.com/search
+    platform: apple-tv
+    query: new release
+    max_items: 8
+    options:
+      media: movie
+      entity: movie
+      country: US
+
+  - id: its-nice-that-rss
+    name: It's Nice That
+    enabled: true
+    adapter: rss
+    domain: creator_indie
+    sector: creative publishing
+    signal_stage: distribution
+    scale_class: mid_size
+    panel_type: discovery
+    event_type: newly_published
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.itsnicethat.com/rss
+    platform: its-nice-that
+    max_items: 8
+
+  - id: dezeen-rss
+    name: Dezeen
+    enabled: true
+    adapter: rss
+    domain: design_interiors
+    sector: design publishing
+    signal_stage: distribution
+    scale_class: large_commercial
+    panel_type: discovery
+    event_type: newly_published
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.dezeen.com/feed/
+    platform: dezeen
+    max_items: 8
+
+  - id: colossal-rss
+    name: Colossal
+    enabled: true
+    adapter: rss
+    domain: art
+    sector: art publishing
+    signal_stage: distribution
+    scale_class: mid_size
+    panel_type: discovery
+    event_type: newly_published
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.thisiscolossal.com/feed/
+    platform: colossal
+    max_items: 8
+
+  - id: creative-boom-rss
+    name: Creative Boom
+    enabled: true
+    adapter: rss
+    domain: creator_indie
+    sector: creative publishing
+    signal_stage: distribution
+    scale_class: mid_size
+    panel_type: discovery
+    event_type: newly_published
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.creativeboom.com/feed/
+    platform: creative-boom
+    max_items: 8
+
+  - id: product-hunt-trending
+    name: Product Hunt Trending
+    enabled: true
+    adapter: webpage
+    domain: audience_intent
+    sector: digital products
+    signal_stage: attention
+    scale_class: independent
+    panel_type: discovery
+    event_type: rising_attention
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.producthunt.com/
+    allowed_hosts: [producthunt.com]
+    platform: product-hunt
+
+  - id: kickstarter-design
+    name: Kickstarter Design
+    enabled: true
+    adapter: webpage
+    domain: audience_intent
+    sector: crowdfunding
+    signal_stage: attention
+    scale_class: independent
+    panel_type: discovery
+    event_type: rising_attention
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.kickstarter.com/discover/categories/design
+    allowed_hosts: [kickstarter.com]
+    platform: kickstarter
+
+  - id: itch-newest
+    name: itch.io New Releases
+    enabled: true
+    adapter: webpage
+    domain: creator_indie
+    sector: independent games
+    signal_stage: creation
+    scale_class: grassroots
+    panel_type: discovery
+    event_type: newly_released
+    geography: global
+    rights_mode: analyze_only
+    url: https://itch.io/games/newest
+    allowed_hosts: [itch.io]
+    platform: itch-io
+
+  - id: arena-explore
+    name: Are.na Explore
+    enabled: true
+    adapter: webpage
+    domain: creator_indie
+    sector: visual research community
+    signal_stage: attention
+    scale_class: grassroots
+    panel_type: discovery
+    event_type: community_attention
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.are.na/explore
+    allowed_hosts: [are.na]
+    platform: arena
+
+  - id: steam-top-sellers
+    name: Steam Top Sellers
+    enabled: true
+    adapter: webpage
+    domain: audience_intent
+    sector: video games
+    signal_stage: attention
+    scale_class: large_commercial
+    panel_type: discovery
+    event_type: commercial_attention
+    geography: US
+    rights_mode: analyze_only
+    url: https://store.steampowered.com/charts/topselling/US
+    allowed_hosts: [steampowered.com]
+    platform: steam
+
+  - id: apple-music-charts
+    name: Apple Music Charts
+    enabled: true
+    adapter: webpage
+    domain: audience_intent
+    sector: music
+    signal_stage: attention
+    scale_class: large_commercial
+    panel_type: discovery
+    event_type: commercial_attention
+    geography: US
+    rights_mode: analyze_only
+    url: https://music.apple.com/us/browse/top-charts
+    allowed_hosts: [apple.com]
+    platform: apple-music
+
+  - id: poster-house
+    name: Poster House Exhibitions
+    enabled: true
+    adapter: webpage
+    domain: public_visual_field
+    sector: graphic design museum
+    signal_stage: creation
+    scale_class: institutional
+    panel_type: discovery
+    event_type: newly_exhibited
+    geography: US
+    rights_mode: analyze_only
+    url: https://posterhouse.org/exhibitions/
+    allowed_hosts: [posterhouse.org]
+    platform: poster-house
+
+  - id: nycxdesign
+    name: NYCxDESIGN
+    enabled: true
+    adapter: webpage
+    domain: public_visual_field
+    sector: design festival
+    signal_stage: distribution
+    scale_class: institutional
+    panel_type: discovery
+    event_type: public_programming
+    geography: US
+    rights_mode: analyze_only
+    url: https://nycxdesign.org/events/
+    fallback_urls: [https://nycxdesign.org/]
+    allowed_hosts: [nycxdesign.org]
+    platform: nycxdesign
+
+  - id: london-design-festival
+    name: London Design Festival
+    enabled: true
+    adapter: webpage
+    domain: public_visual_field
+    sector: design festival
+    signal_stage: distribution
+    scale_class: institutional
+    panel_type: discovery
+    event_type: public_programming
+    geography: UK
+    rights_mode: analyze_only
+    url: https://londondesignfestival.com/whats-on
+    fallback_urls: [https://londondesignfestival.com/]
+    allowed_hosts: [londondesignfestival.com]
+    platform: london-design-festival
+
+  - id: kvadrat
+    name: Kvadrat
+    enabled: true
+    adapter: webpage
+    domain: materials_production
+    sector: textiles
+    signal_stage: creation
+    scale_class: large_commercial
+    panel_type: discovery
+    event_type: material_release
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.kvadrat.dk/en/products
+    fallback_urls: [https://www.kvadrat.dk/en/about/news]
+    allowed_hosts: [kvadrat.dk]
+    platform: kvadrat
+
+  - id: maharam
+    name: Maharam
+    enabled: true
+    adapter: webpage
+    domain: materials_production
+    sector: textiles
+    signal_stage: creation
+    scale_class: large_commercial
+    panel_type: discovery
+    event_type: material_release
+    geography: global
+    rights_mode: analyze_only
+    url: https://www.maharam.com/products
+    fallback_urls: [https://www.maharam.com/stories]
+    allowed_hosts: [maharam.com]
+    platform: maharam
+
+  # ---------- OPTIONAL OFFICIAL API CONNECTORS ----------
+  - id: etsy-api
+    name: Etsy Newly Listed Sample
+    enabled: false
+    adapter: etsy
+    domain: marketplace
+    sector: handmade marketplace
+    signal_stage: creation
+    scale_class: independent
+    panel_type: discovery
+    event_type: newly_listed
+    geography: global
+    rights_mode: analyze_only
+    api_url: https://openapi.etsy.com/v3/application
+    platform: etsy
+    api_key_env: ETSY_API_KEY
+    query: art design fashion
+    max_items: 12
+
+  - id: ebay-api
+    name: eBay Newly Listed Sample
+    enabled: false
+    adapter: ebay
+    domain: marketplace
+    sector: resale marketplace
+    signal_stage: creation
+    scale_class: independent
+    panel_type: discovery
+    event_type: newly_listed
+    geography: US
+    rights_mode: analyze_only
+    api_url: https://api.ebay.com/buy/browse/v1
+    platform: ebay
+    token_env: EBAY_OAUTH_TOKEN
+    query: art design fashion home
+    max_items: 12
+
+  - id: product-hunt-api
+    name: Product Hunt New Launches
+    enabled: false
+    adapter: product_hunt
+    domain: creator_indie
+    sector: digital products
+    signal_stage: creation
+    scale_class: independent
+    panel_type: discovery
+    event_type: newly_launched
+    geography: global
+    rights_mode: analyze_only
+    api_url: https://api.producthunt.com/v2/api/graphql
+    platform: product-hunt
+    token_env: PRODUCT_HUNT_TOKEN
+    max_items: 12
+
+  - id: approved-submissions
+    name: Approved Community Signals
+    enabled: false
+    adapter: submission_inbox
+    domain: creator_indie
+    sector: community submissions
+    signal_stage: creation
+    scale_class: grassroots
+    panel_type: discovery
+    event_type: moderated_submission
+    geography: global
+    rights_mode: analyze_only
+    platform: community-inbox
+    max_items: 20
+    options:
+      path: data/inbox/approved-submissions.csv

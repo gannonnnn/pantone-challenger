@@ -4,337 +4,82 @@ import html
 import json
 import shutil
 from pathlib import Path
-from typing import Any
-
-from .models import Source
 
 
-STYLE = """
-:root{--ink:#171717;--paper:#f4f0e7;--line:#d8d1c4;--card:#fbf9f4;--muted:#6d6961}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
-a{color:inherit}
-header,main,footer{max-width:1180px;margin:auto;padding:28px}
-header{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line)}
-.brand{font-weight:800;letter-spacing:.04em}.sub{font-size:.78rem;letter-spacing:.12em}
-.hero{padding:70px 28px 55px}.hero h1{font-size:clamp(3rem,9vw,7rem);line-height:.88;margin:.15em 0}
-.kicker{text-transform:uppercase;font-weight:700;letter-spacing:.11em}
-.swatch{border-radius:28px;min-height:420px;padding:42px;display:flex;flex-direction:column;justify-content:space-between}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:18px;margin-top:24px}
-.stat{border-top:1px solid currentColor;padding-top:14px}.stat strong{font-size:2rem;display:block}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:16px}
-.tile{aspect-ratio:1;border-radius:18px;padding:18px;text-decoration:none;display:flex;flex-direction:column;justify-content:space-between}
-.evidence-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:16px}
-.evidence-card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;min-height:190px;display:flex;flex-direction:column;gap:12px}
-.evidence-top{display:flex;gap:14px;align-items:center}.evidence-swatch{width:74px;height:74px;border-radius:16px;border:2px solid var(--line);flex:none}
-.evidence-copy{display:flex;flex-direction:column;gap:5px}.evidence-copy small{color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
-.evidence-card img{display:block;max-width:110px;max-height:34px;object-fit:contain;object-position:left center}
-.evidence-meta{font-size:.88rem;color:var(--muted);line-height:1.45}
-.runner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-.runner{border-radius:20px;overflow:hidden;background:var(--card);border:1px solid var(--line)}
-.runner-color{min-height:180px;padding:20px;display:flex;justify-content:space-between;align-items:flex-end}
-.runner-copy{padding:18px}.runner-copy h3{margin:.1em 0}.runner-copy p{color:var(--muted);line-height:1.45}
-section{padding:45px 28px}h2{font-size:2.1rem}
-table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:13px;border-bottom:1px solid var(--line)}
-.note{max-width:780px;font-size:1.13rem;line-height:1.55}.muted{color:var(--muted)}
-footer{border-top:1px solid var(--line);font-size:.88rem;line-height:1.5}
-@media(max-width:760px){.stats{grid-template-columns:1fr 1fr}.runner-grid{grid-template-columns:1fr}.swatch{min-height:350px}.sub{display:none}}
+CSS = """
+:root{--paper:#f6f1e9;--ink:#161616;--muted:#6b655e;--card:#fffdf9;--line:#d8d0c5}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,Arial,sans-serif}
+a{color:inherit}.wrap{max-width:1180px;margin:auto;padding:40px 24px 100px}header{display:flex;justify-content:space-between;gap:20px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:22px}h1{font-size:clamp(2rem,6vw,5rem);line-height:.95;margin:50px 0 12px}.subtitle{font-size:1.1rem;color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:18px;margin-top:42px}.day{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;text-decoration:none}.swatch{height:170px}.meta{padding:16px}.meta strong{display:block;font-size:1.05rem}.meta span{font-size:.86rem;color:var(--muted)}.chips{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0}.chip{border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:var(--card)}.hero{display:grid;grid-template-columns:1.2fr .8fr;gap:28px;margin-top:42px}.hero-swatch{min-height:480px;border-radius:28px;padding:42px;display:flex;flex-direction:column;justify-content:flex-end}.panel{background:var(--card);border:1px solid var(--line);border-radius:24px;padding:28px}.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.metric{border-top:1px solid var(--line);padding-top:12px}.metric b{font-size:2rem;display:block}@media(max-width:800px){.hero{grid-template-columns:1fr}}
 """
 
 
-def _contrast(hex_value: str) -> str:
-    value = hex_value.lstrip("#")
-    red, green, blue = [int(value[index:index + 2], 16) / 255 for index in (0, 2, 4)]
-    luminance = 0.2126 * red + 0.7152 * green + 0.0722 * blue
-    return "#111111" if luminance > 0.58 else "#f7f4ed"
-
-
-def _load_results(archive_root: Path) -> list[dict[str, Any]]:
-    results: list[dict[str, Any]] = []
-    if not archive_root.exists():
-        return results
-    for path in sorted(archive_root.glob("????-??-??/result.json"), reverse=True):
-        try:
-            item = json.loads(path.read_text(encoding="utf-8"))
-        except (OSError, ValueError):
+def build_site(archive_dir: str | Path, destination: str | Path) -> Path:
+    archive = Path(archive_dir)
+    dest = Path(destination)
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True)
+    days = []
+    for day_dir in sorted((p for p in archive.glob("????-??-??") if p.is_dir()), reverse=True):
+        path = day_dir / "result.json"
+        if not path.exists():
             continue
-        if (
-            item.get("status") == "ready"
-            and item.get("winner")
-            and str(item.get("methodology_version", "")).startswith("1.3.")
-        ):
-            results.append(item)
-    return results
-
-
-def _load_year_summaries(archive_root: Path) -> list[dict[str, Any]]:
-    summaries: list[dict[str, Any]] = []
-    for path in sorted(archive_root.glob("yearly/*/annual-summary.json"), reverse=True):
         try:
-            summaries.append(json.loads(path.read_text(encoding="utf-8")))
-        except (OSError, ValueError):
+            result = json.loads(path.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
             continue
-    return summaries
-
-
-def _page(title: str, body: str, home_href: str = "./") -> str:
-    return f"""<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{html.escape(title)}</title><meta name="description" content="A daily computational index of color across the commercial internet.">
-<style>{STYLE}</style></head><body>
-<header><a class="brand" href="{home_href}">PANTONE CHALLENGER</a><span class="sub">THE COMMERCIAL COLOR INDEX</span></header>
-{body}
-<footer><p>Pantone Challenger is an independent computational art project. It is not affiliated with, sponsored by, or endorsed by Pantone LLC. No Pantone color codes or Pantone-branded swatches are used.</p>
-<p>Company names identify monitored official marketing pages and do not imply endorsement. A manually approved mark may be used only for attribution; it is never treated as color evidence. The index describes a declared panel—not the entire internet.</p></footer>
-</body></html>"""
-
-
-def _review_summary(result: dict[str, Any]) -> dict[str, int]:
-    winner = result.get("winner") or {}
-    gate = result.get("quality_gate") or {}
-    return result.get("review_summary") or {
-        "company_pages_monitored": int(result.get("panel_size", 0)),
-        "company_pages_analyzed": int(result.get("captured_sources", 0)),
-        "company_pages_unavailable": max(
-            int(result.get("panel_size", 0)) - int(result.get("captured_sources", 0)), 0
-        ),
-        "brands_supporting_winner": int(winner.get("source_count", 0)),
-        "sectors_in_panel": int(gate.get("configured_sectors", 0)),
-        "sectors_analyzed": int(result.get("captured_sectors", 0)),
-        "sectors_supporting_winner": int(winner.get("sector_count", 0)),
-    }
-
-
-def _recurrence(result: dict[str, Any]) -> dict[str, Any]:
-    value = result.get("recurrence")
-    if isinstance(value, dict):
-        return value
-    winner = result.get("winner") or {}
-    return {
-        "year": int(str(result.get("date", "0000"))[:4] or 0),
-        "family_name": result.get("winner_name") or "Color family",
-        "winning_days": 1,
-        "unique_company_count": int(winner.get("source_count", 0)),
-        "panel_company_count": int(result.get("panel_size", 0)),
-        "sector_count": int(winner.get("sector_count", 0)),
-    }
-
-
-def _archive_tile(result: dict[str, Any]) -> str:
-    winner = result["winner"]
-    color = winner["hex"]
-    text = _contrast(color)
-    day = result["date"]
-    name = html.escape(result.get("winner_name") or color)
-    recurrence = _recurrence(result)
-    return (
-        f'<a class="tile" href="archive/{day}/" style="background:{color};color:{text}">'
-        f'<strong>{html.escape(day)}</strong><span>{name}<br>{color}<br>'
-        f'{recurrence["winning_days"]} {html.escape(recurrence["family_name"])} win(s)</span></a>'
-    )
-
-
-def _evidence_cards(result: dict[str, Any]) -> str:
-    winner = result["winner"]
-    logos = result.get("source_logos") or {}
-    cards: list[str] = []
-    for evidence in winner.get("evidence", [])[:12]:
-        source_id = str(evidence.get("source_id", ""))
-        name = str(evidence.get("source_name", source_id))
-        sector = str(evidence.get("sector", "commercial source"))
-        local_hex = str(evidence.get("local_hex", winner.get("hex", "#777777")))
-        logo = logos.get(source_id)
-        image = (
-            f'<img src="../../assets/{result["date"]}/{html.escape(logo)}" '
-            f'alt="{html.escape(name)} brand mark">'
-            if logo
-            else ""
-        )
+        if result.get("state") != "ready":
+            continue
+        days.append((day_dir, result))
+        _build_day(day_dir, result, dest / "days" / day_dir.name)
+    (dest / "assets").mkdir(exist_ok=True)
+    (dest / "assets" / "site.css").write_text(CSS, encoding="utf-8")
+    cards = []
+    for _, result in days:
+        challenger = result.get("challenger", [])
+        if not challenger:
+            continue
+        colors = [c["hex"] for c in challenger]
+        gradient = colors[0] if len(colors) == 1 else f"linear-gradient(90deg,{','.join(colors)})"
+        names = " + ".join(c.get("family_label", "Color") for c in challenger)
         cards.append(
-            '<article class="evidence-card">'
-            '<div class="evidence-top">'
-            f'<span class="evidence-swatch" style="background:{html.escape(local_hex)}"></span>'
-            '<div class="evidence-copy">'
-            f'<strong>{html.escape(name)}</strong>'
-            f'<small>{html.escape(sector.replace("_", " "))}</small>'
-            f'{image}'
-            '</div></div>'
-            f'<div class="evidence-meta"><code>{html.escape(local_hex)}</code> measured in '
-            f'sampled creative · distance {float(evidence.get("distance_to_candidate", 0.0)):.3f} · '
-            f'local share {float(evidence.get("local_share", 0.0)):.1%}</div>'
-            '</article>'
+            f'<a class="day" href="days/{result["date"]}/"><div class="swatch" style="background:{gradient}"></div>'
+            f'<div class="meta"><strong>{html.escape(names)}</strong><span>{result["date"]} · {result.get("domains_covered",0)} domains</span></div></a>'
         )
-    return "".join(cards)
+    body = f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Pantone Challenger</title><link rel="stylesheet" href="assets/site.css"></head><body><div class="wrap"><header><b>PANTONE CHALLENGER</b><span>THE OPEN CULTURAL COLOR INDEX</span></header><h1>How color moves<br>through culture.</h1><p class="subtitle">Daily evidence across creation, distribution, and attention—from independent signals to mainstream adoption.</p><div class="chips"><span class="chip">Undercurrents</span><span class="chip">Challengers</span><span class="chip">Ties welcome</span><span class="chip">No forced winner</span><a class="chip" href="methodology.html">Methodology</a></div><div class="grid">{''.join(cards) or '<p>No approved public days yet. Calibration is in progress.</p>'}</div></div></body></html>"""
+    (dest / "index.html").write_text(body, encoding="utf-8")
+    _write_methodology(dest)
+    _write_feed(days, dest)
+    return dest
 
 
-def _runner_cards(result: dict[str, Any]) -> str:
-    names = result.get("runner_up_names") or []
-    cards: list[str] = []
-    for index, candidate in enumerate(result.get("runners_up", [])[:3]):
-        color = candidate["hex"]
-        text = _contrast(color)
-        name = names[index] if index < len(names) else color
-        cards.append(
-            f'<article class="runner"><div class="runner-color" '
-            f'style="background:{color};color:{text}"><strong>#{index + 2}</strong>'
-            f'<strong>{color}</strong></div><div class="runner-copy">'
-            f'<h3>{html.escape(name)}</h3><p>{candidate["source_count"]} supporting '
-            f'sources · {candidate["sector_count"]} sectors · score '
-            f'{candidate["score"]:.1f}</p></div></article>'
-        )
-    return "".join(cards)
-
-
-def _build_detail(result: dict[str, Any]) -> str:
-    winner = result["winner"]
-    color = winner["hex"]
-    text = _contrast(color)
-    summary = _review_summary(result)
-    recurrence = _recurrence(result)
-    body = f"""
-<main>
-<section class="swatch" style="background:{color};color:{text}">
-<div><p class="kicker">Yesterday's Challenger · {html.escape(result['date'])}</p>
-<h1>{html.escape(result.get('winner_name') or color)}</h1><p>{color}</p></div>
-<div class="stats">
-<div class="stat"><strong>{summary['brands_supporting_winner']}</strong>supporting brands today</div>
-<div class="stat"><strong>{summary['company_pages_analyzed']} / {summary['company_pages_monitored']}</strong>analyzed / monitored</div>
-<div class="stat"><strong>{summary['sectors_supporting_winner']} / {summary['sectors_in_panel']}</strong>winner sectors / panel</div>
-<div class="stat"><strong>{recurrence['winning_days']}</strong>{html.escape(recurrence['family_name'])} wins in {recurrence['year']}</div>
-<div class="stat"><strong>{winner['score']:.1f}</strong>Challenger Score</div>
-</div></section>
-<section><h2>Year-to-date counter</h2><p class="note">This is day <strong>{recurrence['winning_days']}</strong> in {recurrence['year']} with <strong>{html.escape(recurrence['family_name'])}</strong> as the top color family in the monitored commercial panel. Across matching days, {recurrence['unique_company_count']} unique companies in the {recurrence['panel_company_count']}-company panel contributed across {recurrence['sector_count']} sectors.</p></section>
-<section><h2>Why it surfaced</h2><p class="note">Each card shows the local color measured inside that company’s sampled marketing creative. A company mark may identify the source, but the mark itself is never treated as color evidence.</p>
-<div class="evidence-grid">{_evidence_cards(result)}</div></section>
-<section><h2>Runners-up</h2><div class="runner-grid">{_runner_cards(result)}</div></section>
-<section><h2>Run coverage</h2><p class="note">The panel monitored {summary['company_pages_monitored']} company pages. {summary['company_pages_analyzed']} were successfully captured and analyzed; {summary['company_pages_unavailable']} were blocked, failed, or unusable. The winner was supported by {summary['brands_supporting_winner']} brands across {summary['sectors_supporting_winner']} sectors.</p></section>
-<section><h2>Evidence files</h2><p><a href="../../assets/{result['date']}/result.json">Result JSON</a> ·
-<a href="../../assets/{result['date']}/observations.json">Observations JSON</a> ·
-<a href="../../assets/{result['date']}/capture-report.json">Capture report</a> ·
-<a href="../../assets/{result['date']}/review-summary.md">Review summary</a></p></section>
-</main>"""
-    return _page(f"{result.get('winner_name')} — Pantone Challenger", body, "../../")
-
-
-def _year_links(summaries: list[dict[str, Any]]) -> str:
-    if not summaries:
-        return ""
-    links = "".join(
-        (
-            f'<a class="tile" href="year/{item["year"]}/" '
-            'style="background:#171717;color:#f7f4ed">'
-            f'<strong>{item["year"]} YEAR IN COLOR</strong>'
-            f'<span>{item["approved_days"]} approved days<br>'
-            f'{html.escape(item["most_frequent_family"]["family_name"])} led</span></a>'
-        )
-        for item in summaries
+def _build_day(source_dir: Path, result: dict, dest: Path) -> None:
+    dest.mkdir(parents=True, exist_ok=True)
+    for name in ["feed-post.png", "story-01-color.png", "story-02-evidence.png", "story-03-why-it-won.png", "story-04-runners-up.png", "story-05-signal-map.png", "story-06-context.png"]:
+        if (source_dir / name).exists():
+            shutil.copy2(source_dir / name, dest / name)
+    challenger = result.get("challenger", [])
+    if not challenger:
+        return
+    primary = challenger[0]
+    names = " + ".join(c.get("creative_name", c.get("family_label", "Color")) for c in challenger)
+    colors = [c["hex"] for c in challenger]
+    gradient = colors[0] if len(colors) == 1 else f"linear-gradient(90deg,{','.join(colors)})"
+    evidence = primary.get("evidence", [])
+    evidence_html = "".join(
+        f'<li><b>{html.escape(e.get("source_name",""))}</b> — {html.escape(e.get("domain",""))} / {html.escape(e.get("signal_stage",""))} — local match <code>{e.get("local_hex","")}</code></li>'
+        for e in evidence[:12]
     )
-    return f'<section><h2>Year-end summaries</h2><div class="grid">{links}</div></section>'
+    body = f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{html.escape(names)} — Pantone Challenger</title><link rel="stylesheet" href="../../assets/site.css"></head><body><div class="wrap"><header><a href="../../"><b>PANTONE CHALLENGER</b></a><span>{result['date']}</span></header><div class="hero"><div class="hero-swatch" style="background:{gradient};color:#111"><small>YESTERDAY’S CHALLENGER</small><h1>{html.escape(names)}</h1><b>{' + '.join(colors)}</b></div><div class="panel"><h2>Evidence</h2><div class="metrics"><div class="metric"><b>{result.get('sources_with_eligible_evidence',0)}</b>sources</div><div class="metric"><b>{result.get('domains_covered',0)}</b>domains</div><div class="metric"><b>{result.get('sectors_covered',0)}</b>sectors</div><div class="metric"><b>{result.get('stages_covered',0)}</b>stages</div><div class="metric"><b>{result.get('baseline_days',0)}</b>baseline days</div></div><p>Palette regime: <b>{html.escape(result.get('palette_regime',{}).get('dominant_regime',''))}</b></p></div></div><div class="panel" style="margin-top:28px"><h2>Traceable supporting sources</h2><ul>{evidence_html}</ul><p><a href="result.json">Machine-readable result</a></p></div></div></body></html>"""
+    (dest / "index.html").write_text(body, encoding="utf-8")
+    (dest / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
 
 
-def _build_year_detail(summary: dict[str, Any]) -> str:
-    top = summary["most_frequent_family"]
-    text = _contrast(top["representative_hex"])
-    rows = "".join(
-        (
-            f'<tr><td>{index}</td><td>{html.escape(item["family_name"])}</td>'
-            f'<td><span style="display:inline-block;width:24px;height:24px;border-radius:6px;'
-            f'background:{item["representative_hex"]};vertical-align:middle"></span> '
-            f'{item["representative_hex"]}</td>'
-            f'<td>{item["winning_days"]}</td><td>{item["longest_streak"]}</td>'
-            f'<td>{item["unique_company_count"]} / {item["panel_company_count"]}</td>'
-            f'<td>{item["sector_count"]}</td></tr>'
-        )
-        for index, item in enumerate(summary["families"][:12], start=1)
-    )
-    body = f"""
-<main>
-<section class="swatch" style="background:{top['representative_hex']};color:{text}">
-<div><p class="kicker">{summary['year']} YEAR IN COLOR</p>
-<h1>{html.escape(top['family_name'])}</h1><p>{top['representative_hex']}</p></div>
-<div class="stats">
-<div class="stat"><strong>{summary['approved_days']}</strong>approved days</div>
-<div class="stat"><strong>{top['winning_days']}</strong>days led by {html.escape(top['family_name'])}</div>
-<div class="stat"><strong>{top['unique_company_count']} / {top['panel_company_count']}</strong>company reach</div>
-<div class="stat"><strong>{summary['average_panel_coverage_percent']}%</strong>average panel coverage</div>
-</div></section>
-<section><h2>Most frequent daily winners</h2><table><thead><tr><th>Rank</th><th>Family</th><th>Representative</th><th>Winning days</th><th>Longest streak</th><th>Companies</th><th>Sectors</th></tr></thead><tbody>{rows}</tbody></table></section>
-<section><h2>Downloadable year-end assets</h2><p><a href="../../assets/yearly/{summary['year']}/year-in-color.png">Year-in-color card</a> · <a href="../../assets/yearly/{summary['year']}/year-color-grid.png">Daily color grid</a> · <a href="../../assets/yearly/{summary['year']}/annual-summary.json">Summary JSON</a> · <a href="../../assets/yearly/{summary['year']}/annual-summary.md">Summary report</a></p></section>
-</main>"""
-    return _page(f"{summary['year']} Year in Color — Pantone Challenger", body, "../../")
+def _write_methodology(dest: Path) -> None:
+    body = """<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Methodology — Pantone Challenger</title><link rel="stylesheet" href="assets/site.css"></head><body><div class="wrap"><header><a href="./"><b>PANTONE CHALLENGER</b></a><span>METHODOLOGY</span></header><h1>Measured, not declared.</h1><div class="panel"><p>Pantone Challenger samples declared sources across creation, distribution, and attention. It extracts colors only from eligible creative regions, gives each source a normalized vote, compares each source with its own history, balances benchmark and discovery panels, and permits ties or no winner.</p><p>Logos are attribution only. A displayed source must have a traceable local color swatch from sampled creative. Rights-restricted source imagery remains private.</p><p>The public claim is limited to the declared panel. It is not a measurement of the entire internet.</p></div></div></body></html>"""
+    (dest / "methodology.html").write_text(body, encoding="utf-8")
 
 
-def build_site(archive_root: Path, site_root: Path, sources: list[Source]) -> None:
-    results = _load_results(archive_root)
-    year_summaries = _load_year_summaries(archive_root)
-    if site_root.exists():
-        shutil.rmtree(site_root)
-    (site_root / "archive").mkdir(parents=True, exist_ok=True)
-    (site_root / "year").mkdir(parents=True, exist_ok=True)
-    (site_root / "assets").mkdir(parents=True, exist_ok=True)
-
-    if results:
-        latest = results[0]
-        winner = latest["winner"]
-        summary = _review_summary(latest)
-        recurrence = _recurrence(latest)
-        color = winner["hex"]
-        text = _contrast(color)
-        hero = f"""
-<section class="hero"><p class="kicker">What color did the commercial internet use yesterday?</p>
-<div class="swatch" style="background:{color};color:{text}">
-<div><p class="kicker">{html.escape(latest['date'])} · YESTERDAY'S CHALLENGER</p>
-<h1>{html.escape(latest.get('winner_name') or color)}</h1><p>{color}</p></div>
-<div class="stats">
-<div class="stat"><strong>{summary['brands_supporting_winner']}</strong>supporting brands today</div>
-<div class="stat"><strong>{summary['company_pages_analyzed']} / {summary['company_pages_monitored']}</strong>analyzed / monitored</div>
-<div class="stat"><strong>{summary['sectors_supporting_winner']} / {summary['sectors_in_panel']}</strong>winner sectors / panel</div>
-<div class="stat"><strong>{recurrence['winning_days']}</strong>{html.escape(recurrence['family_name'])} wins in {recurrence['year']}</div>
-<div class="stat"><strong>{winner['score']:.1f}</strong>score</div>
-</div></div></section>"""
-    else:
-        hero = """
-<section class="hero"><p class="kicker">What color did the commercial internet use yesterday?</p>
-<h1>THE FIRST LIVE RESULT IS PENDING.</h1>
-<p class="note">The archive begins only after the real source panel passes its data-quality gate. No synthetic result is presented as a launch result.</p></section>"""
-
-    tiles = "".join(_archive_tile(result) for result in results[:90])
-    source_rows = "".join(
-        f"<tr><td>{html.escape(source.name)}</td>"
-        f"<td>{html.escape(source.sector.replace('_', ' '))}</td>"
-        f'<td><a href="{html.escape(source.url)}" rel="nofollow">official page</a></td></tr>'
-        for source in sources
-    )
-    body = f"""{hero}
-<main>
-<section><h2>The archive</h2><div class="grid">{tiles or '<p>No approved live days yet.</p>'}</div></section>
-{_year_links(year_summaries)}
-<section><h2>The declared panel</h2><p class="note">Every enabled source is an official commercial or brand-owned page. Each brand receives one normalized vote per day regardless of how many visual elements appear on its page.</p>
-<table><thead><tr><th>Source</th><th>Sector</th><th>Page</th></tr></thead><tbody>{source_rows}</tbody></table></section>
-<section><h2>How it works</h2><p class="note">The project browser-renders a balanced panel of official marketing pages, finds eligible marketing-creative regions, and extracts local colors from those regions. Every supporting company must retain a traceable local swatch. Company votes are normalized, persistent house colors are reduced, and independent cross-sector spread is rewarded. Weak days are blocked, and the first accepted runs remain internal calibration.</p></section>
-</main>"""
-    (site_root / "index.html").write_text(
-        _page("Pantone Challenger — The Commercial Color Index", body),
-        encoding="utf-8",
-    )
-
-    for result in results:
-        day = result["date"]
-        source_dir = archive_root / day
-        detail_dir = site_root / "archive" / day
-        detail_dir.mkdir(parents=True, exist_ok=True)
-        (detail_dir / "index.html").write_text(_build_detail(result), encoding="utf-8")
-        asset_dir = site_root / "assets" / day
-        shutil.copytree(source_dir, asset_dir, dirs_exist_ok=True)
-
-    for summary in year_summaries:
-        year = str(summary["year"])
-        detail_dir = site_root / "year" / year
-        detail_dir.mkdir(parents=True, exist_ok=True)
-        (detail_dir / "index.html").write_text(_build_year_detail(summary), encoding="utf-8")
-        source_dir = archive_root / "yearly" / year
-        asset_dir = site_root / "assets" / "yearly" / year
-        shutil.copytree(source_dir, asset_dir, dirs_exist_ok=True)
-
-    (site_root / ".nojekyll").write_text("", encoding="utf-8")
-    (site_root / "robots.txt").write_text("User-agent: *\nAllow: /\n", encoding="utf-8")
+def _write_feed(days, dest: Path) -> None:
+    payload = [result for _, result in days]
+    (dest / "feed.json").write_text(json.dumps(payload, indent=2), encoding="utf-8")

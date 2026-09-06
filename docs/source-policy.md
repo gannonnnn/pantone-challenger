@@ -1,68 +1,30 @@
-# Source and Rights Policy — Version 1.3
+# Source and rights policy
 
-## Inclusion criteria
+## Source classes
 
-A panel source must be:
+- **First-party webpages:** analyzed from the creator, brand, institution, marketplace, or publisher that issued the material.
+- **Official APIs:** used when a platform offers a supported interface.
+- **RSS/Atom feeds:** used for newly published visual work.
+- **Moderator-approved submissions:** opt-in and reviewed before entry.
 
-- publicly reachable without authentication;
-- owned or officially operated by the represented company or organization;
-- substantially commercial or promotional;
-- visually meaningful at the configured desktop viewport;
-- assigned to exactly one declared sector in the registry;
-- appropriate for limited automated observation.
+The system does not scrape private accounts, evade authentication, bypass paywalls, or defeat access controls.
 
-## Exclusions
+## Art event semantics
 
-The project excludes login-only pages, paywalls, private accounts, CAPTCHA circumvention, anti-bot evasion, personal data, user-generated feeds, and unofficial logo repositories.
+A work must not be called newly created merely because it was digitized yesterday. Art observations use explicit event labels such as newly created, newly exhibited, newly published, newly acquired, newly digitized, or historically resurfaced.
 
-## Access behavior
+Open-access museum collections are therefore treated as institutional attention or historical resurfacing unless a current exhibition page supports a stronger claim.
 
-Pantone Challenger limits concurrency and request rate, uses fixed viewports, does not log in, and records blocked pages as unavailable. It does not repeatedly retry a challenged source in a way intended to bypass restrictions.
+## Rights modes
 
-## Evidence regions
+- `public_domain`: public-domain imagery may be shown when the source metadata permits it.
+- `licensed`: the project has a compatible license.
+- `attribution`: reuse is conditioned on attribution.
+- `first_party`: the project owns the material.
+- `analyze_only`: the image may be measured privately, but public output uses local swatches, attribution, aggregate statistics, and outbound source links instead of the full work.
 
-Full-page screenshots are private diagnostics. Public color support must come from an eligible marketing-creative region that passes the configured size and confidence checks.
+Rights mode controls output; it does not change the measured color.
 
-Headers, navigation, footers, cookie interfaces, modal overlays, chat widgets, logos, favicons, and small icons are not public color evidence.
+## Marketplace integrity
 
-## Raw captures
-
-Raw page frames, region screenshots, and evidence contact sheets are used for extraction, audit, and debugging. They are excluded from Git and from the public archive. GitHub Actions retains them only for the configured limited period.
-
-## Public evidence
-
-Public packages may include:
-
-- company name;
-- authoritative sector;
-- official source URL;
-- capture status and counts;
-- local derived color swatch and HEX;
-- perceptual distance and normalized share;
-- scoring and methodology metadata;
-- original Pantone Challenger graphics;
-- an optional manually approved company mark.
-
-V1.3 does not automatically republish campaign photography.
-
-## Brand marks
-
-Runtime favicon and header-logo scraping is not permitted in public assets. Every source defaults to text-only attribution.
-
-A mark may be used only when:
-
-1. it has been manually obtained from an appropriate first-party source;
-2. it has been reviewed for legibility and presentation;
-3. its repository path is declared in `config/sources.yml`;
-4. `brand_mark_status` is set to `approved`;
-5. its use remains modest and identification-only.
-
-If any condition fails, the renderer uses the company name without a logo.
-
-## Attribution and endorsement
-
-A company’s inclusion documents an observation source. It does not imply sponsorship, endorsement, affiliation, partnership, or coordination. The project must not present monitored companies as clients or sponsors.
-
-## Panel changes
-
-A source should be replaced only when it is persistently unusable, ceases to be official or promotional, or creates a structural panel problem. A replacement must be documented with its reason, effective date, sector, and panel-version change. Sources must never be swapped merely to produce a preferred color.
+Listings, seller interest, saves/watchers, and sales are different signal stages. The project must label them separately. A marketplace platform is capped and individual creators are de-duplicated so thousands of images from one platform cannot overwhelm every other domain.

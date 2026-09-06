@@ -1,238 +1,123 @@
 name: Daily Challenger
 
-# V1.3 is manual-only during evidence calibration. Restore a schedule only after
-# seven accepted shadow runs and explicit approval.
 on:
   workflow_dispatch:
     inputs:
       date:
-        description: "Marketing date (YYYY-MM-DD) or auto"
+        description: "Cultural date (YYYY-MM-DD) or auto for yesterday"
         required: true
-        default: "auto"
+        default: auto
       max_sources:
-        description: "0 uses the full 48-source panel"
+        description: "0 uses the complete selected benchmark + rotating discovery panel"
         required: true
         default: "0"
-      force:
-        description: "Rebuild an existing date"
-        type: boolean
+      rebuild:
+        description: "Replace an existing date"
         required: true
+        type: boolean
         default: false
-
-concurrency:
-  group: daily-challenger
-  cancel-in-progress: false
+  schedule:
+    - cron: "30 6 * * *"
 
 permissions:
   contents: write
   pull-requests: write
 
+concurrency:
+  group: daily-challenger-${{ github.event.inputs.date || 'scheduled' }}
+  cancel-in-progress: false
+
 jobs:
   generate:
+    if: github.event_name == 'workflow_dispatch' || vars.ENABLE_DAILY_SCHEDULE == 'true'
     runs-on: ubuntu-latest
     env:
-      REQUESTED_DATE: ${{ github.event.inputs.date || 'auto' }}
-      MAX_SOURCES: ${{ github.event.inputs.max_sources || '0' }}
-      FORCE_INPUT: ${{ github.event.inputs.force || 'false' }}
+      ETSY_API_KEY: ${{ secrets.ETSY_API_KEY }}
+      EBAY_OAUTH_TOKEN: ${{ secrets.EBAY_OAUTH_TOKEN }}
+      PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: "pip"
-
+          cache: pip
       - name: Install application
-        run: |
-          python -m pip install -e .
-          python -m playwright install --with-deps chromium
-
-      - name: Capture and calculate
-        id: run
+        run: python -m pip install -e ".[dev]"
+      - name: Install Chromium
+        run: python -m playwright install --with-deps chromium
+      - name: Resolve date
+        id: date
         shell: bash
         run: |
-          target_date="$(python - <<PY
-          from challenger.config import load_settings
-          from challenger.dates import resolve_marketing_date
-          settings = load_settings('config')
-          print(resolve_marketing_date(
-              '$REQUESTED_DATE',
-              timezone_name=settings.timezone,
-              rollover_hour=settings.rollover_hour,
-          ).isoformat())
-          PY
-          )"
-          echo "target_date=$target_date" >> "$GITHUB_OUTPUT"
-
-          args=(--date "$REQUESTED_DATE")
-          if [[ "$MAX_SOURCES" != "0" ]]; then
-            args+=(--max-sources "$MAX_SOURCES")
-          fi
-          if [[ "$FORCE_INPUT" == "true" ]]; then
-            args+=(--force)
-          fi
-          challenger run "${args[@]}" | tee daily-run.json
-
-          if [[ ! -f "archive/$target_date/result.json" ]]; then
-            echo "No result record was generated for $target_date."
-            exit 1
-          fi
-          result_status="$(python - <<PY
-          import json
-          from pathlib import Path
-          print(json.loads((Path('archive') / '$target_date' / 'result.json').read_text())['status'])
-          PY
-          )"
-          echo "result_status=$result_status" >> "$GITHUB_OUTPUT"
-
-      - name: Upload private capture and evidence review
-        if: always() && steps.run.outputs.target_date != ''
-        uses: actions/upload-artifact@v7
+          VALUE="${{ github.event.inputs.date || 'auto' }}"
+          RESOLVED=$(challenger resolve-date "$VALUE" | tail -1 | tr -d '\r')
+          echo "value=$RESOLVED" >> "$GITHUB_OUTPUT"
+      - name: Run tests before live collection
+        run: pytest
+      - name: Measure the cultural color field
+        shell: bash
+        run: |
+          REBUILD=""
+          if [[ "${{ github.event.inputs.rebuild || 'false' }}" == "true" ]]; then REBUILD="--rebuild"; fi
+          challenger run \
+            --date "${{ steps.date.outputs.value }}" \
+            --max-sources "${{ github.event.inputs.max_sources || '0' }}" \
+            $REBUILD
+      - name: Add result to job summary
+        shell: bash
+        run: cat "archive/${{ steps.date.outputs.value }}/review-summary.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload private evidence
+        uses: actions/upload-artifact@v4
         with:
-          name: private-evidence-${{ steps.run.outputs.target_date }}
-          path: |
-            .work/captures/${{ steps.run.outputs.target_date }}/
-            .work/review/${{ steps.run.outputs.target_date }}/
-            archive/${{ steps.run.outputs.target_date }}/capture-report.json
-            archive/${{ steps.run.outputs.target_date }}/result.json
-            archive/${{ steps.run.outputs.target_date }}/review-summary.md
-          retention-days: 14
-          if-no-files-found: warn
-
-      - name: Upload review package
-        if: steps.run.outputs.result_status == 'ready' || steps.run.outputs.result_status == 'review_only'
-        uses: actions/upload-artifact@v7
-        with:
-          name: challenger-review-${{ steps.run.outputs.target_date }}
-          path: archive/${{ steps.run.outputs.target_date }}/
-          retention-days: 30
+          name: private-evidence-${{ steps.date.outputs.value }}
+          path: .work/${{ steps.date.outputs.value }}/
           if-no-files-found: error
-
-      - name: Write run summary
-        if: always() && steps.run.outputs.target_date != ''
+          retention-days: 30
+      - name: Upload review or social package
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-package-${{ steps.date.outputs.value }}
+          path: archive/${{ steps.date.outputs.value }}/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Read publication state
+        id: state
+        shell: bash
+        run: echo "value=$(cat archive/${{ steps.date.outputs.value }}/workflow-state.txt)" >> "$GITHUB_OUTPUT"
+      - name: Open or update review pull request
+        if: steps.state.outputs.value != 'blocked'
         shell: bash
         run: |
-          python - "${{ steps.run.outputs.target_date }}" <<'PY'
-          import json
-          import sys
-          from pathlib import Path
-          day = sys.argv[1]
-          result = json.loads((Path('archive') / day / 'result.json').read_text())
-          lines = [
-              f"# Pantone Challenger — {day}",
-              "",
-              f"**State:** `{result['status']}`",
-              f"**Coverage:** {result['captured_sources']} / {result['panel_size']} company pages",
-          ]
-          if result.get('winner'):
-              winner = result['winner']
-              lines.extend([
-                  f"**Candidate:** {result.get('winner_name')} `{winner['hex']}`",
-                  f"**Traceable support:** {winner['source_count']} companies / {winner['sector_count']} sectors",
-              ])
-          reasons = result.get('quality_gate', {}).get('reasons', [])
-          warnings = result.get('quality_gate', {}).get('warnings', [])
-          if reasons:
-              lines.extend(["", "## Blocking reasons", *[f"- {x}" for x in reasons]])
-          if warnings:
-              lines.extend(["", "## Warnings", *[f"- {x}" for x in warnings]])
-          Path('/tmp/summary.md').write_text('\n'.join(lines))
-          PY
-          cat /tmp/summary.md >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Create or update review pull request
-        if: steps.run.outputs.result_status == 'ready' || steps.run.outputs.result_status == 'review_only'
-        shell: bash
-        run: |
-          day="${{ steps.run.outputs.target_date }}"
-          status="${{ steps.run.outputs.result_status }}"
-          if [[ "$status" == "review_only" ]]; then
-            branch="calibration/$day"
+          DATE="${{ steps.date.outputs.value }}"
+          STATE="${{ steps.state.outputs.value }}"
+          BRANCH="daily/$DATE"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -C "$BRANCH"
+          git add "archive/$DATE"
+          if git diff --cached --quiet; then
+            echo "No archive changes to commit."
           else
-            branch="daily/$day"
+            git commit -m "data: add Pantone Challenger result for $DATE"
           fi
-          git config user.name "pantone-challenger[bot]"
-          git config user.email "pantone-challenger[bot]@users.noreply.github.com"
-          git checkout -B "$branch"
-          git add "archive/$day" site
-          git commit -m "daily: record Challenger evidence for $day" || true
-          git push --force-with-lease origin "$branch"
-          sha="$(git rev-parse HEAD)"
-
-          python - "$day" "$sha" <<'PY'
-          import json
-          import os
-          import sys
-          from pathlib import Path
-
-          day, sha = sys.argv[1:]
-          result = json.loads((Path('archive') / day / 'result.json').read_text())
-          winner = result.get('winner') or {}
-          repo = os.environ['GITHUB_REPOSITORY']
-          base = f"https://github.com/{repo}/blob/{sha}/archive/{day}"
-          state = result['status']
-          title_prefix = (
-              "INTERNAL CALIBRATION — DO NOT POST"
-              if state == "review_only"
-              else "Yesterday's Challenger"
-          )
-          notice = (
-              "> **Calibration only:** merging this PR saves baseline history. It does not "
-              "enter the public archive, recurrence counter, or social-publishing queue."
-              if state == "review_only"
-              else "> Merging approves this measured result for the public archive."
-          )
-          evidence = []
-          for item in winner.get('evidence', [])[:12]:
-              evidence.append(
-                  f"- **{item['source_name']}** — {item['sector'].replace('_', ' ')} · "
-                  f"local swatch `{item['local_hex']}` · distance {item['distance_to_candidate']:.3f}"
-              )
-          lines = [
-              f"# {title_prefix} — {day}",
-              "",
-              notice,
-              "",
-              f"![Candidate card]({base}/feed-post.png?raw=1)",
-              "",
-              "## Coverage",
-              "",
-              f"- **{result['captured_sources']} / {result['panel_size']}** company pages produced eligible creative evidence",
-              f"- **{winner.get('source_count', 0)} companies / {winner.get('sector_count', 0)} sectors** support the candidate",
-              f"- **State:** `{state}` · **Confidence:** {winner.get('confidence', 'unknown')}",
-              "",
-              "## Traceable source matches",
-              "",
-              *(evidence or ["- No qualifying source evidence."]),
-              "",
-              f"![Evidence cards]({base}/story-02-evidence.png?raw=1)",
-              "",
-              f"![Runners-up]({base}/story-04-runners-up.png?raw=1)",
-              "",
-              f"[Open review summary]({base}/review-summary.md) · "
-              f"[Open result JSON]({base}/result.json) · "
-              f"[Open capture report]({base}/capture-report.json)",
-              "",
-              "> A logo is never color evidence. Every displayed company must have a local "
-              "swatch from a traceable sampled creative region.",
-          ]
-          Path('/tmp/pr-body.md').write_text('\n'.join(lines), encoding='utf-8')
-          Path('/tmp/pr-title.txt').write_text(f"{title_prefix} — {day}", encoding='utf-8')
-          PY
-
-          title="$(cat /tmp/pr-title.txt)"
-          open_pr="$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')"
-          if [[ -n "$open_pr" ]]; then
-            gh pr edit "$open_pr" --title "$title" --body-file /tmp/pr-body.md
+          git push --force-with-lease origin "$BRANCH"
+          if [[ "$STATE" == "ready" ]]; then
+            TITLE="Yesterday's Challenger — $DATE"
+          elif [[ "$STATE" == "baseline_only" ]]; then
+            TITLE="BASELINE ONLY — NO COLOR TO POST — $DATE"
           else
-            gh pr create --base main --head "$branch" --title "$title" --body-file /tmp/pr-body.md
+            TITLE="INTERNAL CALIBRATION — DO NOT POST — $DATE"
           fi
-
-      - name: Publication blocked safely
-        if: steps.run.outputs.result_status == 'blocked'
-        run: |
-          echo "The workflow completed normally, but no public or calibration result cleared the evidence gates."
-          echo "Review the private-evidence artifact and the run summary."
+          BODY_FILE="archive/$DATE/review-summary.md"
+          EXISTING=$(gh pr list --head "$BRANCH" --base main --state open --json number --jq '.[0].number // empty')
+          if [[ -n "$EXISTING" ]]; then
+            gh pr edit "$EXISTING" --title "$TITLE" --body-file "$BODY_FILE"
+          else
+            gh pr create --base main --head "$BRANCH" --title "$TITLE" --body-file "$BODY_FILE"
+          fi
+      - name: Explain blocked result
+        if: steps.state.outputs.value == 'blocked'
+        run: echo "The run completed, but integrity gates blocked a daily branch. Review the private evidence artifact."

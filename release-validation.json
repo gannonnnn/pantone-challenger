@@ -1,23 +1,27 @@
 {
-  "passed": true,
-  "python": "3.13.5 (main, Jul 15 2026, 20:25:40) [GCC 14.2.0]",
-  "sources": 48,
-  "sectors": 12,
-  "panel_version": "1.3",
-  "sector_counts": {
-    "technology": 4,
-    "retail": 4,
-    "food_beverage": 4,
-    "entertainment": 4,
-    "beauty": 4,
-    "travel": 4,
-    "finance": 4,
-    "automotive": 4,
-    "sports": 4,
-    "home": 4,
-    "fashion": 4,
-    "gaming": 4
-  },
-  "pytest_output": "....................................                                     [100%]",
+  "version": "1.5.1",
+  "registry_version": "2026.09-v1.5",
+  "enabled_sources": 67,
+  "domains": [
+    "advertising",
+    "art",
+    "audience_intent",
+    "creator_indie",
+    "design_interiors",
+    "entertainment",
+    "fashion",
+    "food_beauty_lifestyle",
+    "marketplace",
+    "materials_production",
+    "public_visual_field",
+    "technology"
+  ],
+  "stages": [
+    "attention",
+    "creation",
+    "distribution"
+  ],
+  "benchmark_sources": 40,
+  "discovery_sources": 27,
   "errors": []
 }

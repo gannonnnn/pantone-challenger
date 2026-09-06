@@ -1,0 +1,31 @@
+name: Source health
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 13 * * 1"
+
+permissions:
+  contents: read
+
+jobs:
+  health:
+    if: ${{ github.event_name == 'workflow_dispatch' || vars.ENABLE_SOURCE_HEALTH_SCHEDULE == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: python -m pip install -e .
+      - run: playwright install --with-deps chromium
+      - name: Check declared sources without publishing
+        run: python scripts/source_health.py --output .work/source-health
+      - uses: actions/upload-artifact@v4
+        with:
+          name: source-health-${{ github.run_id }}
+          path: .work/source-health
+          if-no-files-found: error
+          retention-days: 14
