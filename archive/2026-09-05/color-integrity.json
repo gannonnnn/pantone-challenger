@@ -1,0 +1,8 @@
+{
+  "passed": true,
+  "evidence_images_checked": 132,
+  "extracted_swatches_checked": 923,
+  "candidate_count_checked": 118,
+  "candidate_evidence_records_checked": 492,
+  "rule": "Every extracted and candidate HEX must exist in decoded source pixels."
+}

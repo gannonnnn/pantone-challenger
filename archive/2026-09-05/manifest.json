@@ -1,0 +1,25 @@
+{
+  "date": "2026-09-05",
+  "state": "review_only",
+  "methodology_version": "1.5.1",
+  "registry_version": "2026.09-v1.5",
+  "public_files": [
+    "caption.txt",
+    "color-integrity.json",
+    "feed-alt-text.txt",
+    "feed-post.png",
+    "observations.json",
+    "palette-regime.json",
+    "result.json",
+    "review-summary.md",
+    "story-01-color.png",
+    "story-02-evidence.png",
+    "story-03-why-it-won.png",
+    "story-04-runners-up.png",
+    "story-05-signal-map.png",
+    "story-06-context.png",
+    "story-alt-text.txt"
+  ],
+  "private_artifact_path": "/home/runner/work/pantone-challenger/pantone-challenger/.work/2026-09-05",
+  "baseline_compatibility_key": "color-truth-v1"
+}
