@@ -53,7 +53,7 @@ jobs:
         shell: bash
         run: |
           VALUE="${{ github.event.inputs.date || 'auto' }}"
-          RESOLVED=$(challenger resolve-date "$VALUE" | tail -1 | tr -d '\r')
+          RESOLVED=$(challenger resolve-date --value "$VALUE" | tail -1 | tr -d '\r')
           echo "value=$RESOLVED" >> "$GITHUB_OUTPUT"
       - name: Run tests before live collection
         run: pytest
