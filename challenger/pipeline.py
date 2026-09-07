@@ -119,7 +119,7 @@ class DailyPipeline:
         result = DailyResult(
             date=date_value,
             state=state,
-            methodology_version=str(self.settings.get("methodology_version", "1.5.1")),
+            methodology_version=str(self.settings.get("methodology_version", "1.5.2")),
             registry_version=self.registry_version,
             panel_declared=len(active),
             sources_attempted=len(active),

@@ -37,10 +37,10 @@ jobs:
       PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
       GH_TOKEN: ${{ github.token }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
           cache: pip
@@ -76,14 +76,14 @@ jobs:
         shell: bash
         run: cat "archive/${{ steps.date.outputs.value }}/review-summary.md" >> "$GITHUB_STEP_SUMMARY"
       - name: Upload private evidence
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: private-evidence-${{ steps.date.outputs.value }}
           path: .work/${{ steps.date.outputs.value }}/
           if-no-files-found: error
           retention-days: 30
       - name: Upload review or social package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: daily-package-${{ steps.date.outputs.value }}
           path: archive/${{ steps.date.outputs.value }}/

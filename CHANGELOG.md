@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.2 hotfix — CI and tie eligibility
+
+- Recomputes neutral status from each candidate HEX before tie evaluation, preventing grays from being treated as eligible co-Challengers.
+- Aligns the main settings and fallback methodology version with V1.5.2.
+- Restores one pull-request CI check instead of duplicate push and pull-request checks on repair branches.
+- Limits lint gating to code-breaking Python errors while retaining the full test and release-validation suite.
+- Updates Daily Challenger artifact actions to Node 24-compatible major versions.
+
 ## 1.5.1 — Color Truth and Pixel Provenance
 
 - Corrects OKLCH family boundaries so red, yellow, cyan, and blue are no longer mislabeled.

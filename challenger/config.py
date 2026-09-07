@@ -29,7 +29,7 @@ def load_yaml(path: str | Path) -> dict[str, Any]:
 
 def load_settings(path: str | Path = "config/settings.yml") -> dict[str, Any]:
     settings = load_yaml(path)
-    settings.setdefault("methodology_version", "1.5.1")
+    settings.setdefault("methodology_version", "1.5.2")
     return settings
 
 

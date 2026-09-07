@@ -1001,6 +1001,10 @@ def _audited_tie(ranking: Sequence[AuditedCluster], cfg: Mapping[str, Any]) -> d
 def _tie_analysis(candidates: Sequence[CandidateInfo], challenger: CandidateInfo, cfg: Mapping[str, Any]) -> dict[str, Any]:
     eligible: list[CandidateInfo] = []
     for candidate in candidates:
+        # CandidateInfo may be created directly by tests, adapters, or future
+        # collectors. Always derive neutral status from the actual HEX so an
+        # unset/default field cannot allow gray into tie calculations.
+        candidate.neutral = is_neutral(candidate.hex) if candidate.hex else False
         candidate.eligible = bool(
             candidate.hex
             and not candidate.neutral
