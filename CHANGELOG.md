@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.2 hotfix — CI and tie eligibility
+
+- Recomputes neutral status from each candidate HEX before tie evaluation, preventing grays from being treated as eligible co-Challengers.
+- Aligns the main settings and fallback methodology version with V1.5.2.
+- Restores one pull-request CI check instead of duplicate push and pull-request checks on repair branches.
+- Limits lint gating to code-breaking Python errors while retaining the full test and release-validation suite.
+- Updates Daily Challenger artifact actions to Node 24-compatible major versions.
+
 ## 1.5.1 — Color Truth and Pixel Provenance
 
 - Corrects OKLCH family boundaries so red, yellow, cyan, and blue are no longer mislabeled.
@@ -27,3 +35,15 @@
 - Adds a static historical website and JSON feed suitable for GitHub Pages.
 - Adds annual regime and color-family summaries.
 - Adds safer image and logo handling: no favicon fallback, contain-only fitting, max 2× enlargement, transparent-padding trim, exact swatch validation, text fallback, and rights-aware public output.
+
+## 1.5.2 — Temporal and Semantic Integrity
+
+- Rejects future-dated feed and API evidence for the requested cultural date.
+- Moves undated historical art, catalogs, and static benchmark material to context or baseline-only roles.
+- Tracks first-seen, last-seen, and last-changed evidence fingerprints.
+- Requires meaningful connected color area rather than scattered incidental pixels.
+- Tightens muted and low-chroma candidate coherence.
+- Evaluates ties only after candidate eligibility and neutral filtering.
+- Suppresses emergence claims until seven prior valid baseline days exist.
+- Reports source counts by domain, signal stage, scale class, panel, and sector.
+- Quarantines public assets whenever postflight integrity checks block a result.

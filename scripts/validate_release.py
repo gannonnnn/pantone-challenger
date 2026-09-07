@@ -18,10 +18,10 @@ def main() -> int:
     errors = []
     settings = load_settings()
     version, sources = load_sources()
-    if __version__ != "1.5.1":
+    if __version__ != "1.5.2":
         errors.append(f"Unexpected package version: {__version__}")
-    if settings.get("methodology_version") != "1.5.1":
-        errors.append("Methodology version is not 1.5.1")
+    if settings.get("methodology_version") != "1.5.2":
+        errors.append("Methodology version is not 1.5.2")
     enabled = [s for s in sources if s.enabled]
     if len(enabled) < 50:
         errors.append("The enabled cultural panel has fewer than 50 declared sources")
