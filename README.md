@@ -66,3 +66,9 @@ See [`docs/CULTURAL_SIGNAL_MATRIX.md`](docs/CULTURAL_SIGNAL_MATRIX.md), [`docs/I
 V1.5.1 guarantees that every local and public HEX is selected from a decoded source pixel rather than an averaged synthetic centroid. It corrects the OKLCH family map, excludes transparent padding from color votes, adds complete-linkage clustering, and creates a private proof sheet that highlights the exact matching pixels. A runtime audit reopens the evidence images and stops the run if any published color cannot be independently verified.
 
 See [`docs/COLOR_TRUTH_AND_PIXEL_PROVENANCE.md`](docs/COLOR_TRUTH_AND_PIXEL_PROVENANCE.md).
+
+## V1.5.2 — Temporal and Semantic Integrity
+
+V1.5.2 adds a conservative postflight gate between color scoring and publication. It verifies that evidence belongs to the requested cultural date, separates historical/context material from current signals, requires meaningful connected color area, tightens muted-color coherence, evaluates ties only after eligibility, and suppresses emergence claims until the historical baseline is mature.
+
+The postflight layer never silently substitutes a new winner. If the pipeline candidate does not agree with the independently audited ranking, the day is blocked and the evidence is preserved for review.

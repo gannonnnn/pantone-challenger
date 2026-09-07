@@ -1,0 +1,22 @@
+{
+  "methodology_version": "1.5.2",
+  "baseline_days_required": 7,
+  "review_min_sources": 24,
+  "public_min_sources": 30,
+  "candidate_min_sources": 6,
+  "candidate_min_domains": 4,
+  "current_item_default_max_age_days": 2,
+  "current_listing_max_age_days": 3,
+  "exhibition_max_age_days": 45,
+  "muted_chroma_threshold": 0.075,
+  "muted_cluster_max_diameter": 0.032,
+  "chromatic_cluster_max_diameter": 0.045,
+  "candidate_match_distance": 0.055,
+  "tie_score_delta": 2.5,
+  "minimum_total_color_share": 0.02,
+  "minimum_component_share": 0.005,
+  "muted_minimum_total_color_share": 0.04,
+  "muted_minimum_component_share": 0.01,
+  "proof_pixel_distance": 0.035,
+  "proof_max_dimension": 240
+}

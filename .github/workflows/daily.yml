@@ -66,6 +66,12 @@ jobs:
             --date "${{ steps.date.outputs.value }}" \
             --max-sources "${{ github.event.inputs.max_sources || '0' }}" \
             $REBUILD
+      - name: Enforce temporal and semantic integrity
+        shell: bash
+        run: |
+          python -m challenger.temporal_semantic_integrity \
+            --date "${{ steps.date.outputs.value }}" \
+            --root .
       - name: Add result to job summary
         shell: bash
         run: cat "archive/${{ steps.date.outputs.value }}/review-summary.md" >> "$GITHUB_STEP_SUMMARY"

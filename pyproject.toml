@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "pantone-challenger"
-version = "1.5.1"
+version = "1.5.2"
 description = "An open cultural color index for how color begins, spreads, converges, and becomes ordinary."
 readme = "README.md"
 requires-python = ">=3.11"
