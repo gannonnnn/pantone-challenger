@@ -1,0 +1,59 @@
+name: AI Image Review (optional)
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Completed Daily Challenger run ID (from its URL)"
+        required: true
+      date:
+        description: "Observation date of that run, YYYY-MM-DD"
+        required: true
+      max_images:
+        description: "Maximum images to review, 1-50"
+        default: "12"
+        required: true
+      execute:
+        description: "Send image copies to the OpenAI API (may incur API charges); otherwise dry run"
+        type: boolean
+        default: false
+      model:
+        description: "Image-capable model supporting structured outputs"
+        default: "gpt-4.1-mini"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      OBSERVATION_DATE: ${{ inputs.date }}
+      MAX_IMAGES: ${{ inputs.max_images }}
+      REVIEW_MODEL: ${{ inputs.model }}
+      EXECUTE_REVIEW: ${{ inputs.execute }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - run: python -m pip install -e .
+      - uses: actions/download-artifact@v5
+        with:
+          name: private-evidence-${{ inputs.date }}
+          path: .work/${{ inputs.date }}
+          run-id: ${{ inputs.run_id }}
+          github-token: ${{ github.token }}
+      - name: Review saved images in shadow mode
+        shell: bash
+        run: |
+          ARGS=()
+          if [[ "$EXECUTE_REVIEW" == "true" ]]; then ARGS+=(--execute); fi
+          challenger review-images --date "$OBSERVATION_DATE" --limit "$MAX_IMAGES" --model "$REVIEW_MODEL" "${ARGS[@]}"
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ai-review-${{ inputs.date }}
+          path: |
+            .work/${{ inputs.date }}/ai-review.json
+            .work/${{ inputs.date }}/human-labels-template.csv
+          retention-days: 30

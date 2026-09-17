@@ -1,0 +1,9 @@
+{
+  "methodology_version": "1.6.0",
+  "declared_run_size": 58,
+  "browser_workers": 6,
+  "browser_source_timeout_seconds": 55.0,
+  "theoretical_browser_wave_seconds": 550.0,
+  "collection_budget_seconds": 1200.0,
+  "errors": []
+}

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from math import ceil
+
 from challenger.models import PublicationState
 
 
@@ -19,8 +21,8 @@ def decide_state(
     q = settings.get("quality", {})
     blocking = []
     review = []
-    min_evidence_block = max(int(q.get("min_evidence_sources_block", 8)), int(active_sources * float(q.get("min_coverage_block", 0.30))))
-    min_evidence_ready = max(int(q.get("min_evidence_sources_ready", 18)), int(active_sources * float(q.get("min_coverage_ready", 0.55))))
+    min_evidence_block = max(int(q.get("min_evidence_sources_block", 8)), ceil(active_sources * float(q.get("min_coverage_block", 0.30))))
+    min_evidence_ready = max(int(q.get("min_evidence_sources_ready", 18)), ceil(active_sources * float(q.get("min_coverage_ready", 0.55))))
     if evidence_sources < min_evidence_block:
         blocking.append(
             f"Only {evidence_sources} of {active_sources} active sources produced eligible creative evidence; at least {min_evidence_block} are required for a valid baseline day."

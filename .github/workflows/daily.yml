@@ -1,10 +1,12 @@
 name: Daily Challenger
 
+run-name: Daily Challenger — ${{ github.event.inputs.date || 'scheduled' }}
+
 on:
   workflow_dispatch:
     inputs:
       date:
-        description: "Cultural date (YYYY-MM-DD) or auto for yesterday"
+        description: "Observation date (YYYY-MM-DD) or auto for today"
         required: true
         default: auto
       max_sources:
@@ -24,14 +26,16 @@ permissions:
   pull-requests: write
 
 concurrency:
-  group: daily-challenger-${{ github.event.inputs.date || 'scheduled' }}
-  cancel-in-progress: false
+  group: daily-challenger-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   generate:
     if: github.event_name == 'workflow_dispatch' || vars.ENABLE_DAILY_SCHEDULE == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 35
     env:
+      PYTHONUNBUFFERED: "1"
       ETSY_API_KEY: ${{ secrets.ETSY_API_KEY }}
       EBAY_OAUTH_TOKEN: ${{ secrets.EBAY_OAUTH_TOKEN }}
       PRODUCT_HUNT_TOKEN: ${{ secrets.PRODUCT_HUNT_TOKEN }}
@@ -50,45 +54,78 @@ jobs:
         run: python -m playwright install --with-deps chromium
       - name: Resolve date
         id: date
+        env:
+          REQUESTED_DATE: ${{ github.event.inputs.date || 'auto' }}
         shell: bash
         run: |
-          VALUE="${{ github.event.inputs.date || 'auto' }}"
+          VALUE="$REQUESTED_DATE"
           RESOLVED=$(challenger resolve-date --value "$VALUE" | tail -1 | tr -d '\r')
           echo "value=$RESOLVED" >> "$GITHUB_OUTPUT"
       - name: Run tests before live collection
         run: pytest
       - name: Measure the cultural color field
+        id: measure
+        continue-on-error: true
+        env:
+          REQUESTED_REBUILD: ${{ github.event.inputs.rebuild || 'false' }}
+          REQUESTED_MAX_SOURCES: ${{ github.event.inputs.max_sources || '0' }}
+          OBSERVATION_DATE: ${{ steps.date.outputs.value }}
         shell: bash
         run: |
           REBUILD=""
-          if [[ "${{ github.event.inputs.rebuild || 'false' }}" == "true" ]]; then REBUILD="--rebuild"; fi
-          challenger run \
-            --date "${{ steps.date.outputs.value }}" \
-            --max-sources "${{ github.event.inputs.max_sources || '0' }}" \
-            $REBUILD
+          if [[ "$REQUESTED_REBUILD" == "true" ]]; then REBUILD="--rebuild"; fi
+          timeout --signal=TERM --kill-after=30s 28m \
+            challenger run \
+              --date "$OBSERVATION_DATE" \
+              --max-sources "$REQUESTED_MAX_SOURCES" \
+              $REBUILD
       - name: Enforce temporal and semantic integrity
+        id: integrity
+        if: ${{ steps.measure.outcome == 'success' }}
+        continue-on-error: true
         shell: bash
         run: |
           python -m challenger.temporal_semantic_integrity \
             --date "${{ steps.date.outputs.value }}" \
             --root .
       - name: Add result to job summary
+        if: ${{ steps.measure.outcome == 'success' && steps.integrity.outcome == 'success' }}
         shell: bash
         run: cat "archive/${{ steps.date.outputs.value }}/review-summary.md" >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload failed-run diagnostics
+        if: ${{ always() && steps.measure.outcome == 'failure' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: failed-run-diagnostics-${{ steps.date.outputs.value }}
+          path: |
+            .work/${{ steps.date.outputs.value }}/
+            archive/${{ steps.date.outputs.value }}/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 30
       - name: Upload private evidence
+        if: ${{ always() && steps.measure.outcome == 'success' }}
         uses: actions/upload-artifact@v7
         with:
           name: private-evidence-${{ steps.date.outputs.value }}
           path: .work/${{ steps.date.outputs.value }}/
+          include-hidden-files: true
           if-no-files-found: error
           retention-days: 30
       - name: Upload review or social package
+        if: ${{ steps.measure.outcome == 'success' && steps.integrity.outcome == 'success' }}
         uses: actions/upload-artifact@v7
         with:
           name: daily-package-${{ steps.date.outputs.value }}
           path: archive/${{ steps.date.outputs.value }}/
           if-no-files-found: error
           retention-days: 90
+      - name: Stop after preserving diagnostics
+        if: ${{ always() && (steps.measure.outcome == 'failure' || steps.integrity.outcome == 'failure') }}
+        shell: bash
+        run: |
+          echo "The run failed, but available runtime diagnostics were preserved as an artifact."
+          exit 1
       - name: Read publication state
         id: state
         shell: bash
@@ -111,7 +148,7 @@ jobs:
           fi
           git push --force-with-lease origin "$BRANCH"
           if [[ "$STATE" == "ready" ]]; then
-            TITLE="Yesterday's Challenger — $DATE"
+            TITLE="Observed Challenger — $DATE"
           elif [[ "$STATE" == "baseline_only" ]]; then
             TITLE="BASELINE ONLY — NO COLOR TO POST — $DATE"
           else

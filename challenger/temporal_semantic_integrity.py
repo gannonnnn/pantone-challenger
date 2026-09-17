@@ -1,4 +1,4 @@
-"""Pantone Challenger V1.5.2 temporal and semantic integrity gate.
+"""Pantone Challenger V1.6.0 temporal and semantic integrity gate.
 
 This module runs after the existing V1.5.1 collection/scoring pipeline and before
 any review pull request is opened.  It is intentionally conservative: it never
@@ -51,7 +51,7 @@ REGION_KEYS = ("region_path", "screenshot_path", "image_path", "crop_path", "evi
 URL_KEYS = ("source_url", "url", "page_url", "item_url", "canonical_url", "link")
 
 DEFAULT_CONFIG: dict[str, Any] = {
-    "methodology_version": "1.5.2",
+    "methodology_version": "1.6.0",
     "baseline_days_required": 7,
     "review_min_sources": 24,
     "public_min_sources": 30,
@@ -1068,12 +1068,12 @@ def _write_ledger(root: Path, target: date, evidence: Sequence[EvidenceFinding])
         source["last_seen"] = max(str(source.get("last_seen", "")), item.last_seen)
         if item.last_changed > str(source.get("last_changed", "")):
             source["last_changed"] = item.last_changed
-        # Flat fields are retained for compatibility with the first V1.5.2 ledger.
+        # Flat fields are retained for compatibility with the first V1.6.0 ledger.
         if item.supports_challenger or "fingerprint" not in source:
             source["fingerprint"] = item.fingerprint
             source["local_hex"] = item.local_hex
     ledger = {
-        "methodology_version": "1.5.2",
+        "methodology_version": "1.6.0",
         "target_date": target.isoformat(),
         "sources": sources,
     }
@@ -1131,7 +1131,7 @@ def _protect_assets(root: Path, target: date, state: str) -> None:
             except OSError:
                 pass
         (archive / "NO_PUBLIC_ASSETS.txt").write_text(
-            "V1.5.2 integrity checks blocked this day. Any generated social assets were quarantined.\n",
+            "V1.6.0 integrity checks blocked this day. Any generated social assets were quarantined.\n",
             encoding="utf-8",
         )
     elif state in {"review_only", "baseline_only"}:
@@ -1152,7 +1152,7 @@ def _format_breakdown(values: Mapping[str, int]) -> str:
 def _integrity_markdown(report: IntegrityReport) -> str:
     c = report.challenger
     lines = [
-        "## V1.5.2 temporal and semantic integrity",
+        "## V1.6.0 temporal and semantic integrity",
         "",
         f"**Final state:** `{report.final_state}`  ",
         f"**Methodology:** `{report.methodology_version}`  ",
@@ -1395,6 +1395,12 @@ def main(argv: Sequence[str] | None = None) -> int:
     except ValueError:
         raise SystemExit("--date must use YYYY-MM-DD")
     root = Path(args.root).resolve()
+    manifest_path = root / "archive" / target.isoformat() / "manifest.json"
+    if manifest_path.exists() and json.loads(manifest_path.read_text()).get("schema_version") == 2:
+        from challenger.evidence import verify_archive
+        verification = verify_archive(manifest_path.parent)
+        print(json.dumps(verification, indent=2))
+        return 0 if verification["passed"] else 1
     report = run_integrity(root, target)
     print(json.dumps({
         "date": report.target_date,

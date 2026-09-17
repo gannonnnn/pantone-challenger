@@ -74,5 +74,6 @@ def test_evidence_uses_local_swatch_not_logo(tmp_path):
 def test_calibration_banner_and_assets(tmp_path):
     out = tmp_path / "out"
     render_daily(result(tmp_path, state=PublicationState.REVIEW_ONLY), out, {}, {})
-    assert (out / "feed-post.png").exists()
+    assert (out / "review-summary.png").exists()
+    assert not (out / "feed-post.png").exists()
     assert (out / "caption.txt").exists()

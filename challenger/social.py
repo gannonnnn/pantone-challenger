@@ -22,6 +22,11 @@ def publish_approved_day(
     result = json.loads((day_dir / "result.json").read_text(encoding="utf-8"))
     if result.get("state") != "ready":
         raise SocialPublishingError("Only approved ready results may be published.")
+    manifest_path = day_dir / "manifest.json"
+    if manifest_path.exists() and json.loads(manifest_path.read_text()).get("schema_version") == 2:
+        from challenger.evidence import verify_archive
+        if not verify_archive(day_dir)["passed"]:
+            raise SocialPublishingError("The stored result failed its final integrity check.")
     image_path = day_dir / "feed-post.png"
     caption = (day_dir / "caption.txt").read_text(encoding="utf-8").strip()
     if dry_run:

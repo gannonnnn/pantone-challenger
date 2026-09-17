@@ -6,12 +6,15 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 from challenger.serialize import clean
+from challenger.narration import explain_candidate
 
 
 def write_json(path: str | Path, payload) -> None:
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    p.write_text(json.dumps(clean(payload), indent=2, sort_keys=False), encoding="utf-8")
+    temporary = p.with_name(p.name + ".tmp")
+    temporary.write_text(json.dumps(clean(payload), indent=2, sort_keys=False), encoding="utf-8")
+    temporary.replace(p)
 
 
 def write_summary(path: str | Path, result) -> None:
@@ -27,6 +30,7 @@ def write_summary(path: str | Path, result) -> None:
         f"**Signal stages:** {result.stages_covered}  ",
         f"**Historical baseline:** {result.baseline_days} prior valid days  ",
         f"**Color provenance:** `{result.reports.get('color_truth', 'not checked')}` — {result.reports.get('color_truth_swatches_checked', '0')} extracted swatches independently verified against decoded source pixels  ",
+        f"**Runtime:** {result.reports.get('runtime_elapsed_seconds', 'unknown')} seconds; {result.reports.get('runtime_timed_out_sources', '0')} sources timed out or exhausted their budget  ",
         "",
     ]
     if result.challenger:
@@ -36,11 +40,11 @@ def write_summary(path: str | Path, result) -> None:
             integrity = c.color_integrity or {}
             lines.append(
                 f"- **{c.creative_name}** `{c.hex}` — {c.source_count} sources, {c.domain_count} domains, "
-                f"{c.stage_count} stages, emergence {c.emergence_score:.1f}, state `{c.trend_state.value}`; "
+                f"{c.stage_count} stages, {'emergence' if c.comparison.get('valid') else 'provisional breadth'} score {c.emergence_score:.1f}, state `{c.trend_state.value}`; "
                 f"display HEX observed: `{bool(integrity.get('display_hex_is_observed'))}`; "
                 f"cluster diameter: `{float(integrity.get('cluster_diameter', 0.0)):.3f}`"
             )
-        lines.append("")
+        lines.extend(["", *[explain_candidate(c) for c in result.challenger], ""])
     elif result.state.value == "baseline_only":
         lines.extend(["## No converged Challenger today", "", "The observations are still useful for the historical baseline.", ""])
     if result.undercurrent:
@@ -90,12 +94,12 @@ def write_contact_sheet(path: str | Path, candidates, title: str) -> None:
             draw.rectangle(image_box, fill="#EEE8DF")
         sx, sy = x + 330, y + 35
         draw.rounded_rectangle((sx, sy, sx + 90, sy + 90), radius=16, fill=item.local_hex, outline="#BDB5AA", width=2)
-        draw.text((sx + 110, sy), item.source_name[:28], fill="#161616", font=font_m)
-        draw.text((sx + 110, sy + 40), f"{item.domain} · {item.signal_stage}", fill="#5C5750", font=font_s)
+        _bounded_text(draw, (sx + 110, sy), item.source_name, font_m, 250, 2, 28)
+        _bounded_text(draw, (sx + 110, sy + 62), f"{item.domain} · {item.signal_stage}", font_s, 250, 2, 22, fill="#5C5750")
         draw.text((sx, sy + 120), f"Local match: {item.local_hex}", fill="#161616", font=font_s)
         draw.text((sx, sy + 152), f"Cluster distance: {item.distance_to_candidate:.3f}", fill="#161616", font=font_s)
         draw.text((sx, sy + 184), f"Creative share: {item.local_share:.1%}", fill="#161616", font=font_s)
-        draw.text((sx, sy + 216), f"Evidence confidence: {item.evidence_confidence:.0%}", fill="#161616", font=font_s)
+        draw.text((sx, sy + 216), f"Evidence quality score: {item.evidence_confidence:.2f}", fill="#161616", font=font_s)
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     canvas.save(path, quality=92)
 
@@ -109,6 +113,23 @@ def _font(size: int, bold: bool = False):
         if Path(path).exists():
             return ImageFont.truetype(path, size)
     return ImageFont.load_default()
+
+
+def _bounded_text(draw, xy, text, font, width, max_lines=1, line_height=24, fill="#161616"):
+    """Wrap at measured pixel widths and ellipsize the last available line."""
+    words = str(text).replace('_', ' ').split()
+    lines = []
+    while words and len(lines) < max_lines:
+        line = words.pop(0)
+        while words and draw.textlength(line + ' ' + words[0], font=font) <= width:
+            line += ' ' + words.pop(0)
+        if draw.textlength(line, font=font) > width or (words and len(lines) == max_lines - 1):
+            while line and draw.textlength(line + '…', font=font) > width:
+                line = line[:-1]
+            line += '…'
+        lines.append(line)
+    for i, line in enumerate(lines):
+        draw.text((xy[0], xy[1] + i * line_height), line, font=font, fill=fill)
 
 
 def write_color_proof_sheet(path: str | Path, candidates, title: str, *, threshold: float = 0.035) -> None:
@@ -178,13 +199,8 @@ def write_color_proof_sheet(path: str | Path, candidates, title: str, *, thresho
             outline="#BDB5AA",
             width=2,
         )
-        draw.text((sx + 112, sy), item.source_name[:30], fill="#161616", font=font_m)
-        draw.text(
-            (sx + 112, sy + 38),
-            f"{item.domain} · {item.signal_stage}",
-            fill="#5C5750",
-            font=font_s,
-        )
+        _bounded_text(draw, (sx + 112, sy), item.source_name, font_m, 350, 2, 27)
+        _bounded_text(draw, (sx + 112, sy + 62), f"{item.domain} · {item.signal_stage}", font_s, 350, 2, 22, fill="#5C5750")
         draw.text((sx, sy + 122), f"Observed local HEX: {item.local_hex}", fill="#161616", font=font_s)
         draw.text(
             (sx, sy + 155),
@@ -204,11 +220,10 @@ def write_color_proof_sheet(path: str | Path, candidates, title: str, *, thresho
             fill="#161616",
             font=font_s,
         )
-        draw.text(
+        _bounded_text(draw,
             (sx, sy + 254),
             f"Candidate display HEX source: {candidate.display_hex_source_id or 'unknown'}",
-            fill="#5C5750",
-            font=font_s,
+            font_s, 470, 2, 22, fill="#5C5750",
         )
     Path(path).parent.mkdir(parents=True, exist_ok=True)
     canvas.save(path, quality=92)

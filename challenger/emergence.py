@@ -9,82 +9,58 @@ from challenger.models import Candidate, TrendState
 EMERGING_STATES = {TrendState.NEW, TrendState.RISING, TrendState.SPREADING, TrendState.SURGING}
 
 
-def score_emergence(candidates: list[Candidate], history: list[dict], settings: dict) -> list[Candidate]:
+def score_emergence(candidates: list[Candidate], history: list[dict], settings: dict,
+                    current_observations: list[dict] | None = None) -> list[Candidate]:
     weights = settings.get("scoring", {}).get("emergence_weights", {})
-    w_novelty = float(weights.get("novelty", 0.25))
-    w_domains = float(weights.get("cross_domain", 0.25))
-    w_stages = float(weights.get("cross_stage", 0.20))
-    w_velocity = float(weights.get("velocity", 0.15))
-    w_scale = float(weights.get("small_large", 0.10))
-    w_quality = float(weights.get("quality", 0.05))
-    min_history = int(settings.get("baseline", {}).get("min_days_for_trend", 7))
-    identity_frequency = float(settings.get("baseline", {}).get("identity_frequency", 0.70))
+    baseline_cfg = settings.get("baseline", {})
+    min_history = int(baseline_cfg.get("min_days_for_trend", 7))
+    min_source_days = int(baseline_cfg.get("min_source_days", 5))
+    identity_frequency = float(baseline_cfg.get("identity_frequency", 0.70))
+    min_change = float(baseline_cfg.get("min_change_percentage_points", 5.0))
     scored = []
-    for candidate in candidates:
-        source_history = source_color_history(history, candidate.oklab)
-        panel_history = panel_candidate_history(history, candidate.oklab)
-        new_count = 0
-        rising_count = 0
-        identity_count = 0
-        current_shares = {e.source_id: e.local_share for e in candidate.evidence}
-        for source_id, share in current_shares.items():
-            baseline = source_history.get(source_id, {"days": 0, "present_days": 0, "frequency": 0, "mean_share": 0})
-            if baseline["present_days"] == 0:
-                new_count += 1
-            elif share >= baseline["mean_share"] * 1.35 and share - baseline["mean_share"] >= 0.04:
-                rising_count += 1
-            if baseline["days"] >= 5 and baseline["frequency"] >= identity_frequency:
-                identity_count += 1
-        source_count = max(1, candidate.source_count)
-        new_ratio = new_count / source_count
-        rising_ratio = rising_count / source_count
-        identity_ratio = identity_count / source_count
-        mean_prior = panel_history["mean_source_count"]
-        lift = candidate.source_count / max(1.0, mean_prior)
-        acceleration = (candidate.source_count - panel_history["previous_source_count"]) / max(
-            1.0, panel_history["previous_source_count"]
+    for c in candidates:
+        previous = source_color_history(history, c.oklab)
+        comparison = panel_candidate_history(
+            history, c.oklab, current_observations=current_observations,
+            min_source_days=min_source_days,
+            min_cohort_sources=int(baseline_cfg.get("min_cohort_sources", 6)),
+            min_comparable_days=int(baseline_cfg.get("min_comparable_days", 5)),
+            min_cohort_coverage=float(baseline_cfg.get("min_cohort_coverage", .5)),
         )
-        novelty = min(1.0, 0.50 * new_ratio + 0.30 * max(0.0, lift - 1.0) + 0.20 * (1.0 - identity_ratio))
-        velocity = min(1.0, 0.55 * rising_ratio + 0.25 * max(0.0, acceleration) + 0.20 * min(1.0, candidate.source_count / 10))
+        known = [e for e in c.evidence if previous.get(e.source_id, {}).get("days", 0) >= min_source_days]
+        confirmed_new = sum(previous[e.source_id]["present_days"] == 0 for e in known)
+        identity = sum(previous[e.source_id]["frequency"] >= identity_frequency for e in known)
+        new_ratio = confirmed_new / len(known) if known else 0.0
+        identity_ratio = identity / len(known) if known else 0.0
+        delta = (comparison["change_percentage_points"] or 0.0) / 100.0
+        novelty = min(1.0, max(0.0, delta) * 2 + 0.5 * new_ratio) if comparison["valid"] else 0.0
+        velocity = min(1.0, max(0.0, delta) * 4) if comparison["valid"] else 0.0
         score = 100 * (
-            w_novelty * novelty
-            + w_domains * candidate.cross_domain_spread
-            + w_stages * candidate.cross_stage_convergence
-            + w_velocity * velocity
-            + w_scale * candidate.small_large_diversity
-            + w_quality * candidate.evidence_quality
+            float(weights.get("novelty", .25)) * novelty
+            + float(weights.get("velocity", .15)) * velocity
+            + float(weights.get("cross_domain", .25)) * c.cross_domain_spread
+            + float(weights.get("cross_stage", .20)) * c.cross_stage_convergence
+            + float(weights.get("small_large", .10)) * c.small_large_diversity
+            + float(weights.get("quality", .05)) * c.evidence_quality
         )
         if len(history) < min_history:
             state = TrendState.CALIBRATION
-        elif identity_ratio >= 0.70 and lift < 1.4 and rising_ratio < 0.25:
-            state = TrendState.IDENTITY
-        elif acceleration < -0.25 and new_ratio < 0.15:
+        elif not comparison["valid"]:
+            state = TrendState.OBSERVED
+        elif delta * 100 <= -min_change:
             state = TrendState.COOLING
-        elif score >= 78 and candidate.stage_count >= 2 and candidate.domain_count >= 4:
+        elif delta * 100 < min_change:
+            state = TrendState.IDENTITY if identity_ratio >= .7 else TrendState.STABLE
+        elif delta >= .20 and score >= 75:
             state = TrendState.SURGING
-        elif candidate.domain_count >= 4 and candidate.stage_count >= 2:
+        elif c.domain_count >= 4 and c.stage_count >= 2:
             state = TrendState.SPREADING
-        elif rising_ratio >= 0.30 or lift >= 1.5:
-            state = TrendState.RISING
-        elif new_ratio >= 0.50:
-            state = TrendState.NEW
         else:
-            state = TrendState.STABLE
-        scored.append(
-            replace(
-                candidate,
-                emergence_score=round(score, 2),
-                novelty=round(novelty, 4),
-                adoption_velocity=round(velocity, 4),
-                trend_state=state,
-                historical_days=len(history),
-            )
-        )
-    scored.sort(key=lambda c: (c.emergence_score, c.source_count, c.current_usage_score), reverse=True)
-    for i, candidate in enumerate(scored):
-        next_score = scored[i + 1].emergence_score if i + 1 < len(scored) else 0.0
-        scored[i] = replace(candidate, score_margin=round(candidate.emergence_score - next_score, 2))
-    return scored
+            state = TrendState.RISING
+        scored.append(replace(c, emergence_score=round(score, 2), novelty=round(novelty, 4),
+                              adoption_velocity=round(velocity, 4), trend_state=state,
+                              historical_days=len(history), comparison=comparison))
+    return sorted(scored, key=lambda c: (c.emergence_score, c.source_count, c.current_usage_score), reverse=True)
 
 
 def select_leaders(candidates: list[Candidate], settings: dict, baseline_days: int):
@@ -107,6 +83,10 @@ def select_leaders(candidates: list[Candidate], settings: dict, baseline_days: i
         and _neutral_ok(c, settings, baseline_days)
         and _color_integrity_ok(c, settings)
     ]
+    # Margin must compare eligible candidates, never an excluded neutral or stale item.
+    emerging.sort(key=lambda c: c.emergence_score, reverse=True)
+    emerging = [replace(c, score_margin=round(c.emergence_score - emerging[i + 1].emergence_score, 2)
+                        if i + 1 < len(emerging) else 100.0) for i, c in enumerate(emerging)]
     challenger = _ties(emerging, settings)
     challenger_ids = {c.hex for c in challenger}
     runners = [c for c in candidates if c.hex not in challenger_ids and _runner_ok(c, settings)][:3]

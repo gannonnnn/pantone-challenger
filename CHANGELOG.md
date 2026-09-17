@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.6.0 — comparable evidence and optional AI review
+
+- Matched the update to the user's uploaded v1.5.2 repository, preserving its additional project files and source registry.
+- Included the missing v1.5.3 runtime repair: one shared browser, source deadlines, progress reporting, and bounded GitHub workflows.
+- Compared observed benchmark groups on both sides of each date pair; coverage changes alone cannot create growth.
+- Admitted dated, substantive evidence before ranking; excluded blocked and incompatible baseline records.
+- Kept unverified creators grouped at their publisher and retained verified marketplace seller identities where available.
+- Added atomic rebuilds, same-day local resume, captured-image retention, and archive verification before publication.
+- Corrected support counts and story layouts, and added a linked Color Trail.
+- Added manual AI image annotations with a dry run, caching, bounded requests, and human-label evaluation. Annotations do not affect rankings.
+- Changed live `auto` to the actual observation date in the configured timezone; rebuilding a past date from today's webpages is rejected.
+
+
 ## 1.5.2 hotfix — CI and tie eligibility
 
 - Recomputes neutral status from each candidate HEX before tie evaluation, preventing grays from being treated as eligible co-Challengers.

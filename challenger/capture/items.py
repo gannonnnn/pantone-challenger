@@ -20,12 +20,13 @@ def download_item_image(
     *,
     allowed_hosts: list[str] | None = None,
     max_bytes: int = 15_000_000,
+    timeout_s: float = 12.0,
 ) -> tuple[bool, str]:
     host = (urlparse(image_url).hostname or "").lower()
     if allowed_hosts and not any(host == h or host.endswith(f".{h}") for h in allowed_hosts):
         return False, "unapproved_image_host"
     try:
-        response = client.get(image_url, follow_redirects=True, timeout=30)
+        response = client.get(image_url, follow_redirects=True, timeout=timeout_s)
         response.raise_for_status()
     except Exception as exc:  # noqa: BLE001
         return False, f"download_error:{type(exc).__name__}"
@@ -78,4 +79,5 @@ def evidence_region_from_item(
         rights_mode=source.rights_mode.value,
         content_hash=content_hash(path),
         perceptual_hash=perceptual_hash(path),
+        metadata={key: item[key] for key in ["item_id", "creator_id", "creator_name", "campaign_id", "identity_verified"] if key in item},
     )

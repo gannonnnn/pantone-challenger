@@ -18,10 +18,10 @@ def main() -> int:
     errors = []
     settings = load_settings()
     version, sources = load_sources()
-    if __version__ != "1.5.2":
+    if __version__ != "1.6.0":
         errors.append(f"Unexpected package version: {__version__}")
-    if settings.get("methodology_version") != "1.5.2":
-        errors.append("Methodology version is not 1.5.2")
+    if settings.get("methodology_version") != "1.6.0":
+        errors.append("Methodology version is not 1.6.0")
     enabled = [s for s in sources if s.enabled]
     if len(enabled) < 50:
         errors.append("The enabled cultural panel has fewer than 50 declared sources")
@@ -31,11 +31,19 @@ def main() -> int:
         errors.append("Creation, distribution, and attention are not all represented")
     if {s.panel_type.value for s in enabled} != {"benchmark", "discovery"}:
         errors.append("Benchmark and discovery panels are not both represented")
-    required_workflows = {"ci.yml", "daily.yml", "pages.yml", "publish.yml", "year-end.yml"}
+    required_workflows = {"ci.yml", "daily.yml", "pages.yml", "publish.yml", "source-health.yml", "year-end.yml"}
     found = {p.name for p in (ROOT / ".github/workflows").glob("*.yml")}
     missing = required_workflows - found
     if missing:
         errors.append(f"Missing workflows: {sorted(missing)}")
+    required_runtime_files = [
+        ROOT / "challenger/runtime.py",
+        ROOT / "scripts/validate_runtime.py",
+        ROOT / "tests/test_runtime.py",
+    ]
+    for path in required_runtime_files:
+        if not path.exists():
+            errors.append(f"Missing bounded-runtime component: {path.relative_to(ROOT)}")
     forbidden_names = []
     for path in ROOT.rglob("*"):
         if any(part in {".git", ".venv", "__pycache__", ".pytest_cache", "tests"} for part in path.parts):

@@ -46,7 +46,9 @@ def build_candidates(
         possible: list[tuple[float, list[tuple[Observation, object, float]]]] = []
         for cluster in clusters:
             distances = [distance(member[1].oklab, swatch.oklab) for member in cluster]
-            if distances and max(distances) <= threshold:
+            muted = swatch.oklch[1] < 0.075 or any(member[1].oklch[1] < 0.075 for member in cluster)
+            allowed_distance = min(threshold, 0.032 if muted else 0.045)
+            if distances and max(distances) <= allowed_distance:
                 possible.append((sum(distances) / len(distances), cluster))
         if possible:
             min(possible, key=lambda item: item[0])[1].append(point)
@@ -103,6 +105,12 @@ def build_candidates(
                     largest_component_share=swatch.largest_component_share,
                     spatial_coverage=swatch.spatial_coverage,
                     observed_pixel=swatch.observed_pixel,
+                    registry_source_id=str(obs.metadata.get("registry_source_id", obs.source_id)),
+                    creator_id=obs.creator_id, item_id=str(obs.metadata.get("item_id", "")),
+                    campaign_id=str(obs.metadata.get("campaign_id", "")),
+                    identity_verified=bool(obs.metadata.get("identity_verified", False)),
+                    temporal_status=str(obs.metadata.get("temporal_status", "")),
+                    published_at=obs.region.published_at, captured_at=obs.captured_at,
                 )
             )
         evidence.sort(
@@ -159,6 +167,8 @@ def build_candidates(
             trend_state=TrendState.CALIBRATION,
             uncertainty=1.0 / (source_count**0.5),
             display_hex_source_id=representative_obs.source_id,
+            item_count=len({str(obs.metadata.get("item_id") or obs.region.region_id) for obs, _, _ in cluster}),
+            verified_source_count=sum(e.identity_verified for e in evidence),
             color_integrity={
                 "display_hex_is_observed": hex_value in {e.local_hex for e in evidence},
                 "all_local_hex_observed": all(e.observed_pixel for e in evidence),

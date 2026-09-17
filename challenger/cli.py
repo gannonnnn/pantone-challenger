@@ -42,13 +42,14 @@ def doctor():
 
 @app.command("run")
 def run_daily(
-    date: str = typer.Option("auto", help="Marketing date in YYYY-MM-DD or 'auto' for yesterday."),
+    date: str = typer.Option("auto", help="Observation date in YYYY-MM-DD or 'auto' for today."),
     max_sources: int = typer.Option(0, min=0, help="0 uses the full selected panel."),
-    rebuild: bool = typer.Option(False, help="Replace an existing archive date."),
+    rebuild: bool = typer.Option(False, help="Replace an existing archive date after successful validation."),
+    resume: bool = typer.Option(False, help="Reuse verified successful captures from this date; retry failures."),
 ):
     """Run the live cultural-color pipeline."""
     pipeline = DailyPipeline()
-    result = pipeline.run(run_date=date, max_sources=max_sources, rebuild=rebuild)
+    result = pipeline.run(run_date=date, max_sources=max_sources, rebuild=rebuild, resume=resume)
     console.print(f"State: [bold]{result.state.value}[/bold]")
     console.print(f"Coverage: {result.sources_with_eligible_evidence}/{result.panel_declared} active sources")
     if result.challenger:
@@ -112,3 +113,41 @@ def publish(
     """Publish one approved ready result. Dry-run is the default."""
     result = publish_approved_day(date, platform, public_base_url=public_base_url or None, dry_run=dry_run)
     console.print_json(data=result)
+
+
+@app.command("review-images")
+def review_images_command(
+    date: str = typer.Option(...),
+    workdir: Path = typer.Option(Path(".work")),
+    model: str = typer.Option("gpt-4.1-mini", envvar="OPENAI_VISION_MODEL"),
+    limit: int = typer.Option(12, min=1, max=50),
+    execute: bool = typer.Option(False, help="Send images to the OpenAI API; requires OPENAI_API_KEY. Default makes no calls."),
+):
+    """Create optional image-review suggestions. Never affects ranking or publication."""
+    from datetime import date as Date
+    from challenger.ai_review import review_images
+    Date.fromisoformat(date)
+    report = review_images(workdir / date, model=model, limit=limit, execute=execute)
+    console.print_json(data={k: v for k, v in report.items() if k != "rows"})
+
+
+@app.command("evaluate-ai")
+def evaluate_ai_command(predictions: Path, labels: Path):
+    """Compare shadow annotations with manually labelled, held-out examples."""
+    from challenger.ai_review import evaluate_review
+    console.print_json(data=evaluate_review(predictions, labels))
+
+
+@app.command("sources")
+def source_status(date: str = "auto"):
+    """Show disabled, unconfigured, selected and rotating-out sources without secrets."""
+    pipeline = DailyPipeline()
+    active, _ = pipeline._select_sources(pipeline.resolve_date(date), 0)
+    ids = {s.id for s in active}
+    table = Table(title="Source readiness")
+    for label in ["ID", "Adapter", "State", "Required secret name"]:
+        table.add_column(label)
+    for s in pipeline.sources:
+        state = "disabled" if not s.enabled else "missing credentials" if not source_is_configured(s) else "selected" if s.id in ids else "rotating out"
+        table.add_row(s.id, s.adapter, state, s.token_env or s.api_key_env or "—")
+    console.print(table)

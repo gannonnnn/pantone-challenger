@@ -8,8 +8,8 @@ from challenger.baseline import load_history
 def _day(root, date, key):
     day = root / date
     day.mkdir(parents=True)
-    (day / "observations.json").write_text(json.dumps([{"source_id": "x", "swatches": []}]))
-    (day / "manifest.json").write_text(json.dumps({"baseline_compatibility_key": key}))
+    (day / "observations.json").write_text(json.dumps([{"source_id": "x", "swatches": [], "metadata": {"baseline_eligible": True}}]))
+    (day / "manifest.json").write_text(json.dumps({"baseline_compatibility_key": key, "baseline_eligible": True, "state": "baseline_only"}))
 
 
 def test_only_color_compatible_days_enter_baseline(tmp_path):

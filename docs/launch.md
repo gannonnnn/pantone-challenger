@@ -1,4 +1,8 @@
-# V1.5 launch sequence
+# Launch instructions
+
+For v1.6.0, follow [IMPLEMENT_V1.6.md](IMPLEMENT_V1.6.md). The update includes the runtime repair, uses today's actual observation date for live capture, and starts a new compatible baseline. The sequence below is retained as historical v1.5 guidance.
+
+## Historical V1.5 launch sequence
 
 1. Install V1.5 on a repair branch and wait for CI.
 2. Merge the repair only after CI passes.
