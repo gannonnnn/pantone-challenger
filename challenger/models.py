@@ -57,6 +57,7 @@ class PublicationState(StrEnum):
 
 
 class TrendState(StrEnum):
+    OBSERVED = "newly_observed"
     NEW = "new"
     RISING = "rising"
     SPREADING = "spreading"
@@ -123,6 +124,8 @@ class EvidenceRegion:
     rights_mode: str = "analyze_only"
     content_hash: str = ""
     perceptual_hash: str = ""
+    captured_at: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass(slots=True)
@@ -185,6 +188,14 @@ class CandidateEvidence:
     largest_component_share: float = 0.0
     spatial_coverage: float = 0.0
     observed_pixel: bool = False
+    registry_source_id: str = ""
+    creator_id: str = ""
+    item_id: str = ""
+    campaign_id: str = ""
+    identity_verified: bool = False
+    temporal_status: str = ""
+    published_at: str = ""
+    captured_at: str = ""
 
 
 @dataclass(slots=True)
@@ -222,6 +233,9 @@ class Candidate:
     matched_dates: list[str] = field(default_factory=list)
     display_hex_source_id: str = ""
     color_integrity: dict[str, Any] = field(default_factory=dict)
+    comparison: dict[str, Any] = field(default_factory=dict)
+    item_count: int = 0
+    verified_source_count: int = 0
 
 
 @dataclass(slots=True)

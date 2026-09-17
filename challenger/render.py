@@ -8,6 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 from challenger.color import contrast_ratio, readable_text_color
 from challenger.image_quality import trim_and_fit_logo
 from challenger.models import PublicationState
+from challenger.narration import explain_candidate
 
 
 BG = "#F6F1E9"
@@ -26,7 +27,7 @@ def render_daily(result, output_dir: str | Path, source_map: dict, settings: dic
         files.append(_render_baseline(result, out / "baseline-summary.png"))
         _write_text_assets(result, out)
         return files
-    if not result.challenger:
+    if result.state != PublicationState.READY or not result.challenger:
         files.append(_render_review(result, out / "review-summary.png"))
         _write_text_assets(result, out)
         return files
@@ -63,22 +64,16 @@ def _text(draw, xy, text, size, *, bold=False, fill=INK, anchor=None):
 def _wrap(draw, text: str, font, width: int, max_lines: int = 3) -> list[str]:
     words = text.split()
     lines = []
-    current = ""
-    for word in words:
-        trial = f"{current} {word}".strip()
-        if draw.textlength(trial, font=font) <= width:
-            current = trial
-        else:
-            if current:
-                lines.append(current)
-            current = word
-            if len(lines) >= max_lines - 1:
-                break
-    if current and len(lines) < max_lines:
-        lines.append(current)
-    if len(" ".join(lines).split()) < len(words):
-        lines[-1] = lines[-1].rstrip(".") + "…"
-    return lines
+    while words and len(lines) < max_lines:
+        line = words.pop(0)
+        while words and draw.textlength(line + " " + words[0], font=font) <= width:
+            line += " " + words.pop(0)
+        if draw.textlength(line, font=font) > width or (words and len(lines) == max_lines - 1):
+            while line and draw.textlength(line + "…", font=font) > width:
+                line = line[:-1]
+            line += "…"
+        lines.append(line)
+    return lines or [""]
 
 
 def _header(draw, date: str, subtitle: str = "THE OPEN CULTURAL COLOR INDEX"):
@@ -101,7 +96,7 @@ def _render_feed(result, path: Path) -> Path:
     _header(draw, result.date)
     _status_banner(draw, result.state)
     title_y = 205 if result.state != PublicationState.READY else 170
-    label = "YESTERDAY’S CO-CHALLENGERS" if len(result.challenger) > 1 else "YESTERDAY’S CHALLENGER"
+    label = "OBSERVED CO-CHALLENGERS" if len(result.challenger) > 1 else "OBSERVED CHALLENGER"
     _text(draw, (70, title_y), label, 27, bold=True)
     x1, y1, x2, y2 = 70, title_y + 55, 1010, 890
     colors = [c.hex for c in result.challenger]
@@ -132,6 +127,7 @@ def _render_feed(result, path: Path) -> Path:
         _text(draw, (115, y1 + 125 + len(lines) * 68), c.hex, 34, fill=text_color)
         _text(draw, (115, y2 - 125), f"{c.trend_state.value.upper()} · EMERGENCE {c.emergence_score:.1f}", 20, bold=True, fill=text_color)
         _text(draw, (115, y2 - 82), "OBSERVED SOURCE COLOR · PIXEL VERIFIED", 15, bold=True, fill=text_color)
+        _text(draw, (115, y2 - 45), f"SUPPORT: {c.source_count} SOURCE GROUPS · {c.domain_count} DOMAINS", 17, bold=True, fill=text_color)
     else:
         for i, c in enumerate(result.challenger):
             center = x1 + (i + 0.5) * (x2 - x1) / len(result.challenger)
@@ -140,7 +136,7 @@ def _render_feed(result, path: Path) -> Path:
             _text(draw, (center, y1 + 175), c.hex, 25, fill=text_color, anchor="ma")
             _text(draw, (center, y2 - 105), f"{c.trend_state.value.upper()} {c.emergence_score:.1f}", 18, bold=True, fill=text_color, anchor="ma")
     y = 945
-    _text(draw, (70, y), "TODAY’S SIGNAL COVERAGE", 18, bold=True, fill=MUTED)
+    _text(draw, (70, y), "OVERALL PANEL COVERAGE", 18, bold=True, fill=MUTED)
     draw.line((70, y + 38, 1010, y + 38), fill=BORDER, width=2)
     metrics = [
         (result.sources_with_eligible_evidence, "SOURCES WITH\nEVIDENCE"),
@@ -171,7 +167,7 @@ def _render_color_story(result, path: Path) -> Path:
     _text(draw, (70, 120), "THE OPEN CULTURAL COLOR INDEX", 16, fill=text_color)
     if result.state != PublicationState.READY:
         _text(draw, (70, 200), "INTERNAL CALIBRATION — DO NOT POST", 19, bold=True, fill=text_color)
-    _text(draw, (70, 500), "YESTERDAY’S CHALLENGER", 27, bold=True, fill=text_color)
+    _text(draw, (70, 500), "OBSERVED CHALLENGER", 27, bold=True, fill=text_color)
     font = _font(60, True)
     lines = _wrap(draw, c.creative_name, font, 880, 3)
     for i, line in enumerate(lines):
@@ -197,7 +193,7 @@ def _render_evidence(result, path: Path, source_map: dict) -> Path:
         x, y = 70 + col * 485, 300 + row * 355
         draw.rounded_rectangle((x, y, x + card_w, y + card_h), radius=28, fill=CARD, outline=BORDER, width=2)
         draw.rounded_rectangle((x + 25, y + 25, x + 125, y + 125), radius=20, fill=item.local_hex, outline=_swatch_border(item.local_hex), width=3)
-        spec = source_map.get(item.source_id.split(":", 1)[0])
+        spec = source_map.get(item.registry_source_id or item.source_id.split(":", 1)[0])
         logo_shown = False
         if spec and spec.brand_mark_status == "approved" and spec.brand_mark_path:
             logo_path = Path(spec.brand_mark_path)
@@ -212,7 +208,9 @@ def _render_evidence(result, path: Path, source_map: dict) -> Path:
             name_font = _font(25, True)
             for j, line in enumerate(_wrap(draw, item.source_name, name_font, 265, 2)):
                 draw.text((x + 150, y + 32 + j * 30), line, font=name_font, fill=INK)
-        _text(draw, (x + 25, y + 148), f"{item.domain.replace('_', ' ').upper()} · {item.sector.upper()} · {item.signal_stage.upper()}", 15, bold=True, fill=MUTED)
+        categories = f"{item.domain.replace('_', ' ').upper()} · {item.sector.upper()} · {item.signal_stage.upper()}"
+        for j, line in enumerate(_wrap(draw, categories, _font(13, True), 395, 2)):
+            _text(draw, (x + 25, y + 143 + j * 18), line, 13, bold=True, fill=MUTED)
         _text(draw, (x + 25, y + 188), f"LOCAL MATCH {item.local_hex}", 17, bold=True)
         _text(draw, (x + 25, y + 220), f"AREA {item.local_share:.0%} · CONTIGUOUS {item.largest_component_share:.0%}", 14, bold=True, fill=MUTED)
         verified = "SOURCE PIXEL VERIFIED" if item.observed_pixel else "COLOR VERIFICATION FAILED"
@@ -228,17 +226,21 @@ def _render_why(result, path: Path) -> Path:
     image = _canvas((1080, 1920))
     draw = ImageDraw.Draw(image)
     _header(draw, result.date)
-    _text(draw, (70, 175), "WHY IT ROSE", 54, bold=True)
+    _text(draw, (70, 175), "WHY IT QUALIFIED", 54, bold=True)
     c = result.challenger[0]
+    comparison = c.comparison or {}
+    valid = comparison.get("valid")
+    change = comparison.get("change_percentage_points")
+    cohort = min((p['cohort_size'] for p in comparison.get('pairs', [])), default=0)
     rows = [
+        ("PAIRED PREVALENCE CHANGE", f"{change:+.1f} pp" if valid and change is not None else "UNESTABLISHED"),
+        ("COMPARABLE PRIOR DATES", str(comparison.get('comparable_days', 0))),
+        ("MINIMUM SHARED BENCHMARK GROUPS", str(cohort)),
+        ("SUPPORTING SOURCE GROUPS", str(c.source_count)),
+        ("VERIFIED ACTOR IDENTITIES", str(c.verified_source_count)),
         ("EMERGENCE SCORE", f"{c.emergence_score:.1f}"),
-        ("INDEPENDENT SOURCES", str(c.source_count)),
         ("CULTURAL DOMAINS", str(c.domain_count)),
         ("SIGNAL STAGES", str(c.stage_count)),
-        ("NEWNESS", f"{c.novelty:.0%}"),
-        ("ADOPTION VELOCITY", f"{c.adoption_velocity:.0%}"),
-        ("SMALL + LARGE DIVERSITY", f"{c.small_large_diversity:.0%}"),
-        ("TOP DOMAIN CONCENTRATION", f"{c.top_domain_weight:.0%}"),
         ("DISPLAY HEX OBSERVED", "YES" if c.color_integrity.get("display_hex_is_observed") else "NO"),
         ("COLOR CLUSTER DIAMETER", f"{float(c.color_integrity.get('cluster_diameter', 0.0)):.3f}"),
     ]
@@ -289,8 +291,10 @@ def _render_signal_map(result, path: Path) -> Path:
     image = _canvas((1080, 1920))
     draw = ImageDraw.Draw(image)
     _header(draw, result.date)
-    _text(draw, (70, 170), "HOW THE SIGNAL MOVED", 50, bold=True)
+    _text(draw, (70, 170), "WHERE THE COLOR APPEARED", 44, bold=True)
+    _text(draw, (70, 235), "Source-group counts within today's supporting evidence.", 20, fill=MUTED)
     evidence = result.challenger[0].evidence
+    evidence = list({e.source_id: e for e in evidence}.values())
     groups = [
         ("CULTURAL DOMAINS", Counter(e.domain for e in evidence)),
         ("INDUSTRY SECTORS", Counter(e.sector for e in evidence)),
@@ -298,18 +302,21 @@ def _render_signal_map(result, path: Path) -> Path:
         ("SOURCE SCALE", Counter(e.scale_class for e in evidence)),
         ("PANEL TYPE", Counter(e.panel_type for e in evidence)),
     ]
-    y = 290
-    for title, counts in groups:
-        _text(draw, (70, y), title, 21, bold=True, fill=MUTED)
-        y += 55
+    for index, (title, counts) in enumerate(groups):
+        row, col = divmod(index, 2)
+        x, top = 70 + col * 485, 300 + row * 465
+        draw.rounded_rectangle((x, top, x + 445, top + 425), radius=24, fill=CARD, outline=BORDER, width=2)
+        _text(draw, (x + 22, top + 25), title, 18, bold=True, fill=MUTED)
+        y = top + 83
         total = max(1, sum(counts.values()))
         for label, count in counts.most_common(6):
-            _text(draw, (70, y + 20), label.replace("_", " ").upper(), 18, bold=True)
-            draw.rounded_rectangle((390, y, 930, y + 44), radius=20, fill="#E7E0D6")
-            draw.rounded_rectangle((390, y, 390 + int(540 * count / total), y + 44), radius=20, fill=ACCENT)
-            _text(draw, (965, y + 22), str(count), 18, bold=True, anchor="mm")
-            y += 65
-        y += 55
+            label_text = _wrap(draw, label.replace("_", " ").upper(), _font(15, True), 335, 1)[0]
+            _text(draw, (x + 22, y), label_text, 15, bold=True)
+            _text(draw, (x + 420, y), str(count), 16, bold=True, anchor="ra")
+            draw.rounded_rectangle((x + 22, y + 27, x + 420, y + 35), radius=4, fill="#E7E0D6")
+            draw.rounded_rectangle((x + 22, y + 27, x + 22 + int(398 * count / total), y + 35), radius=4, fill=ACCENT)
+            y += 48
+    _text(draw, (70, 1780), "Up to six categories per card. These counts do not establish direction or influence.", 17, fill=MUTED)
     image.save(path)
     return path
 
@@ -385,29 +392,25 @@ def _render_review(result, path: Path) -> Path:
 
 
 def _write_text_assets(result, out: Path) -> None:
-    if result.challenger:
-        names = " + ".join(c.creative_name.title() for c in result.challenger)
-        colors = " + ".join(c.hex for c in result.challenger)
-        caption = (
-            f"Yesterday’s Challenger: {names} ({colors}). "
-            f"The signal appeared across {result.sources_with_eligible_evidence} eligible sources, "
-            f"{result.domains_covered} cultural domains, and {result.stages_covered} signal stages. "
-            f"Palette regime: {result.palette_regime.dominant_regime}. "
-            "Measured within Pantone Challenger’s declared Open Cultural Color Index—not the entire internet. "
-            "Independent project; not affiliated with Pantone."
-        )
-        alt = (
-            f"A Pantone Challenger graphic showing {names}, {colors}, as the strongest emerging cultural color "
-            f"signal for {result.date}. {result.sources_with_eligible_evidence} sources across "
-            f"{result.domains_covered} domains produced eligible evidence."
-        )
+    if result.state == PublicationState.READY and result.challenger:
+        support = []
+        for c in result.challenger:
+            support.append(f"{c.creative_name.title()} ({c.hex}): {c.source_count} supporting source groups "
+                           f"across {c.domain_count} domains; {c.verified_source_count} groups have verified actor identities.")
+        caption = (f"Pantone Challenger — observed {result.date}. " + " ".join(support)
+                   + f" Panel coverage: {result.sources_with_eligible_evidence} of {result.panel_declared} selected sources. "
+                   + " ".join(explain_candidate(c) for c in result.challenger)
+                   + " Measured within the declared sample. Independent project; not affiliated with Pantone.")
+        alt = (f"Color swatches for observation date {result.date}. " + " ".join(support)
+               + f" Total panel coverage was {result.sources_with_eligible_evidence}/{result.panel_declared}.")
     else:
-        caption = "No public Challenger was selected today. The observations were retained for calibration or diagnostic review."
+        caption = (f"Observation date {result.date}: {result.state.value.replace('_', ' ')}. "
+                   "No public Challenger is approved. "
+                   f"{result.sources_with_eligible_evidence}/{result.panel_declared} selected sources produced usable baseline evidence.")
         alt = caption
     (out / "caption.txt").write_text(caption + "\n", encoding="utf-8")
     (out / "feed-alt-text.txt").write_text(alt + "\n", encoding="utf-8")
     (out / "story-alt-text.txt").write_text(alt + "\n", encoding="utf-8")
-
 
 def _swatch_border(hex_value: str) -> str:
     return "#B5ADA1" if contrast_ratio(hex_value, BG) < 1.45 else hex_value

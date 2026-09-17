@@ -6,7 +6,7 @@ from pathlib import Path
 from challenger.color import distance, hex_to_oklab
 
 
-def recurrence_for_candidates(archive_dir: str | Path, year: int, candidates: list, current_date: str) -> dict:
+def recurrence_for_candidates(archive_dir: str | Path, year: int, candidates: list, current_date: str, compatibility_key: str = "") -> dict:
     root = Path(archive_dir)
     output = {}
     for candidate in candidates:
@@ -24,6 +24,8 @@ def recurrence_for_candidates(archive_dir: str | Path, year: int, candidates: li
             try:
                 result = json.loads(result_path.read_text(encoding="utf-8"))
             except Exception:  # noqa: BLE001
+                continue
+            if compatibility_key and result.get("baseline_compatibility_key") != compatibility_key:
                 continue
             if result.get("state") != "ready":
                 continue

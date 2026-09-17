@@ -1,5 +1,13 @@
 # Pantone Challenger
 
+## v1.6.0 — update matched to the uploaded v1.5.2 project
+
+This update includes the missing bounded-runtime repair, comparable source-group measurements, evidence admission before ranking, corrected captions and graphics, a Color Trail, and optional AI image review.
+
+Start with [the implementation guide](docs/IMPLEMENT_V1.6.md). The installer is matched to `pantone-challenger-current.zip` supplied on September 17, 2026. It creates a new branch and retains the existing source registry and project files. Current instructions supersede the historical version notes below: live `auto` uses today's observation date, and the new methodology requires a new compatible baseline.
+
+[Validation record](docs/VALIDATION_V1.6.md). Historical release reports in this repository describe their original releases.
+
 ## The Open Cultural Color Index
 
 Pantone Challenger measures how color begins, spreads, converges, and eventually becomes ordinary across culture.
@@ -11,7 +19,7 @@ The product can report:
 - **Undercurrent** — an early signal concentrated in experimental, independent, or grassroots sources.
 - **Challenger** — a color spreading across unrelated domains and signal stages.
 - **Mainstream leader** — the most broadly visible color, even when it is stable rather than new.
-- **Co-Challengers** — a statistically inseparable tie.
+- **Co-Challengers** — eligible candidates within the configured score margin.
 - **Palette pairing** — two colors repeatedly appearing together.
 - **Baseline only** — a useful day with no trustworthy emerging winner.
 

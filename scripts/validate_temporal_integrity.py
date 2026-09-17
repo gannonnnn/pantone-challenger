@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Release checks specific to Pantone Challenger V1.5.2."""
+"""Release checks specific to Pantone Challenger V1.6.0."""
 from __future__ import annotations
 
 import json
@@ -24,12 +24,12 @@ required = [
     ROOT / ".github" / "workflows" / "daily.yml",
 ]
 for path in required:
-    require(path.exists(), f"Missing required V1.5.2 file: {path.relative_to(ROOT)}")
+    require(path.exists(), f"Missing required V1.6.0 file: {path.relative_to(ROOT)}")
 
 config_path = ROOT / "config" / "temporal_semantic_integrity.json"
 if config_path.exists():
     config = json.loads(config_path.read_text(encoding="utf-8"))
-    require(config.get("methodology_version") == "1.5.2", "Methodology version must be 1.5.2")
+    require(config.get("methodology_version") == "1.6.0", "Methodology version must be 1.6.0")
     require(int(config.get("baseline_days_required", 0)) >= 7, "At least seven baseline days are required")
     require(float(config.get("muted_cluster_max_diameter", 1)) < float(config.get("chromatic_cluster_max_diameter", 0)), "Muted clusters must use a tighter diameter")
     require(int(config.get("candidate_min_sources", 0)) >= 6, "Candidate source floor must be at least six")
@@ -64,9 +64,9 @@ except Exception as exc:  # pragma: no cover
     ERRORS.append(f"Could not import or smoke-test integrity module: {exc}")
 
 if ERRORS:
-    print("V1.5.2 validation failed:")
+    print("V1.6.0 validation failed:")
     for error in ERRORS:
         print(f"- {error}")
     raise SystemExit(1)
 
-print("V1.5.2 temporal and semantic integrity validation passed.")
+print("V1.6.0 temporal and semantic integrity validation passed.")

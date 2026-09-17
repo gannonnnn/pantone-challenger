@@ -3,6 +3,9 @@ from __future__ import annotations
 import html
 import json
 import shutil
+
+from challenger.trail import write_trail
+from challenger.color import readable_text_color
 from pathlib import Path
 
 
@@ -30,8 +33,15 @@ def build_site(archive_dir: str | Path, destination: str | Path) -> Path:
             continue
         if result.get("state") != "ready":
             continue
+        manifest_path = day_dir / 'manifest.json'
+        if manifest_path.exists() and json.loads(manifest_path.read_text()).get('schema_version') == 2:
+            from challenger.evidence import verify_archive
+            verification = verify_archive(day_dir)
+            if not verification['passed']:
+                raise ValueError(f"Archive integrity failed for {day_dir.name}: {verification['errors']}")
         days.append((day_dir, result))
         _build_day(day_dir, result, dest / "days" / day_dir.name)
+        write_trail(archive, result, dest / "days" / day_dir.name)
     (dest / "assets").mkdir(exist_ok=True)
     (dest / "assets" / "site.css").write_text(CSS, encoding="utf-8")
     cards = []
@@ -70,13 +80,13 @@ def _build_day(source_dir: Path, result: dict, dest: Path) -> None:
         f'<li><b>{html.escape(e.get("source_name",""))}</b> — {html.escape(e.get("domain",""))} / {html.escape(e.get("signal_stage",""))} — local match <code>{e.get("local_hex","")}</code></li>'
         for e in evidence[:12]
     )
-    body = f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{html.escape(names)} — Pantone Challenger</title><link rel="stylesheet" href="../../assets/site.css"></head><body><div class="wrap"><header><a href="../../"><b>PANTONE CHALLENGER</b></a><span>{result['date']}</span></header><div class="hero"><div class="hero-swatch" style="background:{gradient};color:#111"><small>YESTERDAY’S CHALLENGER</small><h1>{html.escape(names)}</h1><b>{' + '.join(colors)}</b></div><div class="panel"><h2>Evidence</h2><div class="metrics"><div class="metric"><b>{result.get('sources_with_eligible_evidence',0)}</b>sources</div><div class="metric"><b>{result.get('domains_covered',0)}</b>domains</div><div class="metric"><b>{result.get('sectors_covered',0)}</b>sectors</div><div class="metric"><b>{result.get('stages_covered',0)}</b>stages</div><div class="metric"><b>{result.get('baseline_days',0)}</b>baseline days</div></div><p>Palette regime: <b>{html.escape(result.get('palette_regime',{}).get('dominant_regime',''))}</b></p></div></div><div class="panel" style="margin-top:28px"><h2>Traceable supporting sources</h2><ul>{evidence_html}</ul><p><a href="result.json">Machine-readable result</a></p></div></div></body></html>"""
+    body = f"""<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>{html.escape(names)} — Pantone Challenger</title><link rel="stylesheet" href="../../assets/site.css"></head><body><div class="wrap"><header><a href="../../"><b>PANTONE CHALLENGER</b></a><span>{result['date']}</span></header><div class="hero"><div class="hero-swatch" style="background:{gradient};color:{readable_text_color(colors[0])}"><small>OBSERVED CHALLENGER</small><h1>{html.escape(names)}</h1><b>{' + '.join(colors)}</b></div><div class="panel"><h2>Support for this color</h2><p>{primary.get('source_count', 0)} supporting source groups across {primary.get('domain_count', 0)} domains.</p><h3>Total panel coverage</h3><div class="metrics"><div class="metric"><b>{result.get('sources_with_eligible_evidence',0)}</b>sources</div><div class="metric"><b>{result.get('domains_covered',0)}</b>domains</div><div class="metric"><b>{result.get('sectors_covered',0)}</b>sectors</div><div class="metric"><b>{result.get('stages_covered',0)}</b>stages</div><div class="metric"><b>{result.get('baseline_days',0)}</b>baseline days</div></div><p>Palette regime: <b>{html.escape(result.get('palette_regime',{}).get('dominant_regime',''))}</b></p></div></div><div class="panel" style="margin-top:28px"><h2>Traceable supporting sources</h2><ul>{evidence_html}</ul><p><a href="trail.html">Explore this color’s trail</a> · <a href="result.json">Machine-readable result</a></p></div></div></body></html>"""
     (dest / "index.html").write_text(body, encoding="utf-8")
     (dest / "result.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
 
 
 def _write_methodology(dest: Path) -> None:
-    body = """<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Methodology — Pantone Challenger</title><link rel="stylesheet" href="assets/site.css"></head><body><div class="wrap"><header><a href="./"><b>PANTONE CHALLENGER</b></a><span>METHODOLOGY</span></header><h1>Measured, not declared.</h1><div class="panel"><p>Pantone Challenger samples declared sources across creation, distribution, and attention. It extracts colors only from eligible creative regions, gives each source a normalized vote, compares each source with its own history, balances benchmark and discovery panels, and permits ties or no winner.</p><p>Logos are attribution only. A displayed source must have a traceable local color swatch from sampled creative. Rights-restricted source imagery remains private.</p><p>The public claim is limited to the declared panel. It is not a measurement of the entire internet.</p></div></div></body></html>"""
+    body = """<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Methodology — Pantone Challenger</title><link rel="stylesheet" href="assets/site.css"></head><body><div class="wrap"><header><a href="./"><b>PANTONE CHALLENGER</b></a><span>METHODOLOGY</span></header><h1>How the color is chosen.</h1><div class="panel"><p>Pantone Challenger samples declared sources across creation, distribution, and attention. It extracts colors only from eligible creative regions and permits ties or no winner.</p><p>From methodology 1.6 onward, growth compares benchmark source groups observed on both sides of each date pair, with equal domain weights. Missing observations are unknown. Rotating discovery items can support a candidate but cannot enlarge its growth denominator. Unverified creators are grouped at their publisher. A public Challenger requires sufficient comparable history and measured growth.</p><p>Observation dates describe when evidence was collected. The Color Trail links appearances within that sample; it does not establish a color's origin or direction of influence. Each archived result records its methodology version.</p><p>AI image review is optional and advisory. Image pixels determine HEX values; AI annotations do not change rankings or publication.</p><p>Logos are attribution only. A displayed source must have a traceable local color swatch from sampled creative. Rights-restricted source imagery remains private.</p><p>The public claim is limited to the declared panel. It is not a measurement of the entire internet.</p></div></div></body></html>"""
     (dest / "methodology.html").write_text(body, encoding="utf-8")
 
 
