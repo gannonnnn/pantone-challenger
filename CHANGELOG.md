@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.6.1 — repair temporal evidence capture
+
+- Preserve explicit publication dates within a selected item, or on its linked detail page, with bounded detail requests and private HTML evidence.
+- Admit an opted-in, time-stamped ranked chart as attention evidence only when image, item link, and rank associations are present. A chart date is never a release date or proof of growth.
+- Include Apple Music Charts in each daily discovery sample without increasing the 18 discovery slots or 58 total sources.
+- Separate exhibition start/end dates, apply the configured 45-day opening window to newly exhibited work, and reject ended events.
+- Skip partial and out-of-window MusicBrainz release dates before requesting cover images.
+- Show attempted, captured, admitted, and current source counts for each stage, with named missing-date sources and diagnostic files in both artifacts.
+- Add offline browser capture regressions required by CI and daily collection. Retain the existing quality gates and start a new compatible baseline for the changed date-admission rules.
+
 ## 1.6.0 — comparable evidence and optional AI review
 
 - Matched the update to the user's uploaded v1.5.2 repository, preserving its additional project files and source registry.

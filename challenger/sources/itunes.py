@@ -21,7 +21,7 @@ class ITunesSearchAdapter(SourceAdapter):
             "limit": source.max_items,
         }
         with httpx.Client(
-            headers={"User-Agent": "PantoneChallenger/1.6.0"},
+            headers={"User-Agent": "PantoneChallenger/1.6.1"},
             timeout=self.http_timeout_s,
             follow_redirects=True,
         ) as client:

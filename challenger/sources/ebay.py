@@ -26,7 +26,7 @@ class EbayBrowseAdapter(SourceAdapter):
             headers={
                 "Authorization": f"Bearer {token}",
                 "X-EBAY-C-MARKETPLACE-ID": "EBAY_US",
-                "User-Agent": "PantoneChallenger/1.6.0",
+                "User-Agent": "PantoneChallenger/1.6.1",
             },
             timeout=self.http_timeout_s,
             follow_redirects=True,

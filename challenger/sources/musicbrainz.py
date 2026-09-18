@@ -7,6 +7,7 @@ import httpx
 
 from challenger.capture.items import download_item_image, evidence_region_from_item
 from challenger.sources.base import CollectionResult, SourceAdapter
+from challenger.capture.temporal import full_date
 
 
 class MusicBrainzAdapter(SourceAdapter):
@@ -18,14 +19,14 @@ class MusicBrainzAdapter(SourceAdapter):
         start = day - timedelta(days=int(source.options.get("lookback_days", 14)))
         query = f"firstreleasedate:[{start.isoformat()} TO {day.isoformat()}] AND primarytype:Album"
         with httpx.Client(
-            headers={"User-Agent": "PantoneChallenger/1.6.0 (open cultural color research)"},
+            headers={"User-Agent": "PantoneChallenger/1.6.1 (open cultural color research)"},
             timeout=self.http_timeout_s,
             follow_redirects=True,
         ) as client:
             try:
                 response = client.get(
                     self.API,
-                    params={"query": query, "fmt": "json", "limit": source.max_items * 2},
+                    params={"query": query, "fmt": "json", "limit": min(50, source.max_items * 5)},
                     timeout=self.request_timeout(),
                 )
                 response.raise_for_status()
@@ -39,6 +40,12 @@ class MusicBrainzAdapter(SourceAdapter):
                     break
                 gid = group.get("id")
                 if not gid:
+                    continue
+                published = full_date(group.get('first-release-date', ''))
+                if not published or not start.isoformat() <= published <= day.isoformat():
+                    result.report.setdefault('date_rejections', []).append({
+                        'item_id': gid, 'date': group.get('first-release-date', ''),
+                        'reason': 'incomplete_release_date' if not published else 'outside_requested_window'})
                     continue
                 image_url = f"https://coverartarchive.org/release-group/{gid}/front-500"
                 path = self.workdir / "captures" / run_date / source.id / f"cover-{gid}.jpg"
@@ -54,7 +61,8 @@ class MusicBrainzAdapter(SourceAdapter):
                 item = {
                     "title": group.get("title", ""),
                     "url": f"https://musicbrainz.org/release-group/{gid}",
-                    "published_at": group.get("first-release-date", ""),
+                    "published_at": published,
+                    'item_id': gid,
                 }
                 region = evidence_region_from_item(source, item, path, index)
                 if region:

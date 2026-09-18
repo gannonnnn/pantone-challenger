@@ -1,5 +1,11 @@
 # Pantone Challenger
 
+## v1.6.1 — dated evidence and chart observations
+
+This repair addresses the September 16 run that collected images successfully but admitted only distribution evidence. It captures dates tied to the pictured item, preserves the supporting HTML privately, and recognizes explicitly configured ranked charts as observations of attention. It also separates exhibition opening and closing dates and skips incomplete music release dates.
+
+Start with [the repair instructions](docs/REPAIR_V1.6.1.md). The 58-source daily limit and publication thresholds remain in force. A fresh run is required; this repair cannot reconstruct dates that were never saved. The updated date rules start a fresh compatible baseline.
+
 ## v1.6.0 — update matched to the uploaded v1.5.2 project
 
 This update includes the missing bounded-runtime repair, comparable source-group measurements, evidence admission before ranking, corrected captions and graphics, a Color Trail, and optional AI image review.

@@ -23,7 +23,7 @@ class EtsyAdapter(SourceAdapter):
             return self.finalize_result(result)
 
         with httpx.Client(
-            headers={"x-api-key": key, "User-Agent": "PantoneChallenger/1.6.0"},
+            headers={"x-api-key": key, "User-Agent": "PantoneChallenger/1.6.1"},
             timeout=self.http_timeout_s,
             follow_redirects=True,
         ) as client:

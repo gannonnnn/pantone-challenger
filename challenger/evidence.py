@@ -13,6 +13,7 @@ from challenger.image_quality import hash_distance
 from challenger.models import Observation
 from challenger.palette import swatch_is_candidate_eligible
 from challenger.temporal_semantic_integrity import _load_config, _slug, _temporal_status
+from challenger.capture.temporal import snapshot_is_current
 
 
 def _prior_regions(archive: Path, before: str, key: str) -> dict:
@@ -67,6 +68,19 @@ def prepare_evidence(observations: list[Observation], run_date: str, settings: d
         prior_for_status = {'sources': {_slug(obs.source_id): old}} if old else {'sources': {}}
         status, reasons, *_ = _temporal_status(record, date.fromisoformat(run_date),
                                               prior_for_status, fingerprint, cfg)
+        proof = obs.region.metadata.get('temporal_evidence', {})
+        if (proof.get('kind') == 'ranked_snapshot' and obs.signal_stage.value == 'attention'
+                and not status.startswith('rejected_')):
+            if snapshot_is_current(proof, obs.metadata.get('temporal_policy', {}), obs.region.page_url,
+                                   obs.region.captured_at, run_date, settings.get('timezone', 'America/New_York')):
+                status = 'eligible_observed_attention'
+                reasons = ['Ranked chart appearance was recorded with item links and ranks at capture time. This is not a release date or proof of increasing attention.']
+            else:
+                status = 'context_only_unverified_snapshot'
+                reasons = ['The chart snapshot could not be verified for this source and observation date.']
+        if proof.get('event_end') and proof['event_end'] < run_date:
+            status = 'context_only_stale'
+            reasons = ['The documented event ended before the observation date.']
         if status == 'eligible_changed_today' and old.get('perceptual_hash') and obs.region.perceptual_hash:
             if hash_distance(old['perceptual_hash'], obs.region.perceptual_hash) <= int(settings.get('dedupe', {}).get('cross_source_phash_distance', 6)):
                 status = 'baseline_only_unchanged'
@@ -86,6 +100,8 @@ def prepare_evidence(observations: list[Observation], run_date: str, settings: d
                              'current_eligible': current_ok, 'admission_version': 2,
                              'admission_reasons': reasons, 'evidence_key': key})
         decisions.append({'source_id': obs.source_id, 'region_id': obs.region.region_id,
+                          'registry_source_id': obs.metadata.get('registry_source_id', obs.source_id),
+                          'signal_stage': obs.signal_stage.value,
                           'source_url': obs.region.page_url, 'temporal_status': status,
                           'baseline_eligible': baseline_ok, 'current_eligible': current_ok,
                           'kept_swatches': len(kept_swatches), 'reasons': reasons})

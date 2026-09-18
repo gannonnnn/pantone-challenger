@@ -17,7 +17,7 @@ class MetAdapter(SourceAdapter):
         result = CollectionResult(source=source, report={"adapter": "met_open_access"})
         query = source.query or "contemporary art"
         with httpx.Client(
-            headers={"User-Agent": "PantoneChallenger/1.6.0"},
+            headers={"User-Agent": "PantoneChallenger/1.6.1"},
             timeout=self.http_timeout_s,
             follow_redirects=True,
         ) as client:

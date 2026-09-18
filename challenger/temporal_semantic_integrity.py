@@ -1,4 +1,4 @@
-"""Pantone Challenger V1.6.0 temporal and semantic integrity gate.
+"""Pantone Challenger V1.6.1 temporal and semantic integrity gate.
 
 This module runs after the existing V1.5.1 collection/scoring pipeline and before
 any review pull request is opened.  It is intentionally conservative: it never
@@ -51,7 +51,7 @@ REGION_KEYS = ("region_path", "screenshot_path", "image_path", "crop_path", "evi
 URL_KEYS = ("source_url", "url", "page_url", "item_url", "canonical_url", "link")
 
 DEFAULT_CONFIG: dict[str, Any] = {
-    "methodology_version": "1.6.0",
+    "methodology_version": "1.6.1",
     "baseline_days_required": 7,
     "review_min_sources": 24,
     "public_min_sources": 30,
@@ -747,7 +747,7 @@ def _temporal_status(
     most_recent = max(d for d in all_dates if d <= target)
     age = (target - most_recent).days
     max_age = int(cfg["current_item_default_max_age_days"])
-    if "exhibition" in event or event in {"art-fair", "art_fair", "open-studio", "open_studio", "degree-show", "degree_show"}:
+    if "exhibit" in event or event in {"art-fair", "art_fair", "open-studio", "open_studio", "degree-show", "degree_show"}:
         max_age = int(cfg["exhibition_max_age_days"])
     elif "list" in event or "marketplace" in domain or event in {"new-arrival", "new_arrival"}:
         max_age = int(cfg["current_listing_max_age_days"])
@@ -1073,7 +1073,7 @@ def _write_ledger(root: Path, target: date, evidence: Sequence[EvidenceFinding])
             source["fingerprint"] = item.fingerprint
             source["local_hex"] = item.local_hex
     ledger = {
-        "methodology_version": "1.6.0",
+        "methodology_version": "1.6.1",
         "target_date": target.isoformat(),
         "sources": sources,
     }
@@ -1131,7 +1131,7 @@ def _protect_assets(root: Path, target: date, state: str) -> None:
             except OSError:
                 pass
         (archive / "NO_PUBLIC_ASSETS.txt").write_text(
-            "V1.6.0 integrity checks blocked this day. Any generated social assets were quarantined.\n",
+            "V1.6.1 integrity checks blocked this day. Any generated social assets were quarantined.\n",
             encoding="utf-8",
         )
     elif state in {"review_only", "baseline_only"}:
@@ -1152,7 +1152,7 @@ def _format_breakdown(values: Mapping[str, int]) -> str:
 def _integrity_markdown(report: IntegrityReport) -> str:
     c = report.challenger
     lines = [
-        "## V1.6.0 temporal and semantic integrity",
+        "## V1.6.1 temporal and semantic integrity",
         "",
         f"**Final state:** `{report.final_state}`  ",
         f"**Methodology:** `{report.methodology_version}`  ",
