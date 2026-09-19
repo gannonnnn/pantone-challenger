@@ -29,7 +29,7 @@ class ProductHuntAdapter(SourceAdapter):
         }
         """
         with httpx.Client(
-            headers={"Authorization": f"Bearer {token}", "User-Agent": "PantoneChallenger/1.6.0"},
+            headers={"Authorization": f"Bearer {token}", "User-Agent": "PantoneChallenger/1.6.1"},
             timeout=self.http_timeout_s,
             follow_redirects=True,
         ) as client:

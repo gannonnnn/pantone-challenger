@@ -15,7 +15,7 @@ class ArtInstituteChicagoAdapter(SourceAdapter):
         result = CollectionResult(source=source, report={"adapter": "artic_open_access"})
         fields = "id,title,image_id,is_public_domain,date_display,artist_display"
         with httpx.Client(
-            headers={"User-Agent": "PantoneChallenger/1.6.0"},
+            headers={"User-Agent": "PantoneChallenger/1.6.1"},
             timeout=self.http_timeout_s,
             follow_redirects=True,
         ) as client:

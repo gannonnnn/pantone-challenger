@@ -51,6 +51,30 @@ ITEM_ADAPTERS = {
 }
 
 
+def stage_diagnostics(collection_results, admission: dict) -> dict:
+    """Count source groups, including failed collection and rejected dates."""
+    result = {}
+    decisions = admission.get('decisions', [])
+    for stage in ('creation', 'distribution', 'attention'):
+        sources = [r for r in collection_results if r.source.signal_stage.value == stage]
+        ids = {r.source.id for r in sources}
+        rows = [d for d in decisions if d.get('registry_source_id', d['source_id']) in ids]
+        def source_ids(predicate):
+            return sorted({d.get('registry_source_id', d['source_id']) for d in rows if predicate(d)})
+        result[stage] = {
+            'attempted_sources': len(ids),
+            'captured_sources': len({r.source.id for r in sources if r.regions}),
+            'admitted_sources': len(source_ids(lambda d: d['baseline_eligible'])),
+            'current_sources': len(source_ids(lambda d: d['current_eligible'])),
+            'undated_sources': source_ids(lambda d: 'undated' in d['temporal_status']),
+            'stale_sources': source_ids(lambda d: d['temporal_status'] == 'context_only_stale'),
+            'collection_failures': [{'source_id': r.source.id, 'status': r.report.get('status', 'unknown')}
+                                    for r in sources if not r.regions],
+            'admission': rows,
+        }
+    return result
+
+
 class DailyPipeline:
     def __init__(
         self,
@@ -170,7 +194,7 @@ class DailyPipeline:
             result = DailyResult(
                 date=date_value,
                 state=state,
-                methodology_version=str(self.settings.get("methodology_version", "1.6.0")),
+                methodology_version=str(self.settings.get("methodology_version", "1.6.1")),
                 registry_version=self.registry_version,
                 panel_declared=len(active),
                 sources_attempted=len(active),
@@ -282,7 +306,9 @@ class DailyPipeline:
         discovery = [s for s in configured if s.panel_type == PanelType.DISCOVERY]
         per_run = int(self.settings.get("discovery", {}).get("sources_per_run", len(discovery)))
         # Stable daily rotation, distributed by domain rather than a global random draw.
-        selected_discovery = []
+        selected_discovery = [s for s in discovery if s.options.get('always_sample') is True]
+        if len(selected_discovery) > per_run:
+            raise ValueError('Always-sampled discovery sources exceed the daily discovery limit.')
         by_domain = {}
         for source in discovery:
             by_domain.setdefault(source.domain.value, []).append(source)
@@ -452,7 +478,8 @@ class DailyPipeline:
                         captured_at=region.captured_at or datetime.now(timezone.utc).isoformat(),
                         region=region,
                         swatches=swatches,
-                        metadata={**identity, "adapter": spec.adapter},
+                        metadata={**identity, "adapter": spec.adapter,
+                                  'temporal_policy': spec.options.get('temporal_evidence', {})},
                     )
                 )
                 report.append(
@@ -526,6 +553,10 @@ class DailyPipeline:
         write_json(archive_day / "color-integrity.json", public_color_truth)
         write_json(archive_day / "evidence-admission.json", self._admission)
         write_json(archive_day / "evidence-ledger.json", self._evidence_ledger)
+        diagnostics = stage_diagnostics(collection_results, self._admission)
+        write_json(archive_day / 'stage-diagnostics.json', diagnostics)
+        write_json(run_work / 'stage-diagnostics.json', diagnostics)
+        result.reports['stage_diagnostics'] = json.dumps(diagnostics)
         render_daily(result, archive_day, source_map, self.settings)
         result_payload = self._public_result(result)
         write_json(archive_day / "result.json", result_payload)

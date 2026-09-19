@@ -1,4 +1,4 @@
-methodology_version: "1.6.0"
+methodology_version: "1.6.1"
 timezone: "America/New_York"
 
 capture:
@@ -39,7 +39,7 @@ clustering:
   proof_mask_distance: 0.035
 
 baseline:
-  compatibility_key: "cohort-evidence-v2"
+  compatibility_key: "cohort-evidence-v2-dates161"
   history_days: 30
   calibration_days: 7
   min_days_for_trend: 7

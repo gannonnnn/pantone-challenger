@@ -60,6 +60,20 @@ def write_summary(path: str | Path, result) -> None:
         lines.extend(["", "## Blocking reasons", ""] + [f"- {r}" for r in result.blocking_reasons])
     if result.review_reasons:
         lines.extend(["", "## Review notes", ""] + [f"- {r}" for r in result.review_reasons])
+    diagnostics = json.loads(result.reports.get('stage_diagnostics', '{}'))
+    if diagnostics:
+        lines.extend(['', '## Evidence by stage', '',
+                      '| Stage | Sources attempted | Sources with images | Admitted sources | Current sources |',
+                      '| --- | ---: | ---: | ---: | ---: |'])
+        for stage, row in diagnostics.items():
+            lines.append(f"| {stage.title()} | {row['attempted_sources']} | {row['captured_sources']} | {row['admitted_sources']} | {row['current_sources']} |")
+        lines.extend(['', 'Counts represent source groups, not image counts. Admitted sources may include calibration evidence; current sources have qualifying colors and current evidence.'])
+        for stage, row in diagnostics.items():
+            if row['undated_sources']:
+                lines.append(f"- {stage.title()}: {', '.join(row['undated_sources'])} had images without a usable item date.")
+            if row['stale_sources']:
+                lines.append(f"- {stage.title()}: {', '.join(row['stale_sources'])} had evidence outside its date window.")
+        lines.extend(['', 'See `stage-diagnostics.json` for collection failures and all admission decisions by source.'])
     p.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

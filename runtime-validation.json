@@ -1,5 +1,5 @@
 {
-  "methodology_version": "1.6.0",
+  "methodology_version": "1.6.1",
   "declared_run_size": 58,
   "browser_workers": 6,
   "browser_source_timeout_seconds": 55.0,

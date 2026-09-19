@@ -4,6 +4,7 @@ import asyncio
 import os
 import re
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 from urllib.parse import urlparse
@@ -20,6 +21,7 @@ from challenger.image_quality import (
 )
 from challenger.models import EvidenceRegion, SourceSpec
 from challenger.sources.base import CollectionResult
+from challenger.capture.temporal import inspect_dates, ranked_snapshot
 
 
 COMMON_EXCLUDES = [
@@ -270,7 +272,7 @@ class BrowserCollector:
             user_agent=(
                 "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) "
                 "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126 Safari/537.36 "
-                "PantoneChallenger/1.6.0 research"
+                "PantoneChallenger/1.6.1 research"
             ),
         )
         context.set_default_timeout(self.element_timeout_ms)
@@ -360,12 +362,14 @@ class BrowserCollector:
             except Exception as exc:  # noqa: BLE001
                 report["page_screenshot_error"] = type(exc).__name__
 
-            raw_candidates = await self._find_candidate_regions(page, source)
+            raw_candidates = await self._find_candidate_regions(page, source, run_date)
             candidates = self._dedupe_candidate_boxes(raw_candidates)
             report["candidate_region_count_raw"] = len(raw_candidates)
             report["candidate_region_count"] = len(candidates)
             saved: list[dict[str, Any]] = []
             attempted: list[dict[str, Any]] = []
+            detail_cache: dict[str, dict] = {}
+            detail_html: dict[str, str] = {}
             for index, candidate in enumerate(candidates[: self.max_candidate_attempts], start=1):
                 loc = page.locator(candidate["selector"]).nth(candidate["nth"])
                 path = source_dir / f"region-{source.id}-f{frame_index:02d}-r{index:02d}.png"
@@ -385,6 +389,41 @@ class BrowserCollector:
                     continue
 
                 rejection = image_rejection_reason(path)
+                captured_at = datetime.now(timezone.utc).isoformat()
+                temporal = dict(candidate.get('temporal', {}))
+                temporal_html = candidate.get('context_html', '')
+                policy = source.options.get('temporal_evidence', {})
+                try:
+                    region_html = await loc.evaluate('(el) => el.outerHTML.slice(0, 200000)')
+                except Exception:  # noqa: BLE001
+                    region_html = ''
+                snapshot = ranked_snapshot(region_html, final_url, title, policy, captured_at)
+                if snapshot and source.signal_stage.value == 'attention':
+                    temporal = snapshot
+                    temporal_html = region_html
+                elif not temporal.get('published_at'):
+                    link = temporal.get('item_url', '')
+                    if link and self._host_allowed(link, source) and link != final_url:
+                        if link not in detail_cache and len(detail_cache) < 2:
+                            detail_cache[link] = {}
+                            try:
+                                response = await context.request.get(link, timeout=5000, max_redirects=2)
+                                if response.status == 200 and self._host_allowed(response.url, source):
+                                    content = await response.text()
+                                    if len(content) <= 2_000_000:
+                                        detail_html[link] = content
+                                        detail_cache[link] = inspect_dates(content, response.url, event_type=source.event_type, detail=True)
+                                        detail_cache[link]['item_url'] = link
+                            except Exception:  # noqa: BLE001
+                                pass
+                        detail = detail_cache.get(link, {})
+                        if detail.get('published_at'):
+                            temporal = detail
+                            temporal_html = detail_html[link]
+                if temporal_html:
+                    temporal_path = path.with_suffix('.temporal.html')
+                    temporal_path.write_text(temporal_html, encoding='utf-8')
+                    temporal = {**temporal, 'artifact_path': str(temporal_path.relative_to(self.workdir))}
                 text = candidate.get("text", "")
                 if text_looks_like_overlay(text):
                     rejection = "overlay_or_consent_region"
@@ -397,6 +436,8 @@ class BrowserCollector:
                     perceptual_hash=perceptual_hash(path),
                     entropy=metrics["entropy"],
                     edge_density=metrics["edge_density"],
+                    captured_at=captured_at,
+                    temporal=temporal,
                 )
                 attempted.append(candidate)
                 if not rejection:
@@ -421,9 +462,11 @@ class BrowserCollector:
                     edge_density=float(item.get("edge_density", 0.0)),
                     confidence=float(item.get("confidence", 0.0)),
                     eligible=True,
-                    page_url=final_url,
+                    page_url=str(item.get('temporal', {}).get('item_url') or final_url),
                     page_title=title,
-                    published_at="",
+                    published_at=str(item.get('temporal', {}).get('published_at', '')),
+                    captured_at=item['captured_at'],
+                    metadata={'temporal_evidence': item['temporal'], 'capture_page_url': final_url},
                     rights_mode=source.rights_mode.value,
                     content_hash=str(item.get("content_hash", "")),
                     perceptual_hash=str(item.get("perceptual_hash", "")),
@@ -433,6 +476,11 @@ class BrowserCollector:
             report["status"] = "captured" if regions else "captured_but_no_eligible_region"
             report["eligible_region_count"] = len(regions)
             report["screenshot_attempts"] = len(attempted)
+            report['detail_pages_checked'] = len(detail_cache)
+            report['temporal_evidence'] = [
+                {'region_id': r.region_id, 'kind': r.metadata['temporal_evidence'].get('kind'),
+                 'date_status': r.metadata['temporal_evidence'].get('date_status', ''), 'published_at': r.published_at}
+                for r in regions]
             report["rejections"] = [
                 {
                     "selector": candidate.get("selector"),
@@ -540,13 +588,25 @@ class BrowserCollector:
         except Exception:  # noqa: BLE001
             return
 
-    async def _find_candidate_regions(self, page: Page, source: SourceSpec) -> list[dict[str, Any]]:
+    async def _find_candidate_regions(self, page: Page, source: SourceSpec, run_date: str = '') -> list[dict[str, Any]]:
         selectors = list(source.include_selectors) or COMMON_REGION_SELECTORS
         viewport_area = float(self.viewport["width"] * self.viewport["height"])
         payload = await page.evaluate(
             """
             ({selectors, maxNodes}) => {
               const out = [];
+              function itemScope(el) {
+                if (el.matches('article, section, li, [role="listitem"]')) return el;
+                let best = el;
+                for (let node = el.parentElement, depth = 0; node && depth < 5; node = node.parentElement, depth++) {
+                  if (['MAIN', 'BODY', 'HTML', 'NAV', 'HEADER', 'FOOTER'].includes(node.tagName)) break;
+                  const urls = new Set([...node.querySelectorAll('a[href]')].map(a => a.href));
+                  if (node.querySelectorAll('img').length > 1 && urls.size > 1) break;
+                  best = node;
+                  if (node.matches('article, li, [role="listitem"]')) break;
+                }
+                return best;
+              }
               for (const selector of selectors) {
                 let nodes = [];
                 try { nodes = [...document.querySelectorAll(selector)].slice(0, maxNodes); }
@@ -573,6 +633,8 @@ class BrowserCollector:
                     text: String(el.innerText || '').replace(/\\s+/g, ' ').trim().slice(0, 2000),
                     tag: String(el.tagName || 'element').toLowerCase(),
                     imageAreaRatio: Math.min(1, imageArea / area),
+                    contextHTML: itemScope(el).outerHTML.slice(0, 100000),
+                    regionHTML: el.outerHTML.slice(0, 200000),
                   });
                 });
               }
@@ -604,6 +666,12 @@ class BrowserCollector:
                 confidence -= 0.8
             if confidence < 0.50:
                 continue
+            temporal = inspect_dates(str(raw.get('contextHTML', '')), page.url, event_type=source.event_type)
+            published = temporal.get('published_at', '')
+            current = False
+            if published and run_date:
+                age = (datetime.fromisoformat(run_date) - datetime.fromisoformat(published)).days
+                current = 0 <= age <= (45 if 'exhibit' in source.event_type else 2)
             candidates.append(
                 {
                     "selector": str(raw["selector"]),
@@ -616,9 +684,13 @@ class BrowserCollector:
                     "text": text,
                     "tag": str(raw.get("tag", "element")),
                     "confidence": max(0.0, min(1.0, confidence)),
+                    'temporal': temporal,
+                    'region_html': str(raw.get('regionHTML', '')),
+                    'context_html': str(raw.get('contextHTML', '')),
+                    'dated_current': current,
                 }
             )
-        return sorted(candidates, key=lambda item: (item["confidence"], item["area"]), reverse=True)
+        return sorted(candidates, key=lambda item: (item['dated_current'], item["confidence"], item["area"]), reverse=True)
 
     @staticmethod
     def _dedupe_candidate_boxes(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:

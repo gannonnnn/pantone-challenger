@@ -25,7 +25,7 @@ class SubmissionInboxAdapter(SourceAdapter):
             rows = list(csv.DictReader(handle))
         approved = [row for row in rows if row.get("approved", "").lower() in {"true", "yes", "1"}]
         with httpx.Client(
-            headers={"User-Agent": "PantoneChallenger/1.6.0"},
+            headers={"User-Agent": "PantoneChallenger/1.6.1"},
             timeout=self.http_timeout_s,
             follow_redirects=True,
         ) as client:

@@ -3,7 +3,7 @@ from challenger.config import load_sources
 
 def test_source_registry_validates_and_spans_culture():
     version, sources = load_sources()
-    assert version == "2026.09-v1.5"
+    assert version == "2026.09-v1.6.1"
     enabled = [s for s in sources if s.enabled]
     assert len(enabled) >= 50
     assert len({s.domain.value for s in enabled}) >= 10

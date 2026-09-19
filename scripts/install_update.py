@@ -45,10 +45,11 @@ def apply_update(repo: Path, package: Path) -> str:
         base_label = manifest.get('base_description', 'reviewed source files')
         raise RuntimeError(f'Your version differs from {base_label}. No files were changed. Share a fresh repository ZIP to adapt this update. Different files:\n' + '\n'.join(conflicts))
     git(repo, 'apply', '--check', str(patch))
-    branch = 'pantone-improvements-v1.6.0'
+    branch_base = 'pantone-improvements-v' + str(manifest.get('version', '1.6.0'))
+    branch = branch_base
     suffix = 2
     while git(repo, 'show-ref', '--verify', '--quiet', 'refs/heads/' + branch, check=False).returncode == 0:
-        branch = f'pantone-improvements-v1.6.0-{suffix}'
+        branch = f'{branch_base}-{suffix}'
         suffix += 1
     original_branch = git(repo, 'symbolic-ref', '--quiet', '--short', 'HEAD', check=False).stdout.strip()
     original_head = git(repo, 'rev-parse', 'HEAD').stdout.strip()
@@ -76,7 +77,7 @@ def main():
     print('Review and commit the changes in GitHub Desktop, then Publish branch and Create Pull Request.')
     print('Terminal alternative:\n  cd ' + shlex.quote(str(args.repo.expanduser().resolve())))
     print('  git diff --cached --stat')
-    print('  git commit -m "Improve Pantone Challenger measurement and optional AI review"')
+    print('  git commit -m "Update Pantone Challenger"')
     print('  git push -u origin ' + shlex.quote(branch))
     return 0
 
