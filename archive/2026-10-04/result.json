@@ -1,0 +1,603 @@
+{
+  "date": "2026-10-04",
+  "state": "review_only",
+  "methodology_version": "1.6.1",
+  "registry_version": "2026.09-v1.6.1",
+  "panel_declared": 58,
+  "sources_attempted": 58,
+  "sources_captured": 33,
+  "sources_with_eligible_evidence": 26,
+  "domains_covered": 10,
+  "sectors_covered": 20,
+  "stages_covered": 3,
+  "benchmark_sources": 23,
+  "discovery_sources": 3,
+  "challenger": [],
+  "undercurrent": {
+    "hex": "#7E4625",
+    "oklab": [
+      0.4551237027172054,
+      0.05832713153940827,
+      0.06827321008149773
+    ],
+    "oklch": [
+      0.4551237027172054,
+      0.08979579883517802,
+      49.492090682454204
+    ],
+    "family_label": "Brown",
+    "creative_name": "CULTURAL SIGNAL BROWN",
+    "evidence": [
+      {
+        "source_id": "publisher:dezeen-rss",
+        "source_name": "Dezeen",
+        "domain": "design_interiors",
+        "sector": "design publishing",
+        "signal_stage": "distribution",
+        "scale_class": "large_commercial",
+        "panel_type": "discovery",
+        "region_id": "dezeen-rss-item-002",
+        "region_path": "private-evidence:dezeen-rss-item-002",
+        "local_hex": "#7E4625",
+        "local_oklab": [
+          0.4551237027172054,
+          0.05832713153940827,
+          0.06827321008149773
+        ],
+        "distance_to_candidate": 0.0,
+        "local_share": 0.13729159009656186,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.9,
+        "page_title": "Five innovative and practical modular furniture designs",
+        "source_url": "https://www.dezeen.com/2026/10/04/innovative-practical-modular-furniture-designs/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.11337809917355372,
+        "spatial_coverage": 0.75,
+        "observed_pixel": true,
+        "registry_source_id": "dezeen-rss",
+        "creator_id": "",
+        "item_id": "https://www.dezeen.com/2026/10/04/innovative-practical-modular-furniture-designs/",
+        "campaign_id": "",
+        "identity_verified": false,
+        "temporal_status": "eligible_current",
+        "published_at": "Sun, 04 Oct 2026 09:00:44 +0000",
+        "captured_at": "2026-10-04T16:16:41.070483+00:00"
+      },
+      {
+        "source_id": "poster-house",
+        "source_name": "Poster House Exhibitions",
+        "domain": "public_visual_field",
+        "sector": "graphic design museum",
+        "signal_stage": "creation",
+        "scale_class": "institutional",
+        "panel_type": "discovery",
+        "region_id": "poster-house-f01-r01",
+        "region_path": "private-evidence:poster-house-f01-r01",
+        "local_hex": "#7F5024",
+        "local_oklab": [
+          0.47563810158181985,
+          0.041557555740761476,
+          0.07556041642408318
+        ],
+        "distance_to_candidate": 0.027480222151985444,
+        "local_share": 0.14561708966718007,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.8094173990885416,
+        "page_title": "Exhibitions | Poster House",
+        "source_url": "https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.04566115702479339,
+        "spatial_coverage": 0.875,
+        "observed_pixel": true,
+        "registry_source_id": "poster-house",
+        "creator_id": "poster-house",
+        "item_id": "https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/",
+        "campaign_id": "",
+        "identity_verified": true,
+        "temporal_status": "eligible_current",
+        "published_at": "2026-09-25",
+        "captured_at": "2026-10-04T16:18:17.764834+00:00"
+      }
+    ],
+    "source_count": 2,
+    "domain_count": 2,
+    "sector_count": 2,
+    "stage_count": 2,
+    "scale_count": 2,
+    "benchmark_count": 0,
+    "discovery_count": 2,
+    "current_usage_score": 36.65928618077098,
+    "emergence_score": 29.75,
+    "undercurrent_score": 85.0,
+    "mainstream_score": 79.16666666666666,
+    "novelty": 0.0,
+    "adoption_velocity": 0.0,
+    "cross_domain_spread": 0.2857142857142857,
+    "cross_stage_convergence": 0.6666666666666666,
+    "small_large_diversity": 0.5,
+    "evidence_quality": 0.8547086995442708,
+    "top_source_weight": 0.5,
+    "top_domain_weight": 0.5,
+    "top_platform_weight": 0.5,
+    "score_margin": 0.0,
+    "trend_state": "calibration",
+    "uncertainty": 0.7071067811865475,
+    "historical_days": 2,
+    "matched_dates": [],
+    "display_hex_source_id": "publisher:dezeen-rss",
+    "color_integrity": {
+      "display_hex_is_observed": true,
+      "all_local_hex_observed": true,
+      "cluster_diameter": 0.02748,
+      "mean_component_share": 0.07952,
+      "minimum_component_share": 0.045661,
+      "mean_spatial_coverage": 0.8125,
+      "representative_source_id": "publisher:dezeen-rss"
+    },
+    "comparison": {
+      "valid": false,
+      "method": "paired_benchmark_equal_domain_prevalence_v1",
+      "comparable_days": 0,
+      "observed_benchmark_actors": 23,
+      "stable_benchmark_actors": 0,
+      "current_prevalence": null,
+      "prior_prevalence": null,
+      "change_percentage_points": null,
+      "relative_lift": null,
+      "pairs": [],
+      "note": "Sample prevalence; missing sources excluded in pairs. Not a population estimate."
+    },
+    "item_count": 2,
+    "verified_source_count": 1
+  },
+  "mainstream_leader": {
+    "hex": "#1E1F18",
+    "oklab": [
+      0.235690005100049,
+      -0.005308031555802964,
+      0.011917019342452956
+    ],
+    "oklch": [
+      0.235690005100049,
+      0.013045709984734366,
+      114.00895809525838
+    ],
+    "family_label": "Charcoal",
+    "creative_name": "Charcoal",
+    "evidence": [
+      {
+        "source_id": "disney-plus",
+        "source_name": "Disney+",
+        "domain": "entertainment",
+        "sector": "streaming entertainment",
+        "signal_stage": "distribution",
+        "scale_class": "large_commercial",
+        "panel_type": "benchmark",
+        "region_id": "disney-plus-f01-r02",
+        "region_path": "private-evidence:disney-plus-f01-r02",
+        "local_hex": "#1D1D1E",
+        "local_oklab": [
+          0.23115748528366376,
+          0.0005316220180864167,
+          -0.0018238930482228632
+        ],
+        "distance_to_candidate": 0.01560313952630022,
+        "local_share": 0.29729460580912864,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.9029349898323141,
+        "page_title": "Disney+ | Stream Movies, TV Shows, Documentaries & More | U.S. Site",
+        "source_url": "https://www.disneyplus.com/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.31546442687747034,
+        "spatial_coverage": 1.0,
+        "observed_pixel": true,
+        "registry_source_id": "disney-plus",
+        "creator_id": "disney-plus",
+        "item_id": "https://www.disneyplus.com/",
+        "campaign_id": "",
+        "identity_verified": true,
+        "temporal_status": "eligible_changed_today",
+        "published_at": "",
+        "captured_at": "2026-10-04T16:17:18.944356+00:00"
+      },
+      {
+        "source_id": "publisher:dezeen-rss",
+        "source_name": "Dezeen",
+        "domain": "design_interiors",
+        "sector": "design publishing",
+        "signal_stage": "distribution",
+        "scale_class": "large_commercial",
+        "panel_type": "discovery",
+        "region_id": "dezeen-rss-item-005",
+        "region_path": "private-evidence:dezeen-rss-item-005",
+        "local_hex": "#212419",
+        "local_oklab": [
+          0.25346305767772326,
+          -0.010247835975125949,
+          0.01756897836064597
+        ],
+        "distance_to_candidate": 0.019293203631674798,
+        "local_share": 0.27441611814627953,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.9,
+        "page_title": "Studio Armitage creates Field Shelter for people tending allotments in Nara",
+        "source_url": "https://www.dezeen.com/2026/10/03/studio-armitage-field-shelter/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.41696797520661155,
+        "spatial_coverage": 1.0,
+        "observed_pixel": true,
+        "registry_source_id": "dezeen-rss",
+        "creator_id": "",
+        "item_id": "https://www.dezeen.com/2026/10/03/studio-armitage-field-shelter/",
+        "campaign_id": "",
+        "identity_verified": false,
+        "temporal_status": "eligible_current",
+        "published_at": "Sat, 03 Oct 2026 10:00:21 +0000",
+        "captured_at": "2026-10-04T16:16:41.071667+00:00"
+      },
+      {
+        "source_id": "poster-house",
+        "source_name": "Poster House Exhibitions",
+        "domain": "public_visual_field",
+        "sector": "graphic design museum",
+        "signal_stage": "creation",
+        "scale_class": "institutional",
+        "panel_type": "discovery",
+        "region_id": "poster-house-f01-r01",
+        "region_path": "private-evidence:poster-house-f01-r01",
+        "local_hex": "#1E1F18",
+        "local_oklab": [
+          0.235690005100049,
+          -0.005308031555802964,
+          0.011917019342452956
+        ],
+        "distance_to_candidate": 0.0,
+        "local_share": 0.04175316413312797,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.8094173990885416,
+        "page_title": "Exhibitions | Poster House",
+        "source_url": "https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.03925619834710744,
+        "spatial_coverage": 0.4375,
+        "observed_pixel": true,
+        "registry_source_id": "poster-house",
+        "creator_id": "poster-house",
+        "item_id": "https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/",
+        "campaign_id": "",
+        "identity_verified": true,
+        "temporal_status": "eligible_current",
+        "published_at": "2026-09-25",
+        "captured_at": "2026-10-04T16:18:17.764834+00:00"
+      }
+    ],
+    "source_count": 3,
+    "domain_count": 3,
+    "sector_count": 3,
+    "stage_count": 2,
+    "scale_count": 2,
+    "benchmark_count": 1,
+    "discovery_count": 2,
+    "current_usage_score": 51.0129519375813,
+    "emergence_score": 33.4,
+    "undercurrent_score": 69.16666666666667,
+    "mainstream_score": 81.25,
+    "novelty": 0.0,
+    "adoption_velocity": 0.0,
+    "cross_domain_spread": 0.42857142857142855,
+    "cross_stage_convergence": 0.6666666666666666,
+    "small_large_diversity": 0.5,
+    "evidence_quality": 0.8707841296402853,
+    "top_source_weight": 0.3333333333333333,
+    "top_domain_weight": 0.3333333333333333,
+    "top_platform_weight": 0.3333333333333333,
+    "score_margin": 0.0,
+    "trend_state": "calibration",
+    "uncertainty": 0.5773502691896258,
+    "historical_days": 2,
+    "matched_dates": [],
+    "display_hex_source_id": "poster-house",
+    "color_integrity": {
+      "display_hex_is_observed": true,
+      "all_local_hex_observed": true,
+      "cluster_diameter": 0.031461,
+      "mean_component_share": 0.25723,
+      "minimum_component_share": 0.039256,
+      "mean_spatial_coverage": 0.8125,
+      "representative_source_id": "poster-house"
+    },
+    "comparison": {
+      "valid": false,
+      "method": "paired_benchmark_equal_domain_prevalence_v1",
+      "comparable_days": 0,
+      "observed_benchmark_actors": 23,
+      "stable_benchmark_actors": 0,
+      "current_prevalence": null,
+      "prior_prevalence": null,
+      "change_percentage_points": null,
+      "relative_lift": null,
+      "pairs": [],
+      "note": "Sample prevalence; missing sources excluded in pairs. Not a population estimate."
+    },
+    "item_count": 4,
+    "verified_source_count": 2
+  },
+  "usage_leader": {
+    "hex": "#1E1F18",
+    "oklab": [
+      0.235690005100049,
+      -0.005308031555802964,
+      0.011917019342452956
+    ],
+    "oklch": [
+      0.235690005100049,
+      0.013045709984734366,
+      114.00895809525838
+    ],
+    "family_label": "Charcoal",
+    "creative_name": "Charcoal",
+    "evidence": [
+      {
+        "source_id": "disney-plus",
+        "source_name": "Disney+",
+        "domain": "entertainment",
+        "sector": "streaming entertainment",
+        "signal_stage": "distribution",
+        "scale_class": "large_commercial",
+        "panel_type": "benchmark",
+        "region_id": "disney-plus-f01-r02",
+        "region_path": "private-evidence:disney-plus-f01-r02",
+        "local_hex": "#1D1D1E",
+        "local_oklab": [
+          0.23115748528366376,
+          0.0005316220180864167,
+          -0.0018238930482228632
+        ],
+        "distance_to_candidate": 0.01560313952630022,
+        "local_share": 0.29729460580912864,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.9029349898323141,
+        "page_title": "Disney+ | Stream Movies, TV Shows, Documentaries & More | U.S. Site",
+        "source_url": "https://www.disneyplus.com/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.31546442687747034,
+        "spatial_coverage": 1.0,
+        "observed_pixel": true,
+        "registry_source_id": "disney-plus",
+        "creator_id": "disney-plus",
+        "item_id": "https://www.disneyplus.com/",
+        "campaign_id": "",
+        "identity_verified": true,
+        "temporal_status": "eligible_changed_today",
+        "published_at": "",
+        "captured_at": "2026-10-04T16:17:18.944356+00:00"
+      },
+      {
+        "source_id": "publisher:dezeen-rss",
+        "source_name": "Dezeen",
+        "domain": "design_interiors",
+        "sector": "design publishing",
+        "signal_stage": "distribution",
+        "scale_class": "large_commercial",
+        "panel_type": "discovery",
+        "region_id": "dezeen-rss-item-005",
+        "region_path": "private-evidence:dezeen-rss-item-005",
+        "local_hex": "#212419",
+        "local_oklab": [
+          0.25346305767772326,
+          -0.010247835975125949,
+          0.01756897836064597
+        ],
+        "distance_to_candidate": 0.019293203631674798,
+        "local_share": 0.27441611814627953,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.9,
+        "page_title": "Studio Armitage creates Field Shelter for people tending allotments in Nara",
+        "source_url": "https://www.dezeen.com/2026/10/03/studio-armitage-field-shelter/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.41696797520661155,
+        "spatial_coverage": 1.0,
+        "observed_pixel": true,
+        "registry_source_id": "dezeen-rss",
+        "creator_id": "",
+        "item_id": "https://www.dezeen.com/2026/10/03/studio-armitage-field-shelter/",
+        "campaign_id": "",
+        "identity_verified": false,
+        "temporal_status": "eligible_current",
+        "published_at": "Sat, 03 Oct 2026 10:00:21 +0000",
+        "captured_at": "2026-10-04T16:16:41.071667+00:00"
+      },
+      {
+        "source_id": "poster-house",
+        "source_name": "Poster House Exhibitions",
+        "domain": "public_visual_field",
+        "sector": "graphic design museum",
+        "signal_stage": "creation",
+        "scale_class": "institutional",
+        "panel_type": "discovery",
+        "region_id": "poster-house-f01-r01",
+        "region_path": "private-evidence:poster-house-f01-r01",
+        "local_hex": "#1E1F18",
+        "local_oklab": [
+          0.235690005100049,
+          -0.005308031555802964,
+          0.011917019342452956
+        ],
+        "distance_to_candidate": 0.0,
+        "local_share": 0.04175316413312797,
+        "source_vote": 1.0,
+        "evidence_confidence": 0.8094173990885416,
+        "page_title": "Exhibitions | Poster House",
+        "source_url": "https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/",
+        "rights_mode": "analyze_only",
+        "largest_component_share": 0.03925619834710744,
+        "spatial_coverage": 0.4375,
+        "observed_pixel": true,
+        "registry_source_id": "poster-house",
+        "creator_id": "poster-house",
+        "item_id": "https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/",
+        "campaign_id": "",
+        "identity_verified": true,
+        "temporal_status": "eligible_current",
+        "published_at": "2026-09-25",
+        "captured_at": "2026-10-04T16:18:17.764834+00:00"
+      }
+    ],
+    "source_count": 3,
+    "domain_count": 3,
+    "sector_count": 3,
+    "stage_count": 2,
+    "scale_count": 2,
+    "benchmark_count": 1,
+    "discovery_count": 2,
+    "current_usage_score": 51.0129519375813,
+    "emergence_score": 33.4,
+    "undercurrent_score": 69.16666666666667,
+    "mainstream_score": 81.25,
+    "novelty": 0.0,
+    "adoption_velocity": 0.0,
+    "cross_domain_spread": 0.42857142857142855,
+    "cross_stage_convergence": 0.6666666666666666,
+    "small_large_diversity": 0.5,
+    "evidence_quality": 0.8707841296402853,
+    "top_source_weight": 0.3333333333333333,
+    "top_domain_weight": 0.3333333333333333,
+    "top_platform_weight": 0.3333333333333333,
+    "score_margin": 0.0,
+    "trend_state": "calibration",
+    "uncertainty": 0.5773502691896258,
+    "historical_days": 2,
+    "matched_dates": [],
+    "display_hex_source_id": "poster-house",
+    "color_integrity": {
+      "display_hex_is_observed": true,
+      "all_local_hex_observed": true,
+      "cluster_diameter": 0.031461,
+      "mean_component_share": 0.25723,
+      "minimum_component_share": 0.039256,
+      "mean_spatial_coverage": 0.8125,
+      "representative_source_id": "poster-house"
+    },
+    "comparison": {
+      "valid": false,
+      "method": "paired_benchmark_equal_domain_prevalence_v1",
+      "comparable_days": 0,
+      "observed_benchmark_actors": 23,
+      "stable_benchmark_actors": 0,
+      "current_prevalence": null,
+      "prior_prevalence": null,
+      "change_percentage_points": null,
+      "relative_lift": null,
+      "pairs": [],
+      "note": "Sample prevalence; missing sources excluded in pairs. Not a population estimate."
+    },
+    "item_count": 4,
+    "verified_source_count": 2
+  },
+  "runner_ups": [],
+  "palette_regime": {
+    "neutral_share": 0.6461,
+    "median_chroma": 0.0191,
+    "mean_lightness": 0.5894,
+    "warm_share": 0.5954,
+    "cool_share": 0.4046,
+    "mean_contrast": 0.5342,
+    "mean_palette_size": 4.16,
+    "monochrome_share": 0.76,
+    "muted_share": 0.908,
+    "electric_share": 0.092,
+    "dominant_regime": "high-contrast mixed palettes",
+    "top_pairs": [
+      {
+        "colors": [
+          "#4073C6",
+          "#B29C84"
+        ],
+        "score": 0.1988
+      },
+      {
+        "colors": [
+          "#966A42",
+          "#B08960"
+        ],
+        "score": 0.141
+      },
+      {
+        "colors": [
+          "#784E2A",
+          "#B08960"
+        ],
+        "score": 0.1407
+      },
+      {
+        "colors": [
+          "#784E2A",
+          "#966A42"
+        ],
+        "score": 0.1407
+      },
+      {
+        "colors": [
+          "#790200",
+          "#A40405"
+        ],
+        "score": 0.1241
+      },
+      {
+        "colors": [
+          "#62B04D",
+          "#7F5024"
+        ],
+        "score": 0.1179
+      },
+      {
+        "colors": [
+          "#62B04D",
+          "#BFDFE8"
+        ],
+        "score": 0.1168
+      },
+      {
+        "colors": [
+          "#7F5024",
+          "#BFDFE8"
+        ],
+        "score": 0.1168
+      },
+      {
+        "colors": [
+          "#5E3314",
+          "#B08960"
+        ],
+        "score": 0.1124
+      },
+      {
+        "colors": [
+          "#5E3314",
+          "#966A42"
+        ],
+        "score": 0.1124
+      }
+    ]
+  },
+  "palette_pair": null,
+  "blocking_reasons": [],
+  "review_reasons": [
+    "Coverage is sufficient for baseline learning but not public publication: 26/58 sources versus a ready threshold of 32.",
+    "Historical baseline is warming: 2/7 prior valid days.",
+    "No public Challenger is selected during calibration."
+  ],
+  "baseline_days": 2,
+  "recurrence": {},
+  "reports": {
+    "runtime_elapsed_seconds": "137.488",
+    "current_evidence_sources": "8",
+    "observation_date_basis": "Live capture date in the configured timezone; dated items use the stated current window.",
+    "runtime_timed_out_sources": "0",
+    "runtime_status_counts": "{'captured': 33, 'error': 2, 'no_eligible_region': 23}",
+    "color_truth": "passed",
+    "color_truth_swatches_checked": "345",
+    "stage_diagnostics": "{\"creation\": {\"attempted_sources\": 10, \"captured_sources\": 5, \"admitted_sources\": 1, \"current_sources\": 1, \"undated_sources\": [\"droga5\", \"kvadrat\", \"ogilvy\", \"wieden-kennedy\"], \"stale_sources\": [\"poster-house\"], \"collection_failures\": [{\"source_id\": \"itch-newest\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"maharam\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"moma-exhibitions\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"musicbrainz-new-albums\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"pentagram\", \"status\": \"no_eligible_region\"}], \"admission\": [{\"source_id\": \"droga5\", \"region_id\": \"droga5-f01-r01\", \"registry_source_id\": \"droga5\", \"signal_stage\": \"creation\", \"source_url\": \"https://droga5.com/work/15088\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 0, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"droga5\", \"region_id\": \"droga5-f01-r02\", \"registry_source_id\": \"droga5\", \"signal_stage\": \"creation\", \"source_url\": \"https://droga5.com/work/coors-light-coors-light\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 1, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"kvadrat\", \"region_id\": \"kvadrat-f01-r01\", \"registry_source_id\": \"kvadrat\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.kvadrat.dk/en/products/sales-material\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"kvadrat\", \"region_id\": \"kvadrat-f01-r02\", \"registry_source_id\": \"kvadrat\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.kvadrat.dk/en/products/roller-blinds-textiles\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"kvadrat\", \"region_id\": \"kvadrat-f01-r03\", \"registry_source_id\": \"kvadrat\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.kvadrat.dk/en/products/roller-blinds-hardware\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"ogilvy\", \"region_id\": \"ogilvy-f01-r01\", \"registry_source_id\": \"ogilvy\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.ogilvy.com/work/copycats-welcome\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"ogilvy\", \"region_id\": \"ogilvy-f01-r02\", \"registry_source_id\": \"ogilvy\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.ogilvy.com/work/bullet-machine\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"ogilvy\", \"region_id\": \"ogilvy-f01-r03\", \"registry_source_id\": \"ogilvy\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.ogilvy.com/work/search-cena\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"poster-house\", \"region_id\": \"poster-house-f01-r01\", \"registry_source_id\": \"poster-house\", \"signal_stage\": \"creation\", \"source_url\": \"https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 7, \"reasons\": [\"Evidence date is within the 45-day current window.\"]}, {\"source_id\": \"poster-house\", \"region_id\": \"poster-house-f01-r02\", \"registry_source_id\": \"poster-house\", \"signal_stage\": \"creation\", \"source_url\": \"https://posterhouse.org/exhibition/from-monarch-to-modernity-travel-identity-the-czechoslovak-first-republic-1918-1938/\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Dated evidence is 164 days old; the allowed current window is 45 days.\"]}, {\"source_id\": \"poster-house\", \"region_id\": \"poster-house-f01-r03\", \"registry_source_id\": \"poster-house\", \"signal_stage\": \"creation\", \"source_url\": \"https://posterhouse.org/exhibition/designed-to-be-red-native-american-indigenous-poster-works/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 7, \"reasons\": [\"Evidence date is within the 45-day current window.\"]}, {\"source_id\": \"wieden-kennedy\", \"region_id\": \"wieden-kennedy-f01-r01\", \"registry_source_id\": \"wieden-kennedy\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.wk.com/work/lego-everybody-wants-a-piece\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"wieden-kennedy\", \"region_id\": \"wieden-kennedy-f01-r02\", \"registry_source_id\": \"wieden-kennedy\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.wk.com/work/doordash-not-that-dramatic\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"wieden-kennedy\", \"region_id\": \"wieden-kennedy-f01-r03\", \"registry_source_id\": \"wieden-kennedy\", \"signal_stage\": \"creation\", \"source_url\": \"https://www.wk.com/work/absolut-tabasco\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}]}, \"distribution\": {\"attempted_sources\": 41, \"captured_sources\": 26, \"admitted_sources\": 24, \"current_sources\": 6, \"undated_sources\": [\"benjamin-moore\", \"chase\", \"london-design-festival\"], \"stale_sources\": [\"itunes-new-music\"], \"collection_failures\": [{\"source_id\": \"adidas\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"american-express\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"chairish\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"delta\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"etsy-web\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"ford\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"herman-miller\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"its-nice-that-rss\", \"status\": \"error\"}, {\"source_id\": \"itunes-new-films\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"lululemon\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"netflix\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"sephora\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"uniqlo\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"west-elm\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"zara\", \"status\": \"no_eligible_region\"}], \"admission\": [{\"source_id\": \"adobe\", \"region_id\": \"adobe-f02-r01\", \"registry_source_id\": \"adobe\", \"signal_stage\": \"distribution\", \"source_url\": \"https://blog.adobe.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"airbnb\", \"region_id\": \"airbnb-f02-r01\", \"registry_source_id\": \"airbnb\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.airbnb.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"airbnb\", \"region_id\": \"airbnb-f02-r02\", \"registry_source_id\": \"airbnb\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.airbnb.com/airbnb-2026-fall-update\", \"temporal_status\": \"baseline_only_stale\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Benchmark creative is 4 days old and can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"airbnb\", \"region_id\": \"airbnb-f02-r03\", \"registry_source_id\": \"airbnb\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.airbnb.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"apple\", \"region_id\": \"apple-f01-r01\", \"registry_source_id\": \"apple\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.apple.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"apple\", \"region_id\": \"apple-f01-r02\", \"registry_source_id\": \"apple\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.apple.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"apple\", \"region_id\": \"apple-f01-r03\", \"registry_source_id\": \"apple\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.apple.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"benjamin-moore\", \"region_id\": \"benjamin-moore-f02-r01\", \"registry_source_id\": \"benjamin-moore\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.benjaminmoore.com/en-us/color-overview/color-palettes\", \"temporal_status\": \"calibration_only_undated\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists.\"]}, {\"source_id\": \"benjamin-moore\", \"region_id\": \"benjamin-moore-f02-r02\", \"registry_source_id\": \"benjamin-moore\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.benjaminmoore.com/en-us/paint-colors/color-of-the-year-2026\", \"temporal_status\": \"calibration_only_undated\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists.\"]}, {\"source_id\": \"benjamin-moore\", \"region_id\": \"benjamin-moore-f02-r03\", \"registry_source_id\": \"benjamin-moore\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.benjaminmoore.com/en-us/paint-colors/most-popular\", \"temporal_status\": \"calibration_only_undated\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists.\"]}, {\"source_id\": \"chase\", \"region_id\": \"chase-f02-r01\", \"registry_source_id\": \"chase\", \"signal_stage\": \"distribution\", \"source_url\": \"https://secure.chase.com/web/oao/application/card?cfgCode=PREAPPROVEDCONCC_REACT&flowVersion=REACT&cellCode=6MP6&jp_aid_a=T_88267&jp_aid_p=chasehome_3/trip1#/origination/preapproved/index/index\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"chase\", \"region_id\": \"chase-f02-r02\", \"registry_source_id\": \"chase\", \"signal_stage\": \"distribution\", \"source_url\": \"https://account.chase.com/consumer/banking/savingsoffer?jp_aid_a=T_100383&jp_aid_p=chasehome_3/trip2\", \"temporal_status\": \"calibration_only_undated\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 4, \"reasons\": [\"Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists.\"]}, {\"source_id\": \"chase\", \"region_id\": \"chase-f02-r03\", \"registry_source_id\": \"chase\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.chase.com/personal/mortgage/closing-guarantee?SourceCode=CPCG01&jp_aid_a=T_96471&jp_aid_p=chasehome_3/trip3\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"coca-cola\", \"region_id\": \"coca-cola-f01-r01\", \"registry_source_id\": \"coca-cola\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.coca-cola.com/us/en/offerings/coca-cola/football\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"coca-cola\", \"region_id\": \"coca-cola-f01-r02\", \"registry_source_id\": \"coca-cola\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.coca-cola.com/us/en/offerings/coca-cola/football\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"depop\", \"region_id\": \"depop-f01-r01\", \"registry_source_id\": \"depop\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.depop.com/\", \"temporal_status\": \"eligible_changed_today\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 3, \"reasons\": [\"Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence.\"]}, {\"source_id\": \"depop\", \"region_id\": \"depop-f01-r02\", \"registry_source_id\": \"depop\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.depop.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"depop\", \"region_id\": \"depop-f01-r03\", \"registry_source_id\": \"depop\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.depop.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-001\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/04/museum-vonk-studio-marco-vermeulen/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 7, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-002\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/04/innovative-practical-modular-furniture-designs/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 6, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-003\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/04/space-popular-nieuwe-instituut-collection-gallery-rotterdam/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 6, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-004\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/03/kimpton-era-hotel-new-york-city-inc/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 7, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-005\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/03/studio-armitage-field-shelter/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 7, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-006\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/03/brutalist-asia-book-roundup/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 6, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-007\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/03/data-centre-architecture-this-week/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 7, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"publisher:dezeen-rss\", \"region_id\": \"dezeen-rss-item-008\", \"registry_source_id\": \"dezeen-rss\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.dezeen.com/2026/10/02/shinsegae-groups-336-paul-cox-artworks-frieze-seoul-2026/\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 4, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"disney-plus\", \"region_id\": \"disney-plus-f01-r01\", \"registry_source_id\": \"disney-plus\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.disneyplus.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"disney-plus\", \"region_id\": \"disney-plus-f01-r02\", \"registry_source_id\": \"disney-plus\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.disneyplus.com/\", \"temporal_status\": \"eligible_changed_today\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence.\"]}, {\"source_id\": \"disney-plus\", \"region_id\": \"disney-plus-f01-r03\", \"registry_source_id\": \"disney-plus\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.disneyplus.com/commerce/billing?pref=espn_unlimited_bundle\", \"temporal_status\": \"eligible_changed_today\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence.\"]}, {\"source_id\": \"ebay-web\", \"region_id\": \"ebay-web-f01-r01\", \"registry_source_id\": \"ebay-web\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.ebay.com/itm/277472732832?_trkparms=5373%3A0%7C5374%3AFeatured\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 0, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"epic-games-store\", \"region_id\": \"epic-games-store-f02-r01\", \"registry_source_id\": \"epic-games-store\", \"signal_stage\": \"distribution\", \"source_url\": \"https://store.epicgames.com/blog/end-of-abyss-hands-on-interview-review\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"epic-games-store\", \"region_id\": \"epic-games-store-f02-r02\", \"registry_source_id\": \"epic-games-store\", \"signal_stage\": \"distribution\", \"source_url\": \"https://store.epicgames.com/blog/control-resonant-abilities-skills-guide\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"glossier\", \"region_id\": \"glossier-f02-r01\", \"registry_source_id\": \"glossier\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.glossier.com/collections/fragrance\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"glossier\", \"region_id\": \"glossier-f02-r02\", \"registry_source_id\": \"glossier\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.glossier.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"glossier\", \"region_id\": \"glossier-f02-r03\", \"registry_source_id\": \"glossier\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.glossier.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"ikea\", \"region_id\": \"ikea-f01-r01\", \"registry_source_id\": \"ikea\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.ikea.com/us/en/new/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 4, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"ikea\", \"region_id\": \"ikea-f01-r02\", \"registry_source_id\": \"ikea\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.ikea.com/us/en/new/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"ikea\", \"region_id\": \"ikea-f01-r03\", \"registry_source_id\": \"ikea\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.ikea.com/us/en/new/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-001\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/new-music-single/1528817760?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Dated evidence is 2189 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-002\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/new-music/1206583441?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Dated evidence is 3502 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-003\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/new-music-single/1836971421?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Dated evidence is 382 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-004\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/recomposed-by-max-richter-vivaldi-the-four-seasons/1440744386?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Dated evidence is 4659 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-005\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/from-sleep/1440771769?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 4, \"reasons\": [\"Dated evidence is 4048 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-006\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/in-a-time-lapse/1440772612?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Dated evidence is 5024 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-007\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/divenire/1452504769?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Dated evidence is 7216 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"publisher:itunes-new-music\", \"region_id\": \"itunes-new-music-item-008\", \"registry_source_id\": \"itunes-new-music\", \"signal_stage\": \"distribution\", \"source_url\": \"https://music.apple.com/us/album/una-mattina/1440762051?uo=4\", \"temporal_status\": \"context_only_stale\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Dated evidence is 8312 days old; the allowed current window is 2 days.\"]}, {\"source_id\": \"london-design-festival\", \"region_id\": \"london-design-festival-f02-r01\", \"registry_source_id\": \"london-design-festival\", \"signal_stage\": \"distribution\", \"source_url\": \"https://londondesignfestival.com/programme?tab=map\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"london-design-festival\", \"region_id\": \"london-design-festival-f02-r02\", \"registry_source_id\": \"london-design-festival\", \"signal_stage\": \"distribution\", \"source_url\": \"https://londondesignfestival.com/stories/a-first-look-at-ldf26\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"london-design-festival\", \"region_id\": \"london-design-festival-f02-r03\", \"registry_source_id\": \"london-design-festival\", \"signal_stage\": \"distribution\", \"source_url\": \"https://londondesignfestival.com/gdf-london\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}, {\"source_id\": \"marriott\", \"region_id\": \"marriott-f02-r01\", \"registry_source_id\": \"marriott\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.marriott.com/news/2026/09/29/marriott-international-reaches-300-properties-in-mexico-with-over-70-hotels-in-the-countrys-pipeline\", \"temporal_status\": \"baseline_only_stale\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Benchmark creative is 5 days old and can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"marriott\", \"region_id\": \"marriott-f02-r02\", \"registry_source_id\": \"marriott\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.marriott.com/stories/2026/09/toasting-talent-marriotts-global-food-and-beverage-associates-raise-the-bar-at-tales-of-the-cocktail\", \"temporal_status\": \"baseline_only_stale\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 0, \"reasons\": [\"Benchmark creative is 5 days old and can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"marriott\", \"region_id\": \"marriott-f02-r03\", \"registry_source_id\": \"marriott\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.marriott.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"max\", \"region_id\": \"max-f02-r01\", \"registry_source_id\": \"max\", \"signal_stage\": \"distribution\", \"source_url\": \"https://press.wbd.com/us/brands/hbo-max\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"max\", \"region_id\": \"max-f02-r02\", \"registry_source_id\": \"max\", \"signal_stage\": \"distribution\", \"source_url\": \"https://press.wbd.com/us/brands/hbo-max\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"max\", \"region_id\": \"max-f02-r03\", \"registry_source_id\": \"max\", \"signal_stage\": \"distribution\", \"source_url\": \"https://press.wbd.com/us/brands/hbo-max\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"microsoft-surface\", \"region_id\": \"microsoft-surface-f01-r01\", \"registry_source_id\": \"microsoft-surface\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.microsoft.com/en-us/surface\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"microsoft-surface\", \"region_id\": \"microsoft-surface-f01-r02\", \"registry_source_id\": \"microsoft-surface\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.microsoft.com/en-us/surface\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"microsoft-surface\", \"region_id\": \"microsoft-surface-f01-r03\", \"registry_source_id\": \"microsoft-surface\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.microsoft.com/en-us/surface\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"nike\", \"region_id\": \"nike-f01-r01\", \"registry_source_id\": \"nike\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.nike.com/w/los-angeles-dodgers-9radp\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"nike\", \"region_id\": \"nike-f01-r02\", \"registry_source_id\": \"nike\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.nike.com/w/milwaukee-brewers-924vu\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"nike\", \"region_id\": \"nike-f01-r03\", \"registry_source_id\": \"nike\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.nike.com/w/tampa-bay-rays-990op\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 1, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"nintendo\", \"region_id\": \"nintendo-f01-r01\", \"registry_source_id\": \"nintendo\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.nintendo.com/us/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"nintendo\", \"region_id\": \"nintendo-f01-r02\", \"registry_source_id\": \"nintendo\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.nintendo.com/us/\", \"temporal_status\": \"eligible_changed_today\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence.\"]}, {\"source_id\": \"nintendo\", \"region_id\": \"nintendo-f01-r03\", \"registry_source_id\": \"nintendo\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.nintendo.com/us/\", \"temporal_status\": \"eligible_changed_today\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 7, \"reasons\": [\"Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence.\"]}, {\"source_id\": \"playstation\", \"region_id\": \"playstation-f01-r01\", \"registry_source_id\": \"playstation\", \"signal_stage\": \"distribution\", \"source_url\": \"https://blog.playstation.com/2026/10/02/official-playstation-podcast-episode-549-friendly-ghosts/?smcid=pdc:us-en:web-pdc-home\", \"temporal_status\": \"eligible_current\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 6, \"reasons\": [\"Evidence date is within the 2-day current window.\"]}, {\"source_id\": \"rivian\", \"region_id\": \"rivian-f01-r01\", \"registry_source_id\": \"rivian\", \"signal_stage\": \"distribution\", \"source_url\": \"https://rivian.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Only a minor image change was observed; no new creative is established.\"]}, {\"source_id\": \"rivian\", \"region_id\": \"rivian-f01-r02\", \"registry_source_id\": \"rivian\", \"signal_stage\": \"distribution\", \"source_url\": \"https://rivian.com/experience/charging\", \"temporal_status\": \"baseline_only_stale\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 4, \"reasons\": [\"Benchmark creative is 4 days old and can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"rivian\", \"region_id\": \"rivian-f01-r03\", \"registry_source_id\": \"rivian\", \"signal_stage\": \"distribution\", \"source_url\": \"https://rivian.com/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"samsung\", \"region_id\": \"samsung-f01-r01\", \"registry_source_id\": \"samsung\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.samsung.com/us/tablets/galaxy-tab-s12/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 4, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"samsung\", \"region_id\": \"samsung-f01-r02\", \"registry_source_id\": \"samsung\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.samsung.com/us/\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 2, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"spotify\", \"region_id\": \"spotify-f01-r01\", \"registry_source_id\": \"spotify\", \"signal_stage\": \"distribution\", \"source_url\": \"https://open.spotify.com/\", \"temporal_status\": \"eligible_changed_today\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence.\"]}, {\"source_id\": \"starbucks\", \"region_id\": \"starbucks-f01-r01\", \"registry_source_id\": \"starbucks\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.starbucks.com/menu/product/27616/iced\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"starbucks\", \"region_id\": \"starbucks-f01-r02\", \"registry_source_id\": \"starbucks\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.starbucks.com/menu/product/40883/iced\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 6, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"starbucks\", \"region_id\": \"starbucks-f01-r03\", \"registry_source_id\": \"starbucks\", \"signal_stage\": \"distribution\", \"source_url\": \"https://www.starbucks.com/menu/product/418/hot\", \"temporal_status\": \"baseline_only_unchanged\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"xbox\", \"region_id\": \"xbox-f02-r01\", \"registry_source_id\": \"xbox\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.xbox.com/en-us/2026/10/01/ikea-and-xbox-yxstaby-collection-how-the-collaboration-came-together-official-xbox-podcast/\", \"temporal_status\": \"baseline_only_stale\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 7, \"reasons\": [\"Benchmark creative is 3 days old and can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"xbox\", \"region_id\": \"xbox-f02-r02\", \"registry_source_id\": \"xbox\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.xbox.com/en-us/2026/10/01/gears-of-war-e-day-early-access-launch-trailer-xbox/\", \"temporal_status\": \"baseline_only_stale\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 5, \"reasons\": [\"Benchmark creative is 3 days old and can inform baseline or mainstream usage only.\"]}, {\"source_id\": \"xbox\", \"region_id\": \"xbox-f02-r03\", \"registry_source_id\": \"xbox\", \"signal_stage\": \"distribution\", \"source_url\": \"https://news.xbox.com/en-us/2026/09/30/end-of-abyss-xbox-launch/\", \"temporal_status\": \"baseline_only_stale\", \"baseline_eligible\": true, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Benchmark creative is 4 days old and can inform baseline or mainstream usage only.\"]}]}, \"attention\": {\"attempted_sources\": 7, \"captured_sources\": 2, \"admitted_sources\": 1, \"current_sources\": 1, \"undated_sources\": [\"steam-top-sellers\"], \"stale_sources\": [], \"collection_failures\": [{\"source_id\": \"arena-explore\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"artic-open-access\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"kickstarter-design\", \"status\": \"no_eligible_region\"}, {\"source_id\": \"met-open-access\", \"status\": \"error\"}, {\"source_id\": \"product-hunt-trending\", \"status\": \"no_eligible_region\"}], \"admission\": [{\"source_id\": \"apple-music-charts\", \"region_id\": \"apple-music-charts-f01-r01\", \"registry_source_id\": \"apple-music-charts\", \"signal_stage\": \"attention\", \"source_url\": \"https://music.apple.com/us/new/top-charts\", \"temporal_status\": \"eligible_observed_attention\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 4, \"reasons\": [\"Ranked chart appearance was recorded with item links and ranks at capture time. This is not a release date or proof of increasing attention.\"]}, {\"source_id\": \"apple-music-charts\", \"region_id\": \"apple-music-charts-f01-r02\", \"registry_source_id\": \"apple-music-charts\", \"signal_stage\": \"attention\", \"source_url\": \"https://music.apple.com/us/new/top-charts\", \"temporal_status\": \"eligible_observed_attention\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 6, \"reasons\": [\"Ranked chart appearance was recorded with item links and ranks at capture time. This is not a release date or proof of increasing attention.\"]}, {\"source_id\": \"apple-music-charts\", \"region_id\": \"apple-music-charts-f01-r03\", \"registry_source_id\": \"apple-music-charts\", \"signal_stage\": \"attention\", \"source_url\": \"https://music.apple.com/us/new/top-charts\", \"temporal_status\": \"eligible_observed_attention\", \"baseline_eligible\": true, \"current_eligible\": true, \"kept_swatches\": 6, \"reasons\": [\"Ranked chart appearance was recorded with item links and ranks at capture time. This is not a release date or proof of increasing attention.\"]}, {\"source_id\": \"steam-top-sellers\", \"region_id\": \"steam-top-sellers-f01-r01\", \"registry_source_id\": \"steam-top-sellers\", \"signal_stage\": \"attention\", \"source_url\": \"https://store.steampowered.com/charts/topselling/US\", \"temporal_status\": \"context_only_undated\", \"baseline_eligible\": false, \"current_eligible\": false, \"kept_swatches\": 3, \"reasons\": [\"Discovery, creation, or art evidence needs a dated cultural event.\"]}]}}"
+  },
+  "baseline_compatibility_key": "cohort-evidence-v2-dates161"
+}
