@@ -1,0 +1,806 @@
+{
+  "schema_version": 2,
+  "date": "2026-10-15",
+  "regions": {
+    "79d9e8ce71ab38fc0df2fc6f98bba9ab0385e837353f3307b8deb023a3fe8f45": {
+      "fingerprint": "94fd3f7ef37027212421f99bf8a50b341509367d7857dcc0274be17269aea5d7",
+      "perceptual_hash": "f00fc06e00d16430d86592cb05962b2c16180c30186232cd7000034f8498",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:46:35.178357+00:00",
+      "source_id": "adobe",
+      "item_id": "https://blog.adobe.com/"
+    },
+    "bb5454593e95161fb2be35cd6f0c5a4a0bf34e869d61c62ba4c50ba45744887b": {
+      "fingerprint": "f99a448cfcc5ed7a62ac54f24fad831b9d8700ba1d2cda949631b78a63b2c274",
+      "perceptual_hash": "90005800ad8338178e0d3f46d51cea699c52b86770ee6c001c7721080422",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:47:38.667527+00:00",
+      "source_id": "airbnb",
+      "item_id": "https://news.airbnb.com/"
+    },
+    "703fcac2f37f03cd1e35f2884300493037b00746758e7762f8c9d7b86db88d40": {
+      "fingerprint": "1caa49d2c3e28cba47a29a56f1f2d9594065e30f91844996af888c4b872e046c",
+      "perceptual_hash": "bdb1eb13182e607c8ff33ba6fb1c9b39b66665ff0bc7398e3a9877d72ef1",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:40.184023+00:00",
+      "source_id": "airbnb",
+      "item_id": "https://news.airbnb.com/gen-z-is-driving-a-45-jump-in-halloween-weekend-searches"
+    },
+    "4513f301d62ae22d755cb4b34d12e06ff7cbda36db7c15afc1f5feb4684af37b": {
+      "fingerprint": "30201c933caefb71faa53f640d713651a2761e490b9ce459f1272a4a0eb3784e",
+      "perceptual_hash": "70809a9495393a7666edd9c9d283c5234780984c0a9b1734eccf90303100",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:41.546755+00:00",
+      "source_id": "airbnb",
+      "item_id": "https://news.airbnb.com/"
+    },
+    "a53eab46cbbbbf8f61ff60c26171e2b5b13fe46fd3e08654e9cbca103eab95a5": {
+      "fingerprint": "0368dd8c02cb4bf83980fdd715c9f1c9b499400566c91732f41d796fe09f07ee",
+      "perceptual_hash": "020006008c00d801b0036026c02d801d005a007c00b8027004e007405680",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.488743+00:00",
+      "source_id": "apple",
+      "item_id": "https://www.apple.com/"
+    },
+    "ce63eadef634dbff9201221af48bc2ba817a31a4999c4af68e9c9897434a43f0": {
+      "fingerprint": "d2ce1863ec2b351e8984d031b7afcee231eb51ca43112878754250150623a04c",
+      "perceptual_hash": "0b4016802d005a0034036800004d801b00b6006c04d809f013e027c04e80",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:33.883484+00:00",
+      "source_id": "apple",
+      "item_id": "https://www.apple.com/"
+    },
+    "82e45c1d3779a6c4fe42f9dbbb7fd7b063aa2a4ef4ac2b54766cab04a1e49e5e": {
+      "fingerprint": "29427b9ca52649c91d6a7f412e03f422e0da9f0d0ce36f94e7b75401fcfc731a",
+      "perceptual_hash": "0432496b69caf19543392672ccb5146a09a23358e26436c8619047231cce",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:37.863527+00:00",
+      "source_id": "apple",
+      "item_id": "https://www.apple.com/"
+    },
+    "e7211a568356df6a3297f484babd80007fd0103ebbc9608cf323b2196e909b89": {
+      "fingerprint": "a3db81af9c48b70ae6d798f344b3e9a2929a63e05af1670eeeb8feed5e112087",
+      "perceptual_hash": "2634cc6c90d9a193532626cc6d9819367a48f491c9239c80899912320000",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:46.540312+00:00",
+      "source_id": "apple-music-charts",
+      "item_id": "https://music.apple.com/us/new/top-charts"
+    },
+    "48d79cb4859e35813e73f8e401c6f00c5eebb6fb0211715746d9ba756944a2f3": {
+      "fingerprint": "e6605bb726ea05fdcecbbe40972d5faf6a0dbbf545cafd654cbf958bb360d5d6",
+      "perceptual_hash": "4996932d22da41b4836d025258a4634096db2da64b4494f4c92ca2c00480",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:48.159399+00:00",
+      "source_id": "apple-music-charts",
+      "item_id": "https://music.apple.com/us/new/top-charts"
+    },
+    "a542187777e2bb3171a5ea0972317fd6b3c36126c330ef2505583adfdde49908": {
+      "fingerprint": "4cc20fe8b6e8ecbbdb93b53c39214404c370acf81b2a502640c5934236cd36a8",
+      "perceptual_hash": "ccd49ba5b24b6694cd4db3132e26714ce699cd1b083612492a2d92492512",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:48.738779+00:00",
+      "source_id": "apple-music-charts",
+      "item_id": "https://music.apple.com/us/new/top-charts"
+    },
+    "116315d38166a3c6c3825a0f31613e1ec0a17b9d519bd9cb573ff74630b206eb": {
+      "fingerprint": "85982b2629f5b39c967f3b2d142aa388b560d4b64b5e5d24846b88925bee7d4e",
+      "perceptual_hash": "7973f2e300268b4d5699a3306e6114d089a6d34da6864d0c980016925c68",
+      "first_seen": "2026-10-04",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-04",
+      "captured_at": "2026-10-15T11:46:59.998752+00:00",
+      "source_id": "benjamin-moore",
+      "item_id": "https://www.benjaminmoore.com/en-us/color-overview/color-palettes"
+    },
+    "366c36733c3bd13637ba21faadaf6628b7061533bf7bf460c6d03d0d1f494b93": {
+      "fingerprint": "e4867f7b34745053e2f03ff4aabe891099b7ff5df8532ef5dd8716cc6253994d",
+      "perceptual_hash": "4a36dc25384a70ace18986568978d8f9a1f343e6c7cd8f1a1e343c686000",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:01.466425+00:00",
+      "source_id": "benjamin-moore",
+      "item_id": "https://www.benjaminmoore.com/en-us/paint-colors/color-of-the-year-2027"
+    },
+    "a4d2ff4933af1dc634758c5b34482e5de5b1162dc1c3064c3c2cd26edbc946c8": {
+      "fingerprint": "7e2ac87e6adfb44137af5bc865e1708b31663e4a8c2c91bcb8ceb893ad4e4b27",
+      "perceptual_hash": "009200a40cce09c8019027214e409c807901f207e633bc47fc4ff99fe32f",
+      "first_seen": "2026-10-04",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-04",
+      "captured_at": "2026-10-15T11:47:03.296327+00:00",
+      "source_id": "benjamin-moore",
+      "item_id": "https://www.benjaminmoore.com/en-us/paint-colors/most-popular"
+    },
+    "b3118471376d24319acd966fcc44122ee9c40e8d033b83ec88a27d7b6b2f0dc6": {
+      "fingerprint": "bd9160e3c6241a7cd80137dd3ad18d8e8c0336cafc59a0e468cbbc95d0bfe594",
+      "perceptual_hash": "12471b3336c1918080e0001b1b14b656b878bc94ec0000be069d0d384000",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-09-19",
+      "captured_at": "2026-10-15T11:47:41.222397+00:00",
+      "source_id": "chase",
+      "item_id": "https://secure.chase.com/web/oao/application/card?cellCode=6MP6&cfgCode=PREAPPROVEDCONCC_REACT&flowVersion=REACT&jp_aid_a=T_88267&jp_aid_p=chasehome_3%2Ftrip1"
+    },
+    "3b9297051721ed25aaf60256baceee4f70ece65e9455b534cf355887f3c8cf13": {
+      "fingerprint": "616fd8c8e7a1134858137c21d5846312daee700f15589c70509ac7f5aa70e89e",
+      "perceptual_hash": "500710b388c791c0a460001bba07600930587092340060b6069d0d384000",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:47:43.236965+00:00",
+      "source_id": "chase",
+      "item_id": "https://www.chase.com/personal/mortgage/closing-guarantee?SourceCode=CPCG01&jp_aid_a=T_96471&jp_aid_p=chasehome_3%2Ftrip2"
+    },
+    "365a96665f8490924daa3c76dce729beed4f83bce9b4e60d461ea46a6c51c365": {
+      "fingerprint": "dfc2b3d8efe7d8bbd857120f964c59fd846561c6db2e15d56f990cba0de1c524",
+      "perceptual_hash": "4605206326c215a81028060dac12c058a6b53c0e6400023f069d0c384000",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:45.026192+00:00",
+      "source_id": "chase",
+      "item_id": "https://secure.chase.com/web/oao/application/retail?cfgCode=060001&jp_aid_a=T_92082&jp_aid_p=chasehome_3%2Ftrip3"
+    },
+    "10d977c00031eb771541a3bcb6afeb38024c775d6d78692b31b7db2caf614fab": {
+      "fingerprint": "a2ebd5a89cba558d5c9260bbccc6f0cdc0b75d3a34e6d0fd09a832d51134078e",
+      "perceptual_hash": "00000100d8024d348a78010fff9fff3ede7dbcfbf9d7b7ed6596cf2b9e9c",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:22.207173+00:00",
+      "source_id": "coca-cola",
+      "item_id": "https://www.coca-cola.com/us/en/offerings/coca-cola/football"
+    },
+    "77f38a79c96116d042c83d98975595510b80431a273f9381eaa8fa701427f169": {
+      "fingerprint": "9b7314c6d40dd96d62a025be8b1b167c903ffe9aaa2f6339dc6e822fbc26600f",
+      "perceptual_hash": "ffffff7ff6ffedffdeddbd667b6ca6fa79ede34b87b1efe7ffdf3ff4ffcb",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:25.054938+00:00",
+      "source_id": "coca-cola",
+      "item_id": "https://www.coca-cola.com/us/en/offerings/fanta/fanta-halloween"
+    },
+    "a06a833ca9748cfaed4ce4fb2a007bd8552efb2adf6b54e0bf0e0d63f6ad0e7e": {
+      "fingerprint": "bb743c3d8a39ecba0fc1a7ee009b971d2326855402d23220f1e0abdc8a227387",
+      "perceptual_hash": "b4836b059f03790e3218e6378c6e08d011ec123086e04c1993138d1f0016",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.066821+00:00",
+      "source_id": "publisher:creative-boom-rss",
+      "item_id": "https://www.creativeboom.com/work/david-smalling-turns-mattress-pearls-and-instruments-into-something-unsettling-and-uneasy/"
+    },
+    "39c28d0b414252f48ffeaedd7a7f22f355c24cce48c1d07b443e37cc8d5e41a8": {
+      "fingerprint": "8f278d9ee8951f6a0b2dcc5211e340d2f1dd6e99bf03ca4e3c7df13eb9c6ad66",
+      "perceptual_hash": "6d7409fc1b9af3b4affa3bf37b6350c279153424e8a8c027c06f86ff13fa",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.067710+00:00",
+      "source_id": "publisher:creative-boom-rss",
+      "item_id": "https://www.creativeboom.com/work/caroline-tremlett-is-bringing-the-victorian-jelly-back-one-wobble-at-a-time/"
+    },
+    "72df8d124cdf22799efeae3fce1ee568eb9e312baf085ae71b2f2bb7a09a38dc": {
+      "fingerprint": "b8c43f0db8cc6c0b88fafa991a9e07d8b9d13e8d525487ee5ed093c39861702c",
+      "perceptual_hash": "00040651b15b07372ef84ed0b9b17b134765bec97c53b0676036d0f60802",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.068580+00:00",
+      "source_id": "publisher:creative-boom-rss",
+      "item_id": "https://www.creativeboom.com/work/andre-britz-draws-landscapes-from-memory-in-a-book-held-together-with-an-elastic-band/"
+    },
+    "65b6671871f08123af14527a403a1c56a3d2d17ec8a1964847ff05bd5bff12b5": {
+      "fingerprint": "0a0e77cc9a158d06f45a09574d71d5547e17c765e956f09464051326dc5ec475",
+      "perceptual_hash": "00680002a414062b48d52ca0494c929875d9c3b7974c8e9991b3226648f2",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.069123+00:00",
+      "source_id": "publisher:creative-boom-rss",
+      "item_id": "https://www.creativeboom.com/work/how-two-simple-dots-gave-pictoplasma-a-face-after-20-years-of-neutral-design/"
+    },
+    "3daf4b78cdb0e4b627cdbd17ad0a8130daced7378058f2a2a91ab85c2297cf2a": {
+      "fingerprint": "2cc3625d02d0a649a9cd8f810646f343d94ebe6f4189f7afbcf69de12f3fa715",
+      "perceptual_hash": "f161c7f33a74827b13f267edd3c8769a0d3c1a7b603e70f87ba3168aac68",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.074455+00:00",
+      "source_id": "publisher:creative-boom-rss",
+      "item_id": "https://www.creativeboom.com/news/pregnant-then-screwed-makes-clever-use-of-simple-design-to-highlight-a-vital-gender-issue/"
+    },
+    "e485eb0c74e790666fc54bfe1531058f599b3688a2403d109e800c17ff0f0c33": {
+      "fingerprint": "2aab0e6f46b022b7ead3a64b4562c36c6ab4448d855ad9cc891e84d0fc9e527b",
+      "perceptual_hash": "f080c581a8a4c307ce1496296c3920f64064814907d20067e0ce3e203220",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.075497+00:00",
+      "source_id": "publisher:creative-boom-rss",
+      "item_id": "https://www.creativeboom.com/work/kanaisasaki-is-formed-from-in-house-designers-who-have-made-a-career-out-of-staying-curious/"
+    },
+    "86f014d670dc8052b6c8c8fe545b8e3a5591224a95dac0b0d1f1e6bec99dfb5c": {
+      "fingerprint": "3c83523245922495a5ac27de3618a5747a813739c65575007630b97fa6135201",
+      "perceptual_hash": "994dcc22643484692ed321a603440e897d13da68b4d969b2d2139b984c86",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:32.076030+00:00",
+      "source_id": "publisher:creative-boom-rss",
+      "item_id": "https://www.creativeboom.com/work/the-experience-of-seeing-the-work-is-pretty-particular-lily-bunney-on-her-detailed-paintings-filled-with-grids-and-pixels/"
+    },
+    "ac90af182bba808126fdd0c5a8c0352ac8c87d307618f4878ac04bedc9025c3b": {
+      "fingerprint": "bde73fa0ddf2262275656d36eafb6f6bc48e7101292760d00183decba4a4ea82",
+      "perceptual_hash": "51b22174424884b119e264c483c9161306a6c94b949f07360a6c008c0918",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:11.905697+00:00",
+      "source_id": "depop",
+      "item_id": "https://www.depop.com/"
+    },
+    "1bda70457a8228638803a95b5b896e366615d427939efb9a59cadc9ae4156450": {
+      "fingerprint": "5e38e4937195b4fa542fa9d09ab0db7fc2aa8280df2dee0f6a0bb66420ae0e7c",
+      "perceptual_hash": "e001cc601b4236e26d45da8b3597632ec65984b30926926d38da599cb311",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:12.447083+00:00",
+      "source_id": "depop",
+      "item_id": "https://www.depop.com/"
+    },
+    "e4b553d528eace972b19993762f2031b47e04252b5ea871101d7833a5603722b": {
+      "fingerprint": "14b5c20034b29d4bb275ef1ef8655415ee5e4fe0675f1c48ef092804d690522f",
+      "perceptual_hash": "280500013001e0237465761d939ba7162e6c5cdcbb127634e269ea2d01a3",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:47:13.179553+00:00",
+      "source_id": "depop",
+      "item_id": "https://www.depop.com/"
+    },
+    "c46414c4875da9cba5c4f23a037e1ed6db92b8bfa29040253e4b7421de8d4c6a": {
+      "fingerprint": "34fe746fc8e5411e6b9bb2ab296fb08e8810361f03a589c3214d3001fc16739f",
+      "perceptual_hash": "8f39167039a2672ccc9ee70f2a0c33825644ac8c5d98be41db3036c17f0b",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.221610+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/15/schemata-architects-linden-house/"
+    },
+    "e621deaf8452237c48cc632d8b0cddbad323466657a4e5750f76a1c7cca39e7b": {
+      "fingerprint": "2774f03d94c87aaa0ecc8eff54ab7eff514b40e6d18c2739e7fb0c8e1ede8a2f",
+      "perceptual_hash": "d550faa6dc3c94d90e3b1f723edd77b2ef64de459c87bc853a5ee8afb1be",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.222148+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/15/resonance-pavilion-tallinn-architecture-biennale/"
+    },
+    "c752332c08996c383686537896ad8d3f6720a2a898cf4e9772c2303d3c71cf1e": {
+      "fingerprint": "200c9ac34da523e84cad6945608d096b8ae0ca79130b77e3aaa8b010853ee853",
+      "perceptual_hash": "02621cd841e01fc473a1a916966e4c50ec4da5734c669b4d2e0a59dcd3da",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.222532+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/15/aimee-daniels-shaded-interview/"
+    },
+    "286f363c0e5d0ba9086a3b3a67871b397210102ccb00f8b32aad83a48b43cede": {
+      "fingerprint": "2348973a505d65fe6e983d9f6c112cb227ca53c7fcb81e9916f6591025420112",
+      "perceptual_hash": "9de93e92db86b68f6d9c9b336c663c6cdd93330f863609de13cc3fc87f90",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.222897+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/15/jonas-hejduk-blurry-low-resolution-furnishings/"
+    },
+    "25673a26e49d1e3bcffa155924805b35c3309765a20fc52b666c3b1c7dcde914": {
+      "fingerprint": "8936b72d60526f019e4a82247b6dd137fa107a55936527e2e3d8bb2c23c6d0cb",
+      "perceptual_hash": "e3f7cc55d683b327632ededc999b379a6ec87ed8fcf86ec37d31e2599b3b",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.223228+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/14/design-week-mexico-2026-creative-immersions-casa-ortega/"
+    },
+    "b5bbd2c4a2d9adfd7d430b861e41afb80ada43acda93d1e396d5c5a49d2f491e": {
+      "fingerprint": "d619eefc0913d3187fb4c7ba0ee8f4f5c7b9aa2b15a2bdbf47c09fc3ec92464c",
+      "perceptual_hash": "cca7114ee2d8cd0bb9036456d0bc9d78267154c4e88bd317e81f87389cf1",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.223627+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/14/behnaz-farahi-ocean-of-dreams-mit/"
+    },
+    "88e9bf62af03087487f33b49e9f4b33aaaacfc48f9851b37ab51815a4018b44a": {
+      "fingerprint": "53ff2f131696851d4371ac42743cdfd9cae4c6f57da9671480271a9154c8ac6e",
+      "perceptual_hash": "09a7cc7bc667e620f309c713c9a7984f309a6334c66984c70d92bb0d4222",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.223965+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/14/omar-gandhi-brodye-chappell-prince-edwards-island/"
+    },
+    "5086af4d11c6efecb8d201fbac88c8a0e5c4041261aa269acd574e0989672487": {
+      "fingerprint": "9892b10dc0de51d5476a46a59c7f88303f795f0d22cf70a84b2b372386fbc7b8",
+      "perceptual_hash": "51c8e193e667fb0cece463370f6c6c62b8d292e525a841109f5dad8c7ac2",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:30.226004+00:00",
+      "source_id": "publisher:dezeen-rss",
+      "item_id": "https://www.dezeen.com/2026/10/14/dulwich-cricket-pavilion-andy-matthews-studio-streatham-marlborough/"
+    },
+    "b93e73fe59d9718b083ff6478d6221e3b70873b68a94d0fe12b27c93a62e8cfd": {
+      "fingerprint": "f4337f76f3fd0173670f60de3a53baaf6b8bbdcca6632b340b8de416fbef966f",
+      "perceptual_hash": "cf3d8e7b196772876102b1399273267264e4cb3667f88823094820102000",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:02.459196+00:00",
+      "source_id": "disney-plus",
+      "item_id": "https://www.disneyplus.com/"
+    },
+    "4572cad63dfa8d647d47d764ea975ebe9da34faf1a79556f787f514ad9976116": {
+      "fingerprint": "bf1a0d9d5372ba9ecc44201e88867a452517fe4afaff1833357884aba58decd2",
+      "perceptual_hash": "8fd207af3b5c7e997f7f96e12df273c0c6304f1b277244e688cd0e25a314",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:03.791794+00:00",
+      "source_id": "disney-plus",
+      "item_id": "https://www.disneyplus.com/"
+    },
+    "d8f959aaf11aba1439e98bfe4b37410281446aff8ede1e7d71ab505238f2ca6c": {
+      "fingerprint": "f693ee75d50320e7e93fae1024c23e2a6b3fe7442e6d018d4e9685bc93a2b5e5",
+      "perceptual_hash": "c80006029204c40c101c8026207080a411010cfcc35984b30b6609308588",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:04.374601+00:00",
+      "source_id": "disney-plus",
+      "item_id": "https://www.disneyplus.com/commerce/billing?pref=espn_unlimited_bundle"
+    },
+    "f988d1ba3b1fae072fa4ceec3a4e847a4dcde6ea8666fef2bf00b97d3bd8b246": {
+      "fingerprint": "a612e0ab6bda430032f00fc6028d80405d50f504761bdb2b924f9f73e1ba85c5",
+      "perceptual_hash": "12601920b2416482b405680ad415682ac051a0a2416482f1026402c80260",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:13.358205+00:00",
+      "source_id": "ebay-web",
+      "item_id": "https://www.ebay.com/e/_collectibles/us-collectibles-starwars?_trkparams=5373%3A0%7C5374%3AFeatured"
+    },
+    "f22f1b6d02f38e0a4c06042aff58c4d5493c9ef6cabe7f1544110033a5cd66bd": {
+      "fingerprint": "5d07decc97c46eae5f0b0419f2c2263c3fd8e68600538c5bc9b18b6951d18ff0",
+      "perceptual_hash": "1c1007409c693ad275a46b49d6919d233a4eb48d6939d231846200d68c10",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:15.505601+00:00",
+      "source_id": "ebay-web",
+      "item_id": "https://www.ebay.com/e/_electronics/ebay-refurbished-laptops?_trkparams=5373%3A0%7C5374%3AFeatured"
+    },
+    "0c9cb9c746620f984055f6aa3f90527d16a0beaeebcbe4fdb48f8670c8e78449": {
+      "fingerprint": "8e9772d01a8b01a9897adebfafb0aa251a21dbed0224c158bf826901004ecec3",
+      "perceptual_hash": "0100000025005a8026c04d45da0b35056a4a90340068210006c6cdb59427",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:16.956237+00:00",
+      "source_id": "ebay-web",
+      "item_id": "https://www.ebay.com/itm/277426422471?_trkparms=5373%3A0%7C5374%3AFeatured"
+    },
+    "d8a35b9df562ac4310146d64b200230c6c582a9e04577273b226784f89690f5c": {
+      "fingerprint": "7c3a8225424a9cc1932f5d4b1bc3c200511492e41a86434f7f9100609e73ba8f",
+      "perceptual_hash": "00f881b741a6b806794cc0b4355a62f445e8899f130c06440c0810000000",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:14.614744+00:00",
+      "source_id": "epic-games-store",
+      "item_id": "https://store.epicgames.com/blog/epic-games-launcher-preview"
+    },
+    "87c1f2476eae6a83d2aef6cef2cd79f161d356997cc22d4958a99fae39bcf781": {
+      "fingerprint": "4a5f442a58df6c4eaf7e67b1cf20ef32ca138143b6c21c94231db8722cf0dfc4",
+      "perceptual_hash": "ce03dc16f8a8f215e42b6852d0ada11902ba25a40bcc37d86cf0dbe1b741",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:15.358489+00:00",
+      "source_id": "epic-games-store",
+      "item_id": "https://store.epicgames.com/blog/phantom-blade-zero-interview-hands-on-soulslike"
+    },
+    "49b5b29ca2be438fb9b1d8331fb175127ec65cb80dc180019f5bc5a575fcd52d": {
+      "fingerprint": "5564419857b8f04c37ddaaadac898eba4acde86c5ed14f06096d2654c0e1c215",
+      "perceptual_hash": "21b42d62594d9c91b38b64f7d9c73e9239ac7128c256886633c74e72d970",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:40.270392+00:00",
+      "source_id": "glossier",
+      "item_id": "https://www.glossier.com/pages/holiday-gift-guide"
+    },
+    "ea164973f86191e728784be60dbd01930070d32d32b2970801e9ff119815928c": {
+      "fingerprint": "c990e9ff7b7183e2c06316c2b8e726028634f96a5f0c23170ed0a28e4edcbb7c",
+      "perceptual_hash": "32656e8edc15ba2b7672dcedf1d9e3b3666fccdd99b3337666e0cdf9b831",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:43.430890+00:00",
+      "source_id": "glossier",
+      "item_id": "https://www.glossier.com/"
+    },
+    "cc89fb0c39b405e2ef36116e4c453caeab09b822a89f9d7ce4c00e54e462d1be": {
+      "fingerprint": "766d047ab42cda3cf83a03f56e2cb4eb2acc54cca7923d664bdab93ef57bc4ef",
+      "perceptual_hash": "37046e08dc9278d4f1a9e653c4a79c47328e411cc039806299c566590208",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:44.898984+00:00",
+      "source_id": "glossier",
+      "item_id": "https://www.glossier.com/"
+    },
+    "4ea9085c491477eb877e32b131e6507d328f12c77d4569ca5cbd47a7a4e5906d": {
+      "fingerprint": "5b352beb50918a32118ab53529c577be375b8b574c56cd02f425b6355eed5fad",
+      "perceptual_hash": "6703d604035825b04b2086c10c824a0424096812982230456096c1288250",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:46:49.379232+00:00",
+      "source_id": "ikea",
+      "item_id": "https://www.ikea.com/us/en/new/"
+    },
+    "3f8dd16b27d6e035569a65b17c8a0bccc924da92a82e1af5efb8f4556a8e193d": {
+      "fingerprint": "fd5c4859e912ea735ba7073989d50309c8303f4445368be4593b53a498cd7683",
+      "perceptual_hash": "d800e6c9c675928141422a54d624abc992958269445a2db4a3288e58ed6d",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:46:50.438893+00:00",
+      "source_id": "ikea",
+      "item_id": "https://www.ikea.com/us/en/new/"
+    },
+    "d3ad88407131fbfca6fcbcfd184db0422c081e0ca80affcfc9ba125e3db954fb": {
+      "fingerprint": "8c44a39b1e2ebd4f1b8ed259bcbf5b8047ff7d4c37892f674a765383de853045",
+      "perceptual_hash": "99432003a59f5b3eb26c6dd2d934b26924ce5134ad26c9559361a52310c0",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:46:51.387160+00:00",
+      "source_id": "ikea",
+      "item_id": "https://www.ikea.com/us/en/new/"
+    },
+    "a60ecadfd7a3baa97bf386d4aa4aad32529464f989dca2489587c647aa232108": {
+      "fingerprint": "1133a36e80d26d1c92077233ac16f17891f46c79a4d7ea3ee69c654a158e0b9a",
+      "perceptual_hash": "643874f0e56423cc458b230e1f126683a7a666728db4bf20df43372d4b98",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:32.617086+00:00",
+      "source_id": "marriott",
+      "item_id": "https://news.marriott.com/news/2026/10/12/city-express-by-marriott-debuts-in-india-with-the-opening-of-city-express-by-marriott-udaipur-nathdwara-highway"
+    },
+    "0fc421d7d90edb3bc9837f362e8aca5c1db932d8f7ec46b9edd0cd38bf908b64": {
+      "fingerprint": "28bb4a76ef6c532f486f81331a40eae49d278d4156148eca19d56a0bc57ad363",
+      "perceptual_hash": "236392c539cd1b12a624dc5930b325666a55408a69d8d391a6c34d04980d",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:33.530683+00:00",
+      "source_id": "marriott",
+      "item_id": "https://news.marriott.com/stories/2026/10/vintage-finds-new-friends-inside-moxys-new-anywear-club"
+    },
+    "0515ac22115a5a9b35f2b4acd55122041398adcece8b0441a56d88c74f7d48cd": {
+      "fingerprint": "15ba4f64820729eed796d5066a5ef1575d97e7a7a3747d778d67a3ffc4d7e98b",
+      "perceptual_hash": "0a0291c067685e50bca9cb599cb309623a4465d0523196b5233b46f6e212",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-09-19",
+      "captured_at": "2026-10-15T11:47:34.428237+00:00",
+      "source_id": "marriott",
+      "item_id": "https://news.marriott.com/"
+    },
+    "55a44601c2747bbe4605867a877b03c78ffaac6b54793daecef385a72ed98387": {
+      "fingerprint": "683e9b86166b9356d0468ea94fd844f813650dfd008224b28897589c06c439db",
+      "perceptual_hash": "78020004e801d231a46700ced989b3d2286088c999832336666ccc9980c0",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-09-19",
+      "captured_at": "2026-10-15T11:46:59.157680+00:00",
+      "source_id": "max",
+      "item_id": "https://press.wbd.com/us/brands/hbo-max"
+    },
+    "df627c07eda46dd53b43899b580b578bc5e2f80c46e6628ae8a82ba8f061509e": {
+      "fingerprint": "6a91fadc9e1b79b4ca0ae2533af33cb1cd3bf23b9c55ee427222bd82aa145dd3",
+      "perceptual_hash": "350260840c018b731674e4ccd98933c7624adc9d991a3236624cccd980c0",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-09-19",
+      "captured_at": "2026-10-15T11:47:00.420268+00:00",
+      "source_id": "max",
+      "item_id": "https://press.wbd.com/us/brands/hbo-max"
+    },
+    "6e3927bb712d397e76f0c45fd18412c5f8bf0d87a4141e10be20575ebb41ac4c": {
+      "fingerprint": "20faae254fde9ef35f6716c6cfe27de4cd48909357aa256481b091800d9ee6d2",
+      "perceptual_hash": "9333369a733c60e2c1c714fc13f31de337c2258ce6c70dcc3e3cec063a20",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:01.692044+00:00",
+      "source_id": "max",
+      "item_id": "https://press.wbd.com/us/brands/hbo-max"
+    },
+    "afded20dd768c3e19eb2dd1ce57ff58993e798be4dce039ebe44dcbe8f0b977c": {
+      "fingerprint": "0bbee9b4bbb1c7f1b10ff379ad3767596caa384f57637691a162e771483a9d36",
+      "perceptual_hash": "f7085820bc41d91fc45e499a22328cc9298422b0c492863290b4845eb44e",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:46:34.866844+00:00",
+      "source_id": "microsoft-surface",
+      "item_id": "https://www.microsoft.com/en-us/surface"
+    },
+    "63502b19f593147d942ac4a4b0152083695551343237c6a770c93574e6edb58e": {
+      "fingerprint": "254a6d05080e8a17a0acd459bb7ffd9ec0ea6474d8147a3d0c5ea878f016d575",
+      "perceptual_hash": "0000003000c041820b5f16af0c3e207cc9f983f307e68fcd1f9a3f307e60",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-09-19",
+      "captured_at": "2026-10-15T11:46:37.209165+00:00",
+      "source_id": "microsoft-surface",
+      "item_id": "https://www.microsoft.com/en-us/surface"
+    },
+    "316d02986f88d9db8db2f7fda97d9b207437707672d153e9d20e9bbf7356db18": {
+      "fingerprint": "190bc0231e6301bd56d77a59d8a4e1bf550338474715be9410b21cac87e1fb3b",
+      "perceptual_hash": "4846cc4fc447c40fc60fe207e043f0e1f9987f583fa61f619ec0f7926700",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:46:39.548148+00:00",
+      "source_id": "microsoft-surface",
+      "item_id": "https://www.microsoft.com/en-us/surface"
+    },
+    "7acaae6e113783789133b40974ce5495ea90627eb15ff7b550fb168c4fce412b": {
+      "fingerprint": "b7dff52f5c8aacfec287d032b5cf4d14efac97ffb799377c36885e4e63ead1c5",
+      "perceptual_hash": "00000000000412449974cd2d92b935485b0cb24690028000001801c80380",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:48.208134+00:00",
+      "source_id": "moma-exhibitions",
+      "item_id": "https://www.moma.org/calendar/exhibitions/5935"
+    },
+    "adfb67d5ac1ab4dd4b4cd0c5c81e8af300baf44be400653b4b93f478eb61eee7": {
+      "fingerprint": "0629dd84a4ebd2eaabce9d62150180bc9596710bdb139cb4ccf7dc79ce1d4bea",
+      "perceptual_hash": "d800400249218b26924df07ec05dcbfd30de63bcc734a6fc29f05ae177e1",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:46:39.855479+00:00",
+      "source_id": "nike",
+      "item_id": "https://www.nike.com/w/mens-nfl-9bklcznik1"
+    },
+    "6480c9b90f6e0ade68eac0e5251bd96a1d4abfe07518b00d9993d3a34259ca0d": {
+      "fingerprint": "796934c805755a41876d05643b111adec8f8379fb2cde8c6994fd6323e3256e6",
+      "perceptual_hash": "4cc00cf0586c38d8e52dc95bc8378ced16db25b48b6916d2bd845b009080",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:46:42.032054+00:00",
+      "source_id": "nike",
+      "item_id": "https://www.nike.com/w/womens-nfl-5e1x6z9bklc"
+    },
+    "9580544faf65ffc8e4a615bf8a4242760743e6b90ecbc24bb2ede38391c8edad": {
+      "fingerprint": "59df403e62ef8bdc52e725a864d0e281f17fad968cad0e56cec68fb53086c707",
+      "perceptual_hash": "a50b3992527208ac8f3d367a74748c26982ed0bda1bf634e86cd9b5326c9",
+      "first_seen": "2026-10-11",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:46:43.407871+00:00",
+      "source_id": "nike",
+      "item_id": "https://www.nike.com/w/football-lifestyle-7n4yn"
+    },
+    "3470ad94a7e8033b38c65788a733c0558a4bc813a1fc79377461bbb5541a72f9": {
+      "fingerprint": "7e0eb350faf63f7a9294b3d8fa888ac1802dc4e6cdf3a48faea81240505b04a4",
+      "perceptual_hash": "3400366c6dd95bb1b3626cc9b1924b3d2626acac99d931b66460c9918003",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:11.356782+00:00",
+      "source_id": "nintendo",
+      "item_id": "https://www.nintendo.com/us/"
+    },
+    "2d4e7de1b77df2b99a73441999f79549ae9a221e650f0adf63ed6480037066ea": {
+      "fingerprint": "e284e1d4477ca3a92fa624a012a663df70be82fce1454074cacd83448dccbdcc",
+      "perceptual_hash": "d08da91b02b5216b46d29d831b30363c8c3cb411e2acb461203800740201",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:13.071008+00:00",
+      "source_id": "nintendo",
+      "item_id": "https://www.nintendo.com/us/"
+    },
+    "a5cc5612e2ef6b65b305fc2c7470b6ea78b9cab2549f9f652a4568d9f69e4906": {
+      "fingerprint": "5469e37fe4911a5091b3ae0d30ed8e9d302ab724333ba3eae840db69603bed90",
+      "perceptual_hash": "8008008308f6846d49d89d80234616b46d69da5330636c02cc8d8d1b3e4e",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:14.985317+00:00",
+      "source_id": "nintendo",
+      "item_id": "https://www.nintendo.com/us/"
+    },
+    "1c233fa5d7454824a28714d5d291057f4110e554d451b4bf6ad6304323f49a65": {
+      "fingerprint": "59c625dcd1996ee26e3ce053d17f8f110fb4aedfa34959f1ed5c70ec1ca4a40c",
+      "perceptual_hash": "9efccdf85164c2c1cd8309c317166c0c987d3a4e279e6f5dcaedb5fb2fb6",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:02.847203+00:00",
+      "source_id": "playstation",
+      "item_id": "https://blog.playstation.com/2026/10/14/playstation-plus-game-catalog-for-october-mafia-the-old-country-horizon-forbidden-west-mycopunk-and-more/?smcid=pdc%3Aus-en%3Aweb-pdc-home"
+    },
+    "5d404933219c495a4c01c652344bf3b5c70f269da2df2b29a432f05c57499519": {
+      "fingerprint": "6aaca99266755c4bee56d207492483302ee3075fc3dcffc971366aea28966ed1",
+      "perceptual_hash": "0000010808b82df114e643c076087c66370d641ad40e5839c873840a1a13",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-09-19",
+      "captured_at": "2026-10-15T11:47:44.167903+00:00",
+      "source_id": "rivian",
+      "item_id": "https://rivian.com/"
+    },
+    "420762cebfe97d242965673481b788c8476b73ca1cfee23b2e7d95e13c4914ed": {
+      "fingerprint": "0dfd5a982bde6002660d7a921e0e9c953feed8c328acad76e2996ee350a62cbc",
+      "perceptual_hash": "a12c38a32e8fd26cf999b7331be658c4c990728306190c33b4d4bd985fb0",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:45.608884+00:00",
+      "source_id": "rivian",
+      "item_id": "https://rivian.com/experience/charging"
+    },
+    "03b20353cbbcf1f21b2ee7ad71179ead77408321b0e0fe0d2984fb20077c64c3": {
+      "fingerprint": "cdf7ee8ebff9f73222dd1e895536f8dce208d16fa9430f674f5785e5e21e268f",
+      "perceptual_hash": "bfe07ec0ff85ff03fc13f831e863e13fc39f833f01fe0dfe1ffc3fd87db1",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-11",
+      "captured_at": "2026-10-15T11:47:46.791746+00:00",
+      "source_id": "rivian",
+      "item_id": "https://rivian.com/"
+    },
+    "6c2a184372a459d297f609f6f61a47085fcd88526faeaed3474cffea8f1652e3": {
+      "fingerprint": "0c305f4bd8537998185c566e1370b9a89d033416958bc550fad0e4bdf8f9f506",
+      "perceptual_hash": "00400304093023204f289c652926135e66acb1a93490b0c16613b01f0099",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:40.688988+00:00",
+      "source_id": "samsung",
+      "item_id": "https://www.samsung.com/us/offer/samsung-week/"
+    },
+    "5895add6e81f6882636bb1eab8ee314425b4092044dc813ded29615f84b94910": {
+      "fingerprint": "903a0688d7b594152102566a8a0657d8fab113285a3ab14d1fa771dbb590f6a2",
+      "perceptual_hash": "000001201c9146c88daf235c0f2c9b6932745ce83c48f617c03b464d3334",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:57.267855+00:00",
+      "source_id": "samsung",
+      "item_id": "https://www.samsung.com/us/"
+    },
+    "461e9c9bb723b7e69d58b4f684cd6b700bf6b711eb28e686467f8a6e68ed4695": {
+      "fingerprint": "cafd28954f31774cb81468b52584a9ed6af11a711c167bfec03831c44cb5dc43",
+      "perceptual_hash": "0000000000000000000000000000000000000000004446331399a0a35245",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:59.358031+00:00",
+      "source_id": "samsung",
+      "item_id": "https://www.samsung.com/us/smartphones/galaxy-s26-ultra/buy/"
+    },
+    "4f0f77fa3654b5d6b93cfc208fa8c5790e66d76361d7d64e34c44346774ff7ad": {
+      "fingerprint": "1863603997d91e26143a9d8459ea1a971aa5dcde5b1966358fe2d4d9705fb63d",
+      "perceptual_hash": "931dac921b6612a954972930b4c32c9b1d2c8597b0206000000000000000",
+      "first_seen": "2026-09-19",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:46:51.678854+00:00",
+      "source_id": "spotify",
+      "item_id": "https://open.spotify.com/"
+    },
+    "df0b61f5b0d80f8b2caefa36554bd549df85333d8bf02fd6aafa63a2720ba9ec": {
+      "fingerprint": "a5c21be64e1fab548af20e31fb9c015e1f758d59f100c90a3f56ff8293e3a4e4",
+      "perceptual_hash": "009e0ce07388e6819910bc007893f121e623dc4fbc0f083c0133c3886930",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:47:21.344498+00:00",
+      "source_id": "starbucks",
+      "item_id": "https://www.starbucks.com/menu/product/27616/iced"
+    },
+    "0ce3491da7fda4fed6a23ede2b984392e4953dfa0331670df88f66666d564178": {
+      "fingerprint": "12beba6623d77be974fb119df4149f83cc80a0d8abed228ceb22d4214baa782c",
+      "perceptual_hash": "3984e20f2074c047583c33f87540f341e5238006780c3f186e7f78f7cf97",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:47:23.158019+00:00",
+      "source_id": "starbucks",
+      "item_id": "https://www.starbucks.com/menu/product/40883/iced"
+    },
+    "b39318e6e1641513034edd1f295c1f90738a959fe2b802757af2548e5b63c5e5": {
+      "fingerprint": "d9e48b704fb64394d492047cf4d704aeb68207c28cdb4e0e32b818e901d57d03",
+      "perceptual_hash": "000200000100840014066409840620bc10d82130436084c19c83fd0dfce0",
+      "first_seen": "2026-10-03",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-03",
+      "captured_at": "2026-10-15T11:47:24.200567+00:00",
+      "source_id": "starbucks",
+      "item_id": "https://www.starbucks.com/menu/product/418/hot"
+    },
+    "e9b27862ce1acc86db110e1067c4030b999e7095dae4cc5ab22fa768408fac61": {
+      "fingerprint": "c83063671c99e64fcc49e2fe0969b15c715652fe33a63a4a4c12c425522fe932",
+      "perceptual_hash": "64c0ed83cb06b40d668cd926e155589aa1bcb36b06b20cd81d382a50a4e5",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:10.717786+00:00",
+      "source_id": "xbox",
+      "item_id": "https://news.xbox.com/en-us/2026/10/14/castlevania-belmonts-curse-legacy/"
+    },
+    "01b554bb4cad9db75e332bd9a6783de322437e3006ba87fe69400ec00409546a": {
+      "fingerprint": "8b4a46a1631ba7c28084c271372177072215f29c7f09f47e5df8dd7c9ebac9cc",
+      "perceptual_hash": "7cc0ffb1fc0bf817f02fe85a1cbe397862d0c4d7cbe09781ad065dc19bc5",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:11.630505+00:00",
+      "source_id": "xbox",
+      "item_id": "https://www.ign.com/articles/id-xbox-showcase-october-2026-how-to-watch"
+    },
+    "7e671ec4ef0c7563ef7678b340791bd7b311f2a4691652c03fda5be3b614077f": {
+      "fingerprint": "0bfd5d2a91bbf2cede3c762e4016adb1fd87b73c787c0292a08f51f1d33a295b",
+      "perceptual_hash": "7b98b459b8d631b9c7759a2d0feacbd48f414dc31b07362e00de0d5ebb75",
+      "first_seen": "2026-10-15",
+      "last_seen": "2026-10-15",
+      "last_changed": "2026-10-15",
+      "captured_at": "2026-10-15T11:47:12.038848+00:00",
+      "source_id": "xbox",
+      "item_id": "https://news.xbox.com/en-us/2026/10/13/valor-mortis-tips-and-tricks-to-survive-the-crimson-plague/"
+    }
+  }
+}
