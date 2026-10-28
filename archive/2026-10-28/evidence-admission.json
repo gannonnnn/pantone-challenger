@@ -1,0 +1,1391 @@
+{
+  "schema_version": 2,
+  "date": "2026-10-28",
+  "temporal_counts": {
+    "baseline_only_unchanged": 24,
+    "eligible_current": 15,
+    "eligible_changed_today": 12,
+    "calibration_only_undated": 15,
+    "eligible_observed_attention": 2,
+    "context_only_undated": 12,
+    "context_only_historical": 6,
+    "context_only_stale": 9,
+    "baseline_only_stale": 3
+  },
+  "baseline_regions": 71,
+  "current_regions": 29,
+  "decisions": [
+    {
+      "source_id": "adobe",
+      "region_id": "adobe-f02-r01",
+      "registry_source_id": "adobe",
+      "signal_stage": "distribution",
+      "source_url": "https://blog.adobe.com/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "airbnb",
+      "region_id": "airbnb-f02-r01",
+      "registry_source_id": "airbnb",
+      "signal_stage": "distribution",
+      "source_url": "https://news.airbnb.com/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "airbnb",
+      "region_id": "airbnb-f02-r02",
+      "registry_source_id": "airbnb",
+      "signal_stage": "distribution",
+      "source_url": "https://news.airbnb.com/every-home-booked-on-airbnb-helps-house-people-in-crisis",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "airbnb",
+      "region_id": "airbnb-f02-r03",
+      "registry_source_id": "airbnb",
+      "signal_stage": "distribution",
+      "source_url": "https://news.airbnb.com/cracking-down-on-parties-this-halloween-weekend",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "apple",
+      "region_id": "apple-f01-r01",
+      "registry_source_id": "apple",
+      "signal_stage": "distribution",
+      "source_url": "https://www.apple.com/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 2,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "apple",
+      "region_id": "apple-f01-r02",
+      "registry_source_id": "apple",
+      "signal_stage": "distribution",
+      "source_url": "https://www.apple.com/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 1,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "apple",
+      "region_id": "apple-f01-r03",
+      "registry_source_id": "apple",
+      "signal_stage": "distribution",
+      "source_url": "https://www.apple.com/",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 1,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "apple-music-charts",
+      "region_id": "apple-music-charts-f01-r01",
+      "registry_source_id": "apple-music-charts",
+      "signal_stage": "attention",
+      "source_url": "https://music.apple.com/us/new/top-charts",
+      "temporal_status": "eligible_observed_attention",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 4,
+      "reasons": [
+        "Ranked chart appearance was recorded with item links and ranks at capture time. This is not a release date or proof of increasing attention."
+      ]
+    },
+    {
+      "source_id": "apple-music-charts",
+      "region_id": "apple-music-charts-f01-r02",
+      "registry_source_id": "apple-music-charts",
+      "signal_stage": "attention",
+      "source_url": "https://music.apple.com/us/new/top-charts",
+      "temporal_status": "eligible_observed_attention",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Ranked chart appearance was recorded with item links and ranks at capture time. This is not a release date or proof of increasing attention."
+      ]
+    },
+    {
+      "source_id": "apple-music-charts",
+      "region_id": "apple-music-charts-f01-r03",
+      "registry_source_id": "apple-music-charts",
+      "signal_stage": "attention",
+      "source_url": "https://music.apple.com/us/new/top-charts",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "arena-explore",
+      "region_id": "arena-explore-f01-r01",
+      "registry_source_id": "arena-explore",
+      "signal_stage": "attention",
+      "source_url": "https://www.are.na/block/39697976",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "arena-explore",
+      "region_id": "arena-explore-f01-r02",
+      "registry_source_id": "arena-explore",
+      "signal_stage": "attention",
+      "source_url": "https://www.are.na/block/39807453",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 1,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "benjamin-moore",
+      "region_id": "benjamin-moore-f02-r01",
+      "registry_source_id": "benjamin-moore",
+      "signal_stage": "distribution",
+      "source_url": "https://www.benjaminmoore.com/en-us/color-overview/color-palettes",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "benjamin-moore",
+      "region_id": "benjamin-moore-f02-r02",
+      "registry_source_id": "benjamin-moore",
+      "signal_stage": "distribution",
+      "source_url": "https://www.benjaminmoore.com/en-us/paint-colors/color-of-the-year-2027",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "benjamin-moore",
+      "region_id": "benjamin-moore-f02-r03",
+      "registry_source_id": "benjamin-moore",
+      "signal_stage": "distribution",
+      "source_url": "https://www.benjaminmoore.com/en-us/paint-colors/most-popular",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "chase",
+      "region_id": "chase-f02-r01",
+      "registry_source_id": "chase",
+      "signal_stage": "distribution",
+      "source_url": "https://secure.chase.com/web/oao/application/card?cfgCode=PREAPPROVEDCONCC_REACT&flowVersion=REACT&cellCode=6MP6&jp_aid_a=T_88267&jp_aid_p=chasehome_3/trip1#/origination/preapproved/index/index",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 3,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "chase",
+      "region_id": "chase-f02-r02",
+      "registry_source_id": "chase",
+      "signal_stage": "distribution",
+      "source_url": "https://secure.chase.com/web/auth/shared?jp_aid_a=T_92081&jp_aid_p=chasehome_3/trip2#/auto/prequalify/?offercode=OMPREQL000",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 3,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "chase",
+      "region_id": "chase-f02-r03",
+      "registry_source_id": "chase",
+      "signal_stage": "distribution",
+      "source_url": "https://account.chase.com/consumer/banking/secure-banking-offer?jp_aid_a=T_99087&jp_aid_p=chasehome_3/trip3",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 3,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "publisher:cleveland-open-access",
+      "region_id": "cleveland-open-access-item-001",
+      "registry_source_id": "cleveland-open-access",
+      "signal_stage": "attention",
+      "source_url": "https://clevelandart.org/art/1972.117",
+      "temporal_status": "context_only_historical",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Historical or catalog material has no current dated resurfacing event."
+      ]
+    },
+    {
+      "source_id": "publisher:cleveland-open-access",
+      "region_id": "cleveland-open-access-item-002",
+      "registry_source_id": "cleveland-open-access",
+      "signal_stage": "attention",
+      "source_url": "https://clevelandart.org/art/1978.63",
+      "temporal_status": "context_only_historical",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Historical or catalog material has no current dated resurfacing event."
+      ]
+    },
+    {
+      "source_id": "publisher:cleveland-open-access",
+      "region_id": "cleveland-open-access-item-003",
+      "registry_source_id": "cleveland-open-access",
+      "signal_stage": "attention",
+      "source_url": "https://clevelandart.org/art/2017.208",
+      "temporal_status": "context_only_historical",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Historical or catalog material has no current dated resurfacing event."
+      ]
+    },
+    {
+      "source_id": "publisher:cleveland-open-access",
+      "region_id": "cleveland-open-access-item-004",
+      "registry_source_id": "cleveland-open-access",
+      "signal_stage": "attention",
+      "source_url": "https://clevelandart.org/art/1916.660",
+      "temporal_status": "context_only_historical",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Historical or catalog material has no current dated resurfacing event."
+      ]
+    },
+    {
+      "source_id": "publisher:cleveland-open-access",
+      "region_id": "cleveland-open-access-item-005",
+      "registry_source_id": "cleveland-open-access",
+      "signal_stage": "attention",
+      "source_url": "https://clevelandart.org/art/1990.160",
+      "temporal_status": "context_only_historical",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 3,
+      "reasons": [
+        "Historical or catalog material has no current dated resurfacing event."
+      ]
+    },
+    {
+      "source_id": "publisher:cleveland-open-access",
+      "region_id": "cleveland-open-access-item-006",
+      "registry_source_id": "cleveland-open-access",
+      "signal_stage": "attention",
+      "source_url": "https://clevelandart.org/art/1963.91",
+      "temporal_status": "context_only_historical",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Historical or catalog material has no current dated resurfacing event."
+      ]
+    },
+    {
+      "source_id": "coca-cola",
+      "region_id": "coca-cola-f01-r01",
+      "registry_source_id": "coca-cola",
+      "signal_stage": "distribution",
+      "source_url": "https://www.coca-cola.com/us/en/offerings/coca-cola/football",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "coca-cola",
+      "region_id": "coca-cola-f01-r02",
+      "registry_source_id": "coca-cola",
+      "signal_stage": "distribution",
+      "source_url": "https://www.coca-cola.com/us/en/offerings/fanta/fanta-halloween",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "depop",
+      "region_id": "depop-f01-r01",
+      "registry_source_id": "depop",
+      "signal_stage": "distribution",
+      "source_url": "https://www.depop.com/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 3,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "depop",
+      "region_id": "depop-f01-r02",
+      "registry_source_id": "depop",
+      "signal_stage": "distribution",
+      "source_url": "https://www.depop.com/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "depop",
+      "region_id": "depop-f01-r03",
+      "registry_source_id": "depop",
+      "signal_stage": "distribution",
+      "source_url": "https://www.depop.com/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-001",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/28/pagepark-allardice-centre/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-002",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/28/dezeen-awards-public-vote-winner-design-2026/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-003",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/28/ryue-nishizawa-viewpoint-setouchi-art-industry/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-004",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/28/ma-yansong-interview-lucas-museum/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-005",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/28/concept-cars-stellantis-paris-motor-show-design-video/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-006",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/27/protean-practice-manual-photo-lab-chinatown/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-007",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/27/aston-martin-first-residence-s3-architecture-new-york/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "publisher:dezeen-rss",
+      "region_id": "dezeen-rss-item-008",
+      "registry_source_id": "dezeen-rss",
+      "signal_stage": "distribution",
+      "source_url": "https://www.dezeen.com/2026/10/27/buro-ziyu-zhuang-zi-museum-cluster-xianning/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "disney-plus",
+      "region_id": "disney-plus-f01-r01",
+      "registry_source_id": "disney-plus",
+      "signal_stage": "distribution",
+      "source_url": "https://www.disneyplus.com/",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "disney-plus",
+      "region_id": "disney-plus-f01-r02",
+      "registry_source_id": "disney-plus",
+      "signal_stage": "distribution",
+      "source_url": "https://www.disneyplus.com/commerce/billing?pref=espn_unlimited_bundle",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "disney-plus",
+      "region_id": "disney-plus-f01-r03",
+      "registry_source_id": "disney-plus",
+      "signal_stage": "distribution",
+      "source_url": "https://www.disneyplus.com/",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "droga5",
+      "region_id": "droga5-f01-r01",
+      "registry_source_id": "droga5",
+      "signal_stage": "creation",
+      "source_url": "https://droga5.com/work/15088",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 0,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "droga5",
+      "region_id": "droga5-f01-r02",
+      "registry_source_id": "droga5",
+      "signal_stage": "creation",
+      "source_url": "https://droga5.com/work/coors-light-coors-light",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 1,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "ebay-web",
+      "region_id": "ebay-web-f01-r01",
+      "registry_source_id": "ebay-web",
+      "signal_stage": "distribution",
+      "source_url": "https://www.ebay.com/e/_collectibles/us-collectibles-hottesttoys?_trkparams=5373%3A0%7C5374%3AFeatured",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "ebay-web",
+      "region_id": "ebay-web-f01-r02",
+      "registry_source_id": "ebay-web",
+      "signal_stage": "distribution",
+      "source_url": "https://www.ebay.com/itm/158069778974?_trkparms=5373%3A0%7C5374%3AFeatured",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 2,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "epic-games-store",
+      "region_id": "epic-games-store-f02-r01",
+      "registry_source_id": "epic-games-store",
+      "signal_stage": "distribution",
+      "source_url": "https://store.epicgames.com/blog/epic-games-store-halloween-sale-buyers-guide-2026",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "epic-games-store",
+      "region_id": "epic-games-store-f02-r02",
+      "registry_source_id": "epic-games-store",
+      "signal_stage": "distribution",
+      "source_url": "https://store.epicgames.com/blog/10-horror-movies-and-the-games-to-play-if-you-loved-them",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 2,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "glossier",
+      "region_id": "glossier-f02-r01",
+      "registry_source_id": "glossier",
+      "signal_stage": "distribution",
+      "source_url": "https://www.glossier.com/products/glossier-holiday-you-duo",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "glossier",
+      "region_id": "glossier-f02-r02",
+      "registry_source_id": "glossier",
+      "signal_stage": "distribution",
+      "source_url": "https://www.glossier.com/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "glossier",
+      "region_id": "glossier-f02-r03",
+      "registry_source_id": "glossier",
+      "signal_stage": "distribution",
+      "source_url": "https://www.glossier.com/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "ikea",
+      "region_id": "ikea-f01-r01",
+      "registry_source_id": "ikea",
+      "signal_stage": "distribution",
+      "source_url": "https://www.ikea.com/us/en/new/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "ikea",
+      "region_id": "ikea-f01-r02",
+      "registry_source_id": "ikea",
+      "signal_stage": "distribution",
+      "source_url": "https://www.ikea.com/us/en/new/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "ikea",
+      "region_id": "ikea-f01-r03",
+      "registry_source_id": "ikea",
+      "signal_stage": "distribution",
+      "source_url": "https://www.ikea.com/us/en/new/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-001",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/new-music-single/1528817760?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Dated evidence is 2213 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-002",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/new-music-single/1836971421?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 2,
+      "reasons": [
+        "Dated evidence is 406 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-003",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/recomposed-by-max-richter-vivaldi-the-four-seasons/1440744386?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 3,
+      "reasons": [
+        "Dated evidence is 4683 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-004",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/from-sleep/1440771769?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Dated evidence is 4072 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-005",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/new-music/1206583441?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Dated evidence is 3526 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-006",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/in-a-time-lapse/1440772612?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Dated evidence is 5048 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-007",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/divenire/1452504769?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Dated evidence is 7240 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "publisher:itunes-new-music",
+      "region_id": "itunes-new-music-item-008",
+      "registry_source_id": "itunes-new-music",
+      "signal_stage": "distribution",
+      "source_url": "https://music.apple.com/us/album/una-mattina/1440762051?uo=4",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Dated evidence is 8336 days old; the allowed current window is 2 days."
+      ]
+    },
+    {
+      "source_id": "london-design-festival",
+      "region_id": "london-design-festival-f02-r01",
+      "registry_source_id": "london-design-festival",
+      "signal_stage": "distribution",
+      "source_url": "https://londondesignfestival.com/programme?tab=map",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "london-design-festival",
+      "region_id": "london-design-festival-f02-r02",
+      "registry_source_id": "london-design-festival",
+      "signal_stage": "distribution",
+      "source_url": "https://londondesignfestival.com/stories/a-first-look-at-ldf26",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "london-design-festival",
+      "region_id": "london-design-festival-f02-r03",
+      "registry_source_id": "london-design-festival",
+      "signal_stage": "distribution",
+      "source_url": "https://londondesignfestival.com/gdf-london",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 2,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "marriott",
+      "region_id": "marriott-f02-r01",
+      "registry_source_id": "marriott",
+      "signal_stage": "distribution",
+      "source_url": "https://news.marriott.com/news/2026/10/27/edition-expands-its-global-footprint-with-a-landmark-debut-in-cape-town",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "marriott",
+      "region_id": "marriott-f02-r02",
+      "registry_source_id": "marriott",
+      "signal_stage": "distribution",
+      "source_url": "https://news.marriott.com/stories/2026/10/vintage-finds-new-friends-inside-moxys-new-anywear-club",
+      "temporal_status": "baseline_only_stale",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Benchmark creative is 23 days old and can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "marriott",
+      "region_id": "marriott-f02-r03",
+      "registry_source_id": "marriott",
+      "signal_stage": "distribution",
+      "source_url": "https://news.marriott.com/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "max",
+      "region_id": "max-f02-r01",
+      "registry_source_id": "max",
+      "signal_stage": "distribution",
+      "source_url": "https://press.wbd.com/us/brands/hbo-max",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 2,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "max",
+      "region_id": "max-f02-r02",
+      "registry_source_id": "max",
+      "signal_stage": "distribution",
+      "source_url": "https://press.wbd.com/us/brands/hbo-max",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "max",
+      "region_id": "max-f02-r03",
+      "registry_source_id": "max",
+      "signal_stage": "distribution",
+      "source_url": "https://press.wbd.com/us/brands/hbo-max",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "microsoft-surface",
+      "region_id": "microsoft-surface-f01-r01",
+      "registry_source_id": "microsoft-surface",
+      "signal_stage": "distribution",
+      "source_url": "https://www.microsoft.com/en-us/surface",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "microsoft-surface",
+      "region_id": "microsoft-surface-f01-r02",
+      "registry_source_id": "microsoft-surface",
+      "signal_stage": "distribution",
+      "source_url": "https://www.microsoft.com/en-us/surface",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "microsoft-surface",
+      "region_id": "microsoft-surface-f01-r03",
+      "registry_source_id": "microsoft-surface",
+      "signal_stage": "distribution",
+      "source_url": "https://www.microsoft.com/en-us/surface",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "nike",
+      "region_id": "nike-f01-r01",
+      "registry_source_id": "nike",
+      "signal_stage": "distribution",
+      "source_url": "https://www.nike.com/t/milwaukee-brewers-2026-world-series-participant-mens-nike-mlb-replica-jersey-DJUjKHHJ/RP260IM4MZW-FFV",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 1,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "nike",
+      "region_id": "nike-f01-r02",
+      "registry_source_id": "nike",
+      "signal_stage": "distribution",
+      "source_url": "https://www.nike.com/t/christian-yelich-milwaukee-brewers-city-connect-mens-nike-mlb-stadium-jersey-VrpK2cLP/RE260H3FMZ9-L9W",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 3,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "nike",
+      "region_id": "nike-f01-r03",
+      "registry_source_id": "nike",
+      "signal_stage": "distribution",
+      "source_url": "https://www.nike.com/t/milwaukee-brewers-2026-world-series-participant-authentic-collection-mens-nike-dri-fit-mlb-t-shirt-fEawlB4z/NKGK44BMZW-W6A",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 2,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "nintendo",
+      "region_id": "nintendo-f01-r01",
+      "registry_source_id": "nintendo",
+      "signal_stage": "distribution",
+      "source_url": "https://www.nintendo.com/us/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "nintendo",
+      "region_id": "nintendo-f01-r02",
+      "registry_source_id": "nintendo",
+      "signal_stage": "distribution",
+      "source_url": "https://www.nintendo.com/us/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "nintendo",
+      "region_id": "nintendo-f01-r03",
+      "registry_source_id": "nintendo",
+      "signal_stage": "distribution",
+      "source_url": "https://www.nintendo.com/us/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "playstation",
+      "region_id": "playstation-f01-r01",
+      "registry_source_id": "playstation",
+      "signal_stage": "distribution",
+      "source_url": "https://blog.playstation.com/2026/10/27/aloft-and-conan-exiles-enhanced-launch-on-ps5-in-early-2027/?smcid=pdc:us-en:web-pdc-home",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "poster-house",
+      "region_id": "poster-house-f01-r01",
+      "registry_source_id": "poster-house",
+      "signal_stage": "creation",
+      "source_url": "https://posterhouse.org/exhibition/cuteness-conservatism-consumption-lefor-openo-and-postwar-france/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 45-day current window."
+      ]
+    },
+    {
+      "source_id": "poster-house",
+      "region_id": "poster-house-f01-r02",
+      "registry_source_id": "poster-house",
+      "signal_stage": "creation",
+      "source_url": "https://posterhouse.org/exhibition/from-monarch-to-modernity-travel-identity-the-czechoslovak-first-republic-1918-1938/",
+      "temporal_status": "context_only_stale",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Dated evidence is 188 days old; the allowed current window is 45 days."
+      ]
+    },
+    {
+      "source_id": "poster-house",
+      "region_id": "poster-house-f01-r03",
+      "registry_source_id": "poster-house",
+      "signal_stage": "creation",
+      "source_url": "https://posterhouse.org/exhibition/designed-to-be-red-native-american-indigenous-poster-works/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 7,
+      "reasons": [
+        "Evidence date is within the 45-day current window."
+      ]
+    },
+    {
+      "source_id": "rivian",
+      "region_id": "rivian-f01-r01",
+      "registry_source_id": "rivian",
+      "signal_stage": "distribution",
+      "source_url": "https://rivian.com/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "rivian",
+      "region_id": "rivian-f01-r02",
+      "registry_source_id": "rivian",
+      "signal_stage": "distribution",
+      "source_url": "https://rivian.com/experience/charging",
+      "temporal_status": "baseline_only_stale",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Benchmark creative is 28 days old and can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "rivian",
+      "region_id": "rivian-f01-r03",
+      "registry_source_id": "rivian",
+      "signal_stage": "distribution",
+      "source_url": "https://rivian.com/",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Undated benchmark creative is unchanged; it can inform baseline or mainstream usage only."
+      ]
+    },
+    {
+      "source_id": "samsung",
+      "region_id": "samsung-f01-r01",
+      "registry_source_id": "samsung",
+      "signal_stage": "distribution",
+      "source_url": "https://www.samsung.com/us/offer/samsung-week/",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "samsung",
+      "region_id": "samsung-f01-r02",
+      "registry_source_id": "samsung",
+      "signal_stage": "distribution",
+      "source_url": "https://www.samsung.com/us/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 6,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "spotify",
+      "region_id": "spotify-f01-r01",
+      "registry_source_id": "spotify",
+      "signal_stage": "distribution",
+      "source_url": "https://open.spotify.com/",
+      "temporal_status": "eligible_changed_today",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 3,
+      "reasons": [
+        "Undated benchmark creative changed since its prior fingerprint; the change is current distribution evidence."
+      ]
+    },
+    {
+      "source_id": "starbucks",
+      "region_id": "starbucks-f01-r01",
+      "registry_source_id": "starbucks",
+      "signal_stage": "distribution",
+      "source_url": "https://www.starbucks.com/menu/product/27616/iced",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "starbucks",
+      "region_id": "starbucks-f01-r02",
+      "registry_source_id": "starbucks",
+      "signal_stage": "distribution",
+      "source_url": "https://www.starbucks.com/menu/product/40883/iced",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "starbucks",
+      "region_id": "starbucks-f01-r03",
+      "registry_source_id": "starbucks",
+      "signal_stage": "distribution",
+      "source_url": "https://www.starbucks.com/menu/product/418/hot",
+      "temporal_status": "baseline_only_unchanged",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Only a minor image change was observed; no new creative is established."
+      ]
+    },
+    {
+      "source_id": "steam-top-sellers",
+      "region_id": "steam-top-sellers-f01-r01",
+      "registry_source_id": "steam-top-sellers",
+      "signal_stage": "attention",
+      "source_url": "https://store.steampowered.com/charts/topselling/US",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 2,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "wieden-kennedy",
+      "region_id": "wieden-kennedy-f01-r01",
+      "registry_source_id": "wieden-kennedy",
+      "signal_stage": "creation",
+      "source_url": "https://www.wk.com/work/lego-everybody-wants-a-piece",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 6,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "wieden-kennedy",
+      "region_id": "wieden-kennedy-f01-r02",
+      "registry_source_id": "wieden-kennedy",
+      "signal_stage": "creation",
+      "source_url": "https://www.wk.com/work/doordash-not-that-dramatic",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 4,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "wieden-kennedy",
+      "region_id": "wieden-kennedy-f01-r03",
+      "registry_source_id": "wieden-kennedy",
+      "signal_stage": "creation",
+      "source_url": "https://www.wk.com/work/absolut-tabasco",
+      "temporal_status": "context_only_undated",
+      "baseline_eligible": false,
+      "current_eligible": false,
+      "kept_swatches": 5,
+      "reasons": [
+        "Discovery, creation, or art evidence needs a dated cultural event."
+      ]
+    },
+    {
+      "source_id": "xbox",
+      "region_id": "xbox-f02-r01",
+      "registry_source_id": "xbox",
+      "signal_stage": "distribution",
+      "source_url": "https://www.flightsimulator.com/local-legend-26/",
+      "temporal_status": "calibration_only_undated",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Undated benchmark creative may seed calibration but cannot prove emergence until a prior fingerprint exists."
+      ]
+    },
+    {
+      "source_id": "xbox",
+      "region_id": "xbox-f02-r02",
+      "registry_source_id": "xbox",
+      "signal_stage": "distribution",
+      "source_url": "https://news.xbox.com/en-us/2026/10/26/xbox-game-pass-t-mobile/",
+      "temporal_status": "eligible_current",
+      "baseline_eligible": true,
+      "current_eligible": true,
+      "kept_swatches": 5,
+      "reasons": [
+        "Evidence date is within the 2-day current window."
+      ]
+    },
+    {
+      "source_id": "xbox",
+      "region_id": "xbox-f02-r03",
+      "registry_source_id": "xbox",
+      "signal_stage": "distribution",
+      "source_url": "https://news.xbox.com/en-us/2026/10/23/call-of-duty-modern-warfare-4-kill-block-must-play-multiplayer/",
+      "temporal_status": "baseline_only_stale",
+      "baseline_eligible": true,
+      "current_eligible": false,
+      "kept_swatches": 7,
+      "reasons": [
+        "Benchmark creative is 5 days old and can inform baseline or mainstream usage only."
+      ]
+    }
+  ]
+}
