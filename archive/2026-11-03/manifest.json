@@ -1,0 +1,33 @@
+{
+  "schema_version": 2,
+  "date": "2026-11-03",
+  "state": "review_only",
+  "baseline_eligible": true,
+  "baseline_reason": "Admitted observations passed collection quality and pre-score integrity.",
+  "methodology_version": "1.6.1",
+  "registry_version": "2026.09-v1.6.1",
+  "public_files": [
+    "caption.txt",
+    "color-integrity.json",
+    "evidence-admission.json",
+    "evidence-ledger.json",
+    "feed-alt-text.txt",
+    "manifest.json",
+    "observations.json",
+    "palette-regime.json",
+    "result.json",
+    "review-summary.md",
+    "review-summary.png",
+    "stage-diagnostics.json",
+    "story-alt-text.txt",
+    "workflow-state.txt"
+  ],
+  "private_artifact_path": "/home/runner/work/pantone-challenger/pantone-challenger/.work/2026-11-03",
+  "baseline_compatibility_key": "cohort-evidence-v2-dates161",
+  "validated_sha256": {
+    "result.json": "039e2e7910a5e34ce54894188d4a4cae0e481d112860822c632f05a5f33511a6",
+    "observations.json": "4479bfe8c87f224bcf21f14322b08a19fca0131d61df1384daf30121012de43b",
+    "evidence-admission.json": "96b494088610c4a52d80e71424c9be1a8bdc0b29afd9408e7b0b2dbe37c968a8",
+    "evidence-ledger.json": "627a77bb41cb3320d9cbd80e27cbfd7c676ef58950f3e40420cec66779c63da9"
+  }
+}
