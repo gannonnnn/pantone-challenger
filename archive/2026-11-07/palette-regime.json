@@ -1,0 +1,85 @@
+{
+  "neutral_share": 0.6968,
+  "median_chroma": 0.0193,
+  "mean_lightness": 0.5648,
+  "warm_share": 0.7268,
+  "cool_share": 0.2732,
+  "mean_contrast": 0.4993,
+  "mean_palette_size": 4.15,
+  "monochrome_share": 0.8462,
+  "muted_share": 0.7552,
+  "electric_share": 0.2448,
+  "dominant_regime": "neutral minimalism",
+  "top_pairs": [
+    {
+      "colors": [
+        "#860100",
+        "#C30B0C"
+      ],
+      "score": 0.1665
+    },
+    {
+      "colors": [
+        "#564E29",
+        "#726C3C"
+      ],
+      "score": 0.1507
+    },
+    {
+      "colors": [
+        "#383117",
+        "#564E29"
+      ],
+      "score": 0.1403
+    },
+    {
+      "colors": [
+        "#383117",
+        "#726C3C"
+      ],
+      "score": 0.1403
+    },
+    {
+      "colors": [
+        "#564E29",
+        "#8D8C70"
+      ],
+      "score": 0.1288
+    },
+    {
+      "colors": [
+        "#726C3C",
+        "#8D8C70"
+      ],
+      "score": 0.1288
+    },
+    {
+      "colors": [
+        "#383117",
+        "#8D8C70"
+      ],
+      "score": 0.1288
+    },
+    {
+      "colors": [
+        "#62B04D",
+        "#7F5024"
+      ],
+      "score": 0.1179
+    },
+    {
+      "colors": [
+        "#62B04D",
+        "#BFDFE8"
+      ],
+      "score": 0.1168
+    },
+    {
+      "colors": [
+        "#7F5024",
+        "#BFDFE8"
+      ],
+      "score": 0.1168
+    }
+  ]
+}
